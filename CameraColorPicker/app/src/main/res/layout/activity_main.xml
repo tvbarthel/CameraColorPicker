@@ -7,6 +7,14 @@
     <FrameLayout
         android:id="@+id/activity_main_preview_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center"
+            android:background="@drawable/pointer_ring" />
+
+    </FrameLayout>
 
 </RelativeLayout>
