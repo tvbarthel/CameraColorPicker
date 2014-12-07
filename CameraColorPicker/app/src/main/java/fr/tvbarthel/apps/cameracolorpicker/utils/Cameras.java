@@ -93,9 +93,10 @@ public final class Cameras {
     }
 
     /**
-     * used to adapt camera preview to the current device orientation
+     * Adapt the {@link android.hardware.Camera} display orientaiton to the current device orientation.
      *
-     * @param camera
+     * @param context a {@link android.content.Context} to retrieve device orientation.
+     * @param camera  the {@link android.hardware.Camera} to be adapted.
      */
     public static void setCameraDisplayOrientation(Context context, android.hardware.Camera camera) {
         final Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
