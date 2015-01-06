@@ -8,13 +8,14 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import fr.tvbarthel.apps.cameracolorpicker.utils.Cameras;
-import fr.tvbarthel.apps.cameracolorpicker.views.CameraPreview;
+import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements CameraColorPickerPreview.OnColorPickedListener {
 
     protected static final String TAG = MainActivity.class.getCanonicalName();
 
@@ -22,8 +23,9 @@ public class MainActivity extends ActionBarActivity {
     protected boolean mIsPortrait;
     protected FrameLayout mPreviewContainter;
     protected FrameLayout.LayoutParams mPreviewParams;
-    protected CameraPreview mCameraPreview;
+    protected CameraColorPickerPreview mCameraPreview;
     protected CameraAsyncTask mCameraAsyncTask;
+    protected View mColorPreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class MainActivity extends ActionBarActivity {
 
         mIsPortrait = getResources().getBoolean(R.bool.is_portrait);
         mPreviewContainter = (FrameLayout) findViewById(R.id.activity_main_preview_container);
+        mColorPreview = findViewById(R.id.activity_main_color_preview);
     }
 
     @Override
@@ -52,8 +55,15 @@ public class MainActivity extends ActionBarActivity {
 
         // Release the camera.
         if (mCamera != null) {
+            mCamera.stopPreview();
+            mCamera.setPreviewCallback(null);
             mCamera.release();
             mCamera = null;
+        }
+
+        // Remove the camera preview
+        if (mCameraPreview != null) {
+            mPreviewContainter.removeView(mCameraPreview);
         }
     }
 
@@ -90,6 +100,11 @@ public class MainActivity extends ActionBarActivity {
             Log.e(TAG, e.getMessage());
         }
         return c;
+    }
+
+    @Override
+    public void onColorPicked(int color) {
+        mColorPreview.setBackgroundColor(color);
     }
 
     /**
@@ -145,7 +160,8 @@ public class MainActivity extends ActionBarActivity {
                     MainActivity.this.finish();
                 } else {
                     //set up camera preview
-                    mCameraPreview = new CameraPreview(MainActivity.this, mCamera);
+                    mCameraPreview = new CameraColorPickerPreview(MainActivity.this, mCamera);
+                    mCameraPreview.setOnColorPickedListener(MainActivity.this);
 
                     //add camera preview
                     mPreviewContainter.addView(mCameraPreview, 0, mPreviewParams);
