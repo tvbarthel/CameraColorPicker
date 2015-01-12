@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.cameracolorpicker;
 
+import android.graphics.PorterDuff;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,11 +22,13 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
 
     protected Camera mCamera;
     protected boolean mIsPortrait;
-    protected FrameLayout mPreviewContainter;
+    protected FrameLayout mPreviewContainer;
     protected FrameLayout.LayoutParams mPreviewParams;
     protected CameraColorPickerPreview mCameraPreview;
     protected CameraAsyncTask mCameraAsyncTask;
+
     protected View mColorPreview;
+    protected View mPointerRing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +36,9 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
         setContentView(R.layout.activity_main);
 
         mIsPortrait = getResources().getBoolean(R.bool.is_portrait);
-        mPreviewContainter = (FrameLayout) findViewById(R.id.activity_main_preview_container);
+        mPreviewContainer = (FrameLayout) findViewById(R.id.activity_main_preview_container);
         mColorPreview = findViewById(R.id.activity_main_color_preview);
+        mPointerRing = findViewById(R.id.activity_main_pointer_ring);
     }
 
     @Override
@@ -63,7 +67,7 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
 
         // Remove the camera preview
         if (mCameraPreview != null) {
-            mPreviewContainter.removeView(mCameraPreview);
+            mPreviewContainer.removeView(mCameraPreview);
         }
     }
 
@@ -90,7 +94,7 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
     }
 
     /**
-     * A safe way to get an instance of the front camera
+     * A safe way to get an instance of the back {@link android.hardware.Camera}.
      */
     private static Camera getCameraInstance() {
         Camera c = null;
@@ -105,6 +109,7 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
     @Override
     public void onColorPicked(int color) {
         mColorPreview.setBackgroundColor(color);
+        mPointerRing.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
     }
 
     /**
@@ -124,8 +129,8 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
                 //get optimal camera preview size according to the layout used to display it
                 Camera.Size bestSize = Cameras.getBestPreviewSize(
                         cameraParameters.getSupportedPreviewSizes()
-                        , mPreviewContainter.getWidth()
-                        , mPreviewContainter.getHeight()
+                        , mPreviewContainer.getWidth()
+                        , mPreviewContainer.getHeight()
                         , mIsPortrait);
                 //set optimal camera preview
                 cameraParameters.setPreviewSize(bestSize.width, bestSize.height);
@@ -138,8 +143,8 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
                 //get proportional dimension for the layout used to display preview according to the preview size used
                 int[] adaptedDimension = Cameras.getProportionalDimension(
                         bestSize
-                        , mPreviewContainter.getWidth()
-                        , mPreviewContainter.getHeight()
+                        , mPreviewContainer.getWidth()
+                        , mPreviewContainer.getHeight()
                         , mIsPortrait);
 
                 //set up params for the layout used to display the preview
@@ -164,7 +169,7 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
                     mCameraPreview.setOnColorPickedListener(MainActivity.this);
 
                     //add camera preview
-                    mPreviewContainter.addView(mCameraPreview, 0, mPreviewParams);
+                    mPreviewContainer.addView(mCameraPreview, 0, mPreviewParams);
                 }
             }
         }
