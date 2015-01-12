@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.TextureView;
 
@@ -13,6 +12,9 @@ import android.view.TextureView;
  */
 public class CameraColorPickerPreview extends TextureView implements TextureView.SurfaceTextureListener, Camera.PreviewCallback {
 
+    /**
+     * A tag for logging.
+     */
     private static final String TAG = CameraColorPickerPreview.class.getCanonicalName();
 
     /**
@@ -20,12 +22,25 @@ public class CameraColorPickerPreview extends TextureView implements TextureView
      */
     protected static final int POINTER_RADIUS = 5;
 
+    /**
+     * The {@link android.hardware.Camera} used for getting a preview frame.
+     */
     protected Camera mCamera;
-    protected int mPointerSize;
+
+    /**
+     * The {@link android.hardware.Camera.Size} of the preview.
+     */
     protected Camera.Size mPreviewSize;
+
+    /**
+     * An array of 3 integers representing the color being picked.
+     */
+    protected int[] mPickedColor;
+
+    /**
+     * An {@link fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview.OnColorPickedListener} that will be called each time a new color is being picked.
+     */
     protected OnColorPickedListener mOnColorPickedListener;
-    protected int mWidth;
-    protected int mHeight;
 
     public CameraColorPickerPreview(Context context, Camera camera) {
         super(context);
@@ -36,8 +51,8 @@ public class CameraColorPickerPreview extends TextureView implements TextureView
         // underlying surface is created and destroyed.
         this.setSurfaceTextureListener(this);
 
-        final DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         mPreviewSize = mCamera.getParameters().getPreviewSize();
+        mPickedColor = new int[3];
     }
 
 
@@ -75,17 +90,23 @@ public class CameraColorPickerPreview extends TextureView implements TextureView
         if (mOnColorPickedListener != null) {
             final int midX = mPreviewSize.width / 2;
             final int midY = mPreviewSize.height / 2;
-            final int[] colors = new int[3];
+
+            // Reset the picked color.
+            mPickedColor[0] = 0;
+            mPickedColor[1] = 0;
+            mPickedColor[2] = 0;
+
+            // Compute the average picked color.
             for (int i = 0; i <= POINTER_RADIUS; i++) {
                 for (int j = 0; j <= POINTER_RADIUS; j++) {
-                    addColorFromYUV420(data, colors, (i * POINTER_RADIUS + j + 1),
+                    addColorFromYUV420(data, mPickedColor, (i * POINTER_RADIUS + j + 1),
                             (midX - POINTER_RADIUS) + i, (midY - POINTER_RADIUS) + j,
                             mPreviewSize.width, mPreviewSize.height);
                 }
             }
-            mOnColorPickedListener.onColorPicked(Color.rgb(colors[0], colors[1], colors[2]));
-        }
 
+            mOnColorPickedListener.onColorPicked(Color.rgb(mPickedColor[0], mPickedColor[1], mPickedColor[2]));
+        }
     }
 
     protected void addColorFromYUV420(byte[] data, int[] averageColor, int count, int x, int y, int width, int height) {
@@ -103,7 +124,7 @@ public class CameraColorPickerPreview extends TextureView implements TextureView
         int green = (int) (Yf - 0.813f * V - 0.391f * U);
         int blue = (int) (Yf + 2.018f * U);
 
-        // Clip rgb values to 0-255
+        // Clip rgb values to [0-255]
         red = red < 0 ? 0 : red > 255 ? 255 : red;
         green = green < 0 ? 0 : green > 255 ? 255 : green;
         blue = blue < 0 ? 0 : blue > 255 ? 255 : blue;
@@ -114,12 +135,27 @@ public class CameraColorPickerPreview extends TextureView implements TextureView
     }
 
 
+    /**
+     * Set a {@link fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview.OnColorPickedListener} that will be called each time a new color is picked.
+     *
+     * @param onColorPickedListener the {@link fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview.OnColorPickedListener} that will be called.
+     */
     public void setOnColorPickedListener(OnColorPickedListener onColorPickedListener) {
         mOnColorPickedListener = onColorPickedListener;
     }
 
+
+    /**
+     * An interface for callback.
+     */
     public interface OnColorPickedListener {
-        void onColorPicked(int color);
+
+        /**
+         * Called when a new color has just been picked.
+         *
+         * @param newColor the new color that has just been picked.
+         */
+        void onColorPicked(int newColor);
     }
 
 }
