@@ -5,7 +5,7 @@
 
     <!-- Activity Main -->
     <dimen name="activity_main_pointer_size">8dp</dimen>
-    <dimen name="activity_main_pointer_ring_size">42dp</dimen>
-    <dimen name="activity_main_pointer_ring_thickness">3dp</dimen>
+    <dimen name="activity_main_pointer_ring_size">48dp</dimen>
+    <dimen name="activity_main_pointer_ring_thickness">8dp</dimen>
 
 </resources>

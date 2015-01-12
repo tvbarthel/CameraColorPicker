@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="activity_main_pointer_ring">#c7ffffff</color>
+    <color name="activity_main_pointer_ring">#FFFFFFFF</color>
 
-    <color name="pointer_color">#80ffffff</color>
+    <color name="pointer_color">#80FFFFFF</color>
 </resources>
