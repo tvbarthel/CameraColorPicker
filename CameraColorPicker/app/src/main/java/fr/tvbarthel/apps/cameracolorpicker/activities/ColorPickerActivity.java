@@ -1,14 +1,19 @@
 package fr.tvbarthel.apps.cameracolorpicker.activities;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -21,6 +26,21 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
     protected static final String TAG = ColorPickerActivity.class.getSimpleName();
 
+    protected static final String ANIMATED_PROPERTY_NAME = "pickedColorProgress";
+
+    /**
+     * A safe way to get an instance of the back {@link android.hardware.Camera}.
+     */
+    private static Camera getCameraInstance() {
+        Camera c = null;
+        try {
+            c = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return c;
+    }
+
     protected Camera mCamera;
     protected boolean mIsPortrait;
     protected FrameLayout mPreviewContainer;
@@ -29,23 +49,26 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     protected CameraAsyncTask mCameraAsyncTask;
 
     protected int mPickedColor;
-
+    protected int mColorToApply;
 
     protected View mColorPreview;
+    protected View mColorPreviewAnimated;
+    protected ObjectAnimator mPickedColorProgressAnimator;
     protected TextView mColorPreviewText;
 
     protected View mPointerRing;
+
+    protected float mTranslationDeltaX;
+    protected float mTranslationDeltaY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_picker);
 
-        mIsPortrait = getResources().getBoolean(R.bool.is_portrait);
-        mPreviewContainer = (FrameLayout) findViewById(R.id.activity_color_picker_preview_container);
-        mColorPreview = findViewById(R.id.activity_color_picker_color_preview);
-        mColorPreviewText = (TextView) findViewById(R.id.activity_color_picker_color_preview_text);
-        mPointerRing = findViewById(R.id.activity_color_picker_pointer_ring);
+        initViews();
+        initPickedColorProgressAnimator();
+        initTranslationDeltas();
     }
 
     @Override
@@ -95,28 +118,10 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         return handled;
     }
 
-    /**
-     * A safe way to get an instance of the back {@link android.hardware.Camera}.
-     */
-    private static Camera getCameraInstance() {
-        Camera c = null;
-        try {
-            c = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-        return c;
-    }
-
     @Override
     public void onColorPicked(int color) {
         mPickedColor = color;
         mPointerRing.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-    }
-
-    protected void applyPickedColor(int pickedColor) {
-        mColorPreview.getBackground().setColorFilter(pickedColor, PorterDuff.Mode.SRC_ATOP);
-        mColorPreviewText.setText(Integer.toHexString(pickedColor));
     }
 
     @Override
@@ -124,6 +129,89 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         if (v == mCameraPreview) {
             applyPickedColor(mPickedColor);
         }
+    }
+
+    protected void initViews() {
+        mIsPortrait = getResources().getBoolean(R.bool.is_portrait);
+        mPreviewContainer = (FrameLayout) findViewById(R.id.activity_color_picker_preview_container);
+        mColorPreview = findViewById(R.id.activity_color_picker_color_preview);
+        mColorPreviewAnimated = findViewById(R.id.activity_color_picker_animated_preview);
+        mColorPreviewText = (TextView) findViewById(R.id.activity_color_picker_color_preview_text);
+        mPointerRing = findViewById(R.id.activity_color_picker_pointer_ring);
+    }
+
+    protected void initTranslationDeltas() {
+        ViewTreeObserver vto = mPointerRing.getViewTreeObserver();
+        if (vto.isAlive()) {
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    ViewTreeObserver vto = mPointerRing.getViewTreeObserver();
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
+                        vto.removeGlobalOnLayoutListener(this);
+                    } else {
+                        vto.removeOnGlobalLayoutListener(this);
+                    }
+
+                    final Rect pointerRingRect = new Rect();
+                    final Rect colorPreviewAnimatedRect = new Rect();
+                    mPointerRing.getGlobalVisibleRect(pointerRingRect);
+                    mColorPreviewAnimated.getGlobalVisibleRect(colorPreviewAnimatedRect);
+
+                    mTranslationDeltaX = pointerRingRect.left - colorPreviewAnimatedRect.left;
+                    mTranslationDeltaY = pointerRingRect.top - colorPreviewAnimatedRect.top;
+                }
+            });
+        }
+    }
+
+
+    protected void initPickedColorProgressAnimator() {
+        mPickedColorProgressAnimator = ObjectAnimator.ofFloat(this, ANIMATED_PROPERTY_NAME, 1f, 0f);
+        mPickedColorProgressAnimator.setDuration(400);
+        mPickedColorProgressAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mColorPreviewAnimated.setVisibility(View.VISIBLE);
+                mColorPreviewAnimated.getBackground().setColorFilter(mPickedColor, PorterDuff.Mode.SRC_ATOP);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mColorPreview.getBackground().setColorFilter(mColorToApply, PorterDuff.Mode.SRC_ATOP);
+                mColorPreviewText.setText(Integer.toHexString(mColorToApply));
+                mColorPreviewAnimated.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                mColorPreviewAnimated.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+    }
+
+    protected void applyPickedColor(int pickedColor) {
+        mColorToApply = pickedColor;
+        if (mPickedColorProgressAnimator.isRunning()) {
+            mPickedColorProgressAnimator.cancel();
+        }
+        mPickedColorProgressAnimator.start();
+    }
+
+    protected void setPickedColorProgress(float progress) {
+        final float fastOppositeProgress = (float) Math.pow(1 - progress, 0.3f);
+        final float translationX = (float) (mTranslationDeltaX * Math.pow(progress, 2f));
+        final float translationY = mTranslationDeltaY * progress;
+
+        mColorPreviewAnimated.setTranslationX(translationX);
+        mColorPreviewAnimated.setTranslationY(translationY);
+        mColorPreviewAnimated.setScaleX(fastOppositeProgress);
+        mColorPreviewAnimated.setScaleY(fastOppositeProgress);
     }
 
     /**
