@@ -27,7 +27,12 @@
 
         <activity
             android:name=".activities.ColorPickerActivity"
-            android:label="@string/activity_color_picker_label" />
+            android:label="@string/activity_color_picker_label"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

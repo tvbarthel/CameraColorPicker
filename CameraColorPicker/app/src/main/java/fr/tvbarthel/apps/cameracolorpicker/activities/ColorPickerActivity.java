@@ -7,17 +7,17 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.utils.Cameras;
 import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
 
 
-public class ColorPickerActivity extends ActionBarActivity implements CameraColorPickerPreview.OnColorPickedListener {
+public class ColorPickerActivity extends ActionBarActivity implements CameraColorPickerPreview.OnColorPickedListener, View.OnClickListener {
 
     protected static final String TAG = ColorPickerActivity.class.getSimpleName();
 
@@ -28,7 +28,12 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     protected CameraColorPickerPreview mCameraPreview;
     protected CameraAsyncTask mCameraAsyncTask;
 
+    protected int mPickedColor;
+
+
     protected View mColorPreview;
+    protected TextView mColorPreviewText;
+
     protected View mPointerRing;
 
     @Override
@@ -39,6 +44,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mIsPortrait = getResources().getBoolean(R.bool.is_portrait);
         mPreviewContainer = (FrameLayout) findViewById(R.id.activity_color_picker_preview_container);
         mColorPreview = findViewById(R.id.activity_color_picker_color_preview);
+        mColorPreviewText = (TextView) findViewById(R.id.activity_color_picker_color_preview_text);
         mPointerRing = findViewById(R.id.activity_color_picker_pointer_ring);
     }
 
@@ -73,25 +79,20 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        final int itemId = item.getItemId();
+        boolean handled;
+        switch (itemId) {
+            case android.R.id.home:
+                finish();
+                handled = true;
+                break;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            default:
+                handled = super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+        return handled;
     }
 
     /**
@@ -109,8 +110,20 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
     @Override
     public void onColorPicked(int color) {
-        mColorPreview.setBackgroundColor(color);
+        mPickedColor = color;
         mPointerRing.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+    }
+
+    protected void applyPickedColor(int pickedColor) {
+        mColorPreview.getBackground().setColorFilter(pickedColor, PorterDuff.Mode.SRC_ATOP);
+        mColorPreviewText.setText(Integer.toHexString(pickedColor));
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mCameraPreview) {
+            applyPickedColor(mPickedColor);
+        }
     }
 
     /**
@@ -168,6 +181,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
                     //set up camera preview
                     mCameraPreview = new CameraColorPickerPreview(ColorPickerActivity.this, mCamera);
                     mCameraPreview.setOnColorPickedListener(ColorPickerActivity.this);
+                    mCameraPreview.setOnClickListener(ColorPickerActivity.this);
 
                     //add camera preview
                     mPreviewContainer.addView(mCameraPreview, 0, mPreviewParams);
