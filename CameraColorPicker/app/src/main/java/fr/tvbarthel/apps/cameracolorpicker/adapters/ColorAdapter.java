@@ -17,8 +17,8 @@ import fr.tvbarthel.apps.cameracolorpicker.R;
  */
 public class ColorAdapter extends ArrayAdapter<Integer> {
 
-    public ColorAdapter(Context context, List<Integer> objects) {
-        super(context, R.layout.row_color_item, objects);
+    public ColorAdapter(Context context) {
+        super(context, R.layout.row_color_item);
     }
 
     @Override

@@ -129,6 +129,8 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     public void onClick(View v) {
         if (v == mCameraPreview) {
             animatePickedColor(mPickedColor);
+        } else if (v.getId() == R.id.activity_color_picker_save_button) {
+            Colors.saveColor(this, mColorToApply);
         }
     }
 
@@ -139,6 +141,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mColorPreviewAnimated = findViewById(R.id.activity_color_picker_animated_preview);
         mColorPreviewText = (TextView) findViewById(R.id.activity_color_picker_color_preview_text);
         mPointerRing = findViewById(R.id.activity_color_picker_pointer_ring);
+        findViewById(R.id.activity_color_picker_save_button).setOnClickListener(this);
 
         final int lastPickedColor = Colors.getLastPickedColor(this);
         applyPreviewColor(lastPickedColor);
