@@ -6,6 +6,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.ListView;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,9 @@ public class MainActivity extends ActionBarActivity {
         final ListView colorList = (ListView) findViewById(R.id.activity_main_list_view);
         colorList.setAdapter(colorAdapter);
         colorList.setEmptyView(emptyView);
+
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
+        fab.attachToListView(colorList);
     }
 
     // TODO remove (for test purpose only)

@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,5 +20,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/row_color_item" />
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/activity_main_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_image_colorize"
+        app:fab_colorNormal="@color/color_accent"
+        app:fab_colorPressed="@color/color_accent"
+        app:fab_colorRipple="?attr/colorControlHighlight" />
 
 </FrameLayout>

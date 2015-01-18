@@ -3,9 +3,9 @@
 
 
     <!-- General -->
-    <color name="color_primary">#0277BD</color>
-    <color name="color_primary_dark">#ff024673</color>
-    <color name="color_accent">#C2185B</color>
+    <color name="color_primary">#4CAF50</color>
+    <color name="color_primary_dark">#ff397d3d</color>
+    <color name="color_accent">#0091EA</color>
 
 
     <color name="activity_color_picker_pointer_ring">#FFFFFFFF</color>
