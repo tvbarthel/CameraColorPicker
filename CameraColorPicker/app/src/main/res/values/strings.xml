@@ -8,4 +8,7 @@
     <!-- Main activity -->
     <string name="activity_main_empty_view">You have no colors :(</string>
 
+    <!-- Color picker activity -->
+    <string name="activity_color_picker_label">Pick a color</string>
+
 </resources>

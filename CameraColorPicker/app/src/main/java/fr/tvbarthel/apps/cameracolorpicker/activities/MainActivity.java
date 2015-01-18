@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.cameracolorpicker.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -17,7 +18,7 @@ import fr.tvbarthel.apps.cameracolorpicker.adapters.ColorAdapter;
 /**
  * TODO comment
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class MainActivity extends ActionBarActivity {
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
         fab.attachToListView(colorList);
+        fab.setOnClickListener(this);
     }
 
     // TODO remove (for test purpose only)
@@ -49,5 +51,20 @@ public class MainActivity extends ActionBarActivity {
         fakeColors.add(Color.WHITE);
         fakeColors.add(Color.YELLOW);
         return fakeColors;
+    }
+
+    @Override
+    public void onClick(View v) {
+        final int viewId = v.getId();
+
+        switch (viewId) {
+            case R.id.activity_main_fab:
+                final Intent intent = new Intent(this, ColorPickerActivity.class);
+                startActivity(intent);
+                break;
+
+            default:
+                throw new IllegalArgumentException("View clicked unsupported. Found " + v);
+        }
     }
 }
