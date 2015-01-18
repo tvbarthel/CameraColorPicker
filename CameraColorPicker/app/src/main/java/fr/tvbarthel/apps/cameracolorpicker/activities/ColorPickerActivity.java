@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.cameracolorpicker;
+package fr.tvbarthel.apps.cameracolorpicker.activities;
 
 import android.graphics.PorterDuff;
 import android.hardware.Camera;
@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.utils.Cameras;
 import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
 
