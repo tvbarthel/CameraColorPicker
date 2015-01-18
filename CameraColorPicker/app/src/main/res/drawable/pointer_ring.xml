@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="ring"
-    android:thickness="@dimen/activity_main_pointer_ring_thickness"
+    android:thickness="@dimen/activity_color_picker_pointer_ring_thickness"
     android:useLevel="false">
 
-    <solid android:color="@color/activity_main_pointer_ring" />
+    <solid android:color="@color/activity_color_picker_pointer_ring" />
 
     <size
         android:width="30dp"

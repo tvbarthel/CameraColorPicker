@@ -2,35 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="#808080"
     tools:context=".MainActivity">
 
-    <FrameLayout
-        android:id="@+id/activity_main_preview_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/activity_main_color_preview">
-
-        <View
-            android:id="@+id/activity_main_pointer_ring"
-            android:layout_width="@dimen/activity_main_pointer_ring_size"
-            android:layout_height="@dimen/activity_main_pointer_ring_size"
-            android:layout_gravity="center"
-            android:background="@drawable/pointer_ring" />
-
-        <View
-            android:id="@+id/activity_main_pointer"
-            android:layout_width="@dimen/activity_main_pointer_size"
-            android:layout_height="@dimen/activity_main_pointer_size"
-            android:layout_gravity="center"
-            android:background="@drawable/pointer" />
-
-    </FrameLayout>
-
-    <View
-        android:id="@+id/activity_main_color_preview"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

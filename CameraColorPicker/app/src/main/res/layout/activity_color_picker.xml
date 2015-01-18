@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/activity_color_picker_preview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/activity_color_picker_bottom_bar"
+        tools:background="#808080">
+
+        <View
+            android:id="@+id/activity_color_picker_pointer_ring"
+            android:layout_width="@dimen/activity_color_picker_pointer_ring_size"
+            android:layout_height="@dimen/activity_color_picker_pointer_ring_size"
+            android:layout_gravity="center"
+            android:background="@drawable/pointer_ring" />
+
+        <View
+            android:id="@+id/activity_main_pointer"
+            android:layout_width="@dimen/activity_color_picker_pointer_size"
+            android:layout_height="@dimen/activity_color_picker_pointer_size"
+            android:layout_gravity="center"
+            android:background="@drawable/pointer" />
+
+    </FrameLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/activity_color_picker_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_alignParentBottom="true"
+        android:padding="16dp">
+
+        <View
+            android:id="@+id/activity_color_picker_color_preview"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            tools:background="#992000" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

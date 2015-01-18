@@ -4,8 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- Activity Main -->
-    <dimen name="activity_main_pointer_size">8dp</dimen>
-    <dimen name="activity_main_pointer_ring_size">48dp</dimen>
-    <dimen name="activity_main_pointer_ring_thickness">8dp</dimen>
+    <dimen name="activity_color_picker_pointer_size">8dp</dimen>
+    <dimen name="activity_color_picker_pointer_ring_size">48dp</dimen>
+    <dimen name="activity_color_picker_pointer_ring_thickness">8dp</dimen>
 
 </resources>

@@ -16,9 +16,9 @@ import fr.tvbarthel.apps.cameracolorpicker.utils.Cameras;
 import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
 
 
-public class MainActivity extends ActionBarActivity implements CameraColorPickerPreview.OnColorPickedListener {
+public class ColorPickerActivity extends ActionBarActivity implements CameraColorPickerPreview.OnColorPickedListener {
 
-    protected static final String TAG = MainActivity.class.getCanonicalName();
+    protected static final String TAG = ColorPickerActivity.class.getSimpleName();
 
     protected Camera mCamera;
     protected boolean mIsPortrait;
@@ -33,12 +33,12 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_color_picker);
 
         mIsPortrait = getResources().getBoolean(R.bool.is_portrait);
-        mPreviewContainer = (FrameLayout) findViewById(R.id.activity_main_preview_container);
-        mColorPreview = findViewById(R.id.activity_main_color_preview);
-        mPointerRing = findViewById(R.id.activity_main_pointer_ring);
+        mPreviewContainer = (FrameLayout) findViewById(R.id.activity_color_picker_preview_container);
+        mColorPreview = findViewById(R.id.activity_color_picker_color_preview);
+        mPointerRing = findViewById(R.id.activity_color_picker_pointer_ring);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
         protected Camera doInBackground(Void... params) {
             Camera camera = getCameraInstance();
             if (camera == null) {
-                MainActivity.this.finish();
+                ColorPickerActivity.this.finish();
             } else {
                 //configure Camera parameters
                 Camera.Parameters cameraParameters = camera.getParameters();
@@ -138,7 +138,7 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
                 camera.setParameters(cameraParameters);
 
                 //set camera orientation to match with current device orientation
-                Cameras.setCameraDisplayOrientation(MainActivity.this, camera);
+                Cameras.setCameraDisplayOrientation(ColorPickerActivity.this, camera);
 
                 //get proportional dimension for the layout used to display preview according to the preview size used
                 int[] adaptedDimension = Cameras.getProportionalDimension(
@@ -162,11 +162,11 @@ public class MainActivity extends ActionBarActivity implements CameraColorPicker
             if (!isCancelled()) {
                 mCamera = camera;
                 if (mCamera == null) {
-                    MainActivity.this.finish();
+                    ColorPickerActivity.this.finish();
                 } else {
                     //set up camera preview
-                    mCameraPreview = new CameraColorPickerPreview(MainActivity.this, mCamera);
-                    mCameraPreview.setOnColorPickedListener(MainActivity.this);
+                    mCameraPreview = new CameraColorPickerPreview(ColorPickerActivity.this, mCamera);
+                    mCameraPreview.setOnColorPickedListener(ColorPickerActivity.this);
 
                     //add camera preview
                     mPreviewContainer.addView(mCameraPreview, 0, mPreviewParams);
