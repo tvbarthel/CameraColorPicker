@@ -5,32 +5,43 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Static methods for dealing with colors.
+ * Static methods for dealing with {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}s.
  * <p/>
  * TODO comment.
  */
-public final class Colors {
+public final class ColorItems {
 
     private static final String COLOR_DELIMITER = ",";
     private static final String KEY_SAVED_COLORS = "Colors.Keys.SAVED_COLORS";
     private static final String KEY_LAST_PICKED_COLOR = "Colors.Keys.LAST_PICKED_COLOR";
     private static final int DEFAULT_LAST_PICKED_COLOR = Color.WHITE;
+    private static final ColorItem DEFAULT_LAST_PICKED_COLOR_ITEM = new ColorItem(1, Color.WHITE);
+    private static final Gson GSON = new Gson();
 
     private static SharedPreferences getPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static int getLastPickedColor(Context context) {
-        return getPreferences(context).getInt(KEY_LAST_PICKED_COLOR, DEFAULT_LAST_PICKED_COLOR);
+    public static ColorItem getLastPickedColorItem(Context context) {
+        final String colorItemString = getPreferences(context).getString(KEY_LAST_PICKED_COLOR, null);
+
+        if (colorItemString == null) {
+            return DEFAULT_LAST_PICKED_COLOR_ITEM;
+        }
+
+        return GSON.fromJson(colorItemString, ColorItem.class);
     }
 
-    public static boolean saveLastPickedColor(Context context, int lastPickedColor) {
+    public static boolean saveLastPickedColorItem(Context context, ColorItem lastPickedColorItem) {
+        final String colorItemString = GSON.toJson(lastPickedColorItem);
         final SharedPreferences.Editor editor = getPreferences(context).edit();
-        editor.putInt(KEY_LAST_PICKED_COLOR, lastPickedColor);
+        editor.putString(KEY_LAST_PICKED_COLOR, colorItemString);
         return editor.commit();
     }
 
@@ -65,6 +76,6 @@ public final class Colors {
     }
 
     // Non-instantibility
-    private Colors() {
+    private ColorItems() {
     }
 }

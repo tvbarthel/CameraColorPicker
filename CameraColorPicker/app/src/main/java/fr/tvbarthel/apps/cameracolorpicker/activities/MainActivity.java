@@ -10,7 +10,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.adapters.ColorAdapter;
-import fr.tvbarthel.apps.cameracolorpicker.data.Colors;
+import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
 
 /**
  * TODO comment
@@ -39,7 +39,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         mColorAdapter.clear();
-        mColorAdapter.addAll(Colors.getSavedColors(this));
+        mColorAdapter.addAll(ColorItems.getSavedColors(this));
         mColorAdapter.notifyDataSetChanged();
     }
 
