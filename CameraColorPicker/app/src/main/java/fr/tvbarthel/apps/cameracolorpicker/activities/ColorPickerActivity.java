@@ -18,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
+import fr.tvbarthel.apps.cameracolorpicker.data.Colors;
 import fr.tvbarthel.apps.cameracolorpicker.utils.Cameras;
 import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
 
@@ -127,7 +128,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     @Override
     public void onClick(View v) {
         if (v == mCameraPreview) {
-            applyPickedColor(mPickedColor);
+            animatePickedColor(mPickedColor);
         }
     }
 
@@ -138,6 +139,9 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mColorPreviewAnimated = findViewById(R.id.activity_color_picker_animated_preview);
         mColorPreviewText = (TextView) findViewById(R.id.activity_color_picker_color_preview_text);
         mPointerRing = findViewById(R.id.activity_color_picker_pointer_ring);
+
+        final int lastPickedColor = Colors.getLastPickedColor(this);
+        applyPreviewColor(lastPickedColor);
     }
 
     protected void initTranslationDeltas() {
@@ -178,8 +182,8 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                mColorPreview.getBackground().setColorFilter(mColorToApply, PorterDuff.Mode.SRC_ATOP);
-                mColorPreviewText.setText(Integer.toHexString(mColorToApply));
+                Colors.saveLastPickedColor(ColorPickerActivity.this, mColorToApply);
+                applyPreviewColor(mColorToApply);
                 mColorPreviewAnimated.setVisibility(View.INVISIBLE);
             }
 
@@ -195,7 +199,12 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         });
     }
 
-    protected void applyPickedColor(int pickedColor) {
+    protected void applyPreviewColor(int previewColor) {
+        mColorPreview.getBackground().setColorFilter(previewColor, PorterDuff.Mode.SRC_ATOP);
+        mColorPreviewText.setText(Integer.toHexString(previewColor));
+    }
+
+    protected void animatePickedColor(int pickedColor) {
         mColorToApply = pickedColor;
         if (mPickedColorProgressAnimator.isRunning()) {
             mPickedColorProgressAnimator.cancel();
