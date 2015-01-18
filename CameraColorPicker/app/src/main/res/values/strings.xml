@@ -5,4 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Main activity -->
+    <string name="activity_main_empty_view">You have no colors :(</string>
+
 </resources>
