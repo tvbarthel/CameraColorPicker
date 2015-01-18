@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+
+    <!-- General -->
+    <color name="color_primary">#0277BD</color>
+    <color name="color_primary_dark">#ff024673</color>
+    <color name="color_accent">#C2185B</color>
+
+
     <color name="activity_color_picker_pointer_ring">#FFFFFFFF</color>
 
     <color name="pointer_color">#80FFFFFF</color>
