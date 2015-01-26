@@ -6,8 +6,11 @@ import android.graphics.Color;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,6 +26,8 @@ public final class ColorItems {
     private static final int DEFAULT_LAST_PICKED_COLOR = Color.WHITE;
     private static final ColorItem DEFAULT_LAST_PICKED_COLOR_ITEM = new ColorItem(1, Color.WHITE);
     private static final Gson GSON = new Gson();
+    private static final Type COLOR_ITEM_LIST_TYPE = new TypeToken<List<ColorItem>>() {
+    }.getType();
 
     private static SharedPreferences getPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -45,33 +50,36 @@ public final class ColorItems {
         return editor.commit();
     }
 
-    public static List<Integer> getSavedColors(Context context) {
-        final String intArray = getPreferences(context).getString(KEY_SAVED_COLORS, "");
-        if (intArray.equals("")) {
-            return new ArrayList<>(0);
+    @SuppressWarnings("unchecked")
+    public static List<ColorItem> getSavedColors(Context context) {
+        final String jsonColorItems = getPreferences(context).getString(KEY_SAVED_COLORS, "");
+
+        // No saved colors were found.
+        // Return an empty list.
+        if (jsonColorItems.equals("")) {
+            return Collections.EMPTY_LIST;
         }
 
-        String[] strInts = intArray.split(COLOR_DELIMITER);
-        final List<Integer> ints = new ArrayList<>(strInts.length);
-        for (String strInt : strInts) {
-            ints.add(Integer.valueOf(strInt));
-        }
+        // Parse the json into colorItems.
+        final List<ColorItem> colorItems = GSON.fromJson(jsonColorItems, COLOR_ITEM_LIST_TYPE);
 
-        return ints;
+        // Return an unmodifiable list of the color items.
+        return Collections.unmodifiableList(colorItems);
     }
 
-    public static boolean saveColor(Context context, int colorToSave) {
-        final SharedPreferences preferences = getPreferences(context);
-        final String intArray = preferences.getString(KEY_SAVED_COLORS, "");
-        String intArrayToSave;
-        if (intArray.equals("")) {
-            intArrayToSave = String.valueOf(colorToSave);
-        } else {
-            intArrayToSave = intArray + COLOR_DELIMITER + colorToSave;
+    public static boolean saveColor(Context context, ColorItem colorToSave) {
+        if (colorToSave == null) {
+            throw new IllegalArgumentException("Can't save a null color.");
         }
 
-        final SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(KEY_SAVED_COLORS, intArrayToSave);
+        final List<ColorItem> savedColorsItems = getSavedColors(context);
+        final SharedPreferences.Editor editor = getPreferences(context).edit();
+        final List<ColorItem> colorItems = new ArrayList<>(savedColorsItems.size() + 1);
+        colorItems.addAll(savedColorsItems);
+        colorItems.add(colorToSave);
+
+        editor.putString(KEY_SAVED_COLORS, GSON.toJson(colorItems));
+
         return editor.commit();
     }
 

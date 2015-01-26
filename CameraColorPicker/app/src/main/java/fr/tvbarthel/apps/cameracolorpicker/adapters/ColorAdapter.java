@@ -8,14 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.List;
-
 import fr.tvbarthel.apps.cameracolorpicker.R;
+import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 
 /**
  * TODO comment.
  */
-public class ColorAdapter extends ArrayAdapter<Integer> {
+public class ColorAdapter extends ArrayAdapter<ColorItem> {
 
     public ColorAdapter(Context context) {
         super(context, R.layout.row_color_item);
@@ -44,7 +43,7 @@ public class ColorAdapter extends ArrayAdapter<Integer> {
     }
 
     protected void bindViewHolder(ViewHolder viewHolder, int position) {
-        final int color = getItem(position);
+        final int color = getItem(position).getColor();
         viewHolder.mColorPreview.getBackground().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
         viewHolder.mColorText.setText(Integer.toHexString(color));
     }

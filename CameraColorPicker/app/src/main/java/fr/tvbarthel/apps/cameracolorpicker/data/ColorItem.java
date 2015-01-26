@@ -13,7 +13,7 @@ public class ColorItem {
     /**
      * An int representing the value of the color.
      */
-    protected final int mColor;
+    protected int mColor;
 
     /**
      * A long representing the creation time of the color. (In milliseconds).
@@ -30,6 +30,18 @@ public class ColorItem {
         mId = id;
         mColor = color;
         mCreationTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Create a new {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem} with a color.
+     * <p/>
+     * The {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem#mId} is set to the {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem#mCreationTime}.
+     *
+     * @param color the color value.
+     */
+    public ColorItem(int color) {
+        mId = mCreationTime = System.currentTimeMillis();
+        mColor = color;
     }
 
     /**
@@ -50,6 +62,14 @@ public class ColorItem {
         return mColor;
     }
 
+    /**
+     * Set the color valur of the {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}.
+     *
+     * @param color an integer representing the new color value of the {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}.
+     */
+    public void setColor(int color) {
+        mColor = color;
+    }
 
     /**
      * Get the creation time of the {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}.

@@ -132,7 +132,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         if (v == mCameraPreview) {
             animatePickedColor(mPickedColor);
         } else if (v.getId() == R.id.activity_color_picker_save_button) {
-            ColorItems.saveColor(this, mLastPickedColorItem.getColor());
+            ColorItems.saveColor(this, new ColorItem(mLastPickedColorItem.getColor()));
         }
     }
 
