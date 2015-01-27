@@ -106,7 +106,7 @@ public class ColorItem {
      * @param value the integer representation the color.
      * @return a human readable representation of the hexadecimal value.
      */
-    protected static String makeHexString(int value) {
+    public static String makeHexString(int value) {
         return "#" + Integer.toHexString(value).substring(2);
     }
 

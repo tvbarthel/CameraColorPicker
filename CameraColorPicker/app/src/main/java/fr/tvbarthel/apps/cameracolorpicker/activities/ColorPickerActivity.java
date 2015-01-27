@@ -206,7 +206,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
     protected void applyPreviewColor(int previewColor) {
         mColorPreview.getBackground().setColorFilter(previewColor, PorterDuff.Mode.SRC_ATOP);
-        mColorPreviewText.setText(Integer.toHexString(previewColor));
+        mColorPreviewText.setText(ColorItem.makeHexString(previewColor));
     }
 
     protected void animatePickedColor(int pickedColor) {
