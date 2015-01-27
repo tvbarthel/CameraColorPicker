@@ -39,7 +39,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         mColorAdapter.clear();
-        mColorAdapter.addAll(ColorItems.getSavedColors(this));
+        mColorAdapter.addAll(ColorItems.getSavedColorItems(this));
         mColorAdapter.notifyDataSetChanged();
     }
 

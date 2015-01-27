@@ -20,7 +20,7 @@ import java.util.List;
  */
 public final class ColorItems {
 
-    private static final String KEY_SAVED_COLORS = "Colors.Keys.SAVED_COLORS";
+    private static final String KEY_SAVED_COLOR_ITEMS = "Colors.Keys.SAVED_COLOR_COLOR_ITEMS";
     private static final String KEY_LAST_PICKED_COLOR = "Colors.Keys.LAST_PICKED_COLOR";
     private static final int DEFAULT_LAST_PICKED_COLOR = Color.WHITE;
     private static final Gson GSON = new Gson();
@@ -42,8 +42,8 @@ public final class ColorItems {
     }
 
     @SuppressWarnings("unchecked")
-    public static List<ColorItem> getSavedColors(Context context) {
-        final String jsonColorItems = getPreferences(context).getString(KEY_SAVED_COLORS, "");
+    public static List<ColorItem> getSavedColorItems(Context context) {
+        final String jsonColorItems = getPreferences(context).getString(KEY_SAVED_COLOR_ITEMS, "");
 
         // No saved colors were found.
         // Return an empty list.
@@ -58,18 +58,18 @@ public final class ColorItems {
         return Collections.unmodifiableList(colorItems);
     }
 
-    public static boolean saveColor(Context context, ColorItem colorToSave) {
+    public static boolean saveColorItem(Context context, ColorItem colorToSave) {
         if (colorToSave == null) {
             throw new IllegalArgumentException("Can't save a null color.");
         }
 
-        final List<ColorItem> savedColorsItems = getSavedColors(context);
+        final List<ColorItem> savedColorsItems = getSavedColorItems(context);
         final SharedPreferences.Editor editor = getPreferences(context).edit();
         final List<ColorItem> colorItems = new ArrayList<>(savedColorsItems.size() + 1);
         colorItems.addAll(savedColorsItems);
         colorItems.add(colorToSave);
 
-        editor.putString(KEY_SAVED_COLORS, GSON.toJson(colorItems));
+        editor.putString(KEY_SAVED_COLOR_ITEMS, GSON.toJson(colorItems));
 
         return editor.commit();
     }
