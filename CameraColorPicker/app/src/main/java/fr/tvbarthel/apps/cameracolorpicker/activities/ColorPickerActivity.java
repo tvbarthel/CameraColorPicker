@@ -24,7 +24,7 @@ import fr.tvbarthel.apps.cameracolorpicker.utils.Cameras;
 import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
 
 
-public class ColorPickerActivity extends ActionBarActivity implements CameraColorPickerPreview.OnColorPickedListener, View.OnClickListener {
+public class ColorPickerActivity extends ActionBarActivity implements CameraColorPickerPreview.OnColorSelectedListener, View.OnClickListener {
 
     protected static final String TAG = ColorPickerActivity.class.getSimpleName();
 
@@ -50,7 +50,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     protected CameraColorPickerPreview mCameraPreview;
     protected CameraAsyncTask mCameraAsyncTask;
 
-    protected int mPickedColor;
+    protected int mSelectedColor;
 
     protected View mColorPreview;
     protected View mColorPreviewAnimated;
@@ -122,15 +122,15 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     }
 
     @Override
-    public void onColorPicked(int color) {
-        mPickedColor = color;
+    public void onColorSelected(int color) {
+        mSelectedColor = color;
         mPointerRing.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
     }
 
     @Override
     public void onClick(View v) {
         if (v == mCameraPreview) {
-            animatePickedColor(mPickedColor);
+            animatePickedColor(mSelectedColor);
         } else if (v.getId() == R.id.activity_color_picker_save_button) {
             ColorItems.saveColor(this, new ColorItem(mLastPickedColorItem.getColor()));
         }
@@ -182,7 +182,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
             @Override
             public void onAnimationStart(Animator animation) {
                 mColorPreviewAnimated.setVisibility(View.VISIBLE);
-                mColorPreviewAnimated.getBackground().setColorFilter(mPickedColor, PorterDuff.Mode.SRC_ATOP);
+                mColorPreviewAnimated.getBackground().setColorFilter(mSelectedColor, PorterDuff.Mode.SRC_ATOP);
             }
 
             @Override
@@ -282,7 +282,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
                 } else {
                     //set up camera preview
                     mCameraPreview = new CameraColorPickerPreview(ColorPickerActivity.this, mCamera);
-                    mCameraPreview.setOnColorPickedListener(ColorPickerActivity.this);
+                    mCameraPreview.setOnColorSelectedListener(ColorPickerActivity.this);
                     mCameraPreview.setOnClickListener(ColorPickerActivity.this);
 
                     //add camera preview

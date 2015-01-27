@@ -33,14 +33,14 @@ public class CameraColorPickerPreview extends TextureView implements TextureView
     protected Camera.Size mPreviewSize;
 
     /**
-     * An array of 3 integers representing the color being picked.
+     * An array of 3 integers representing the color being selected.
      */
-    protected int[] mPickedColor;
+    protected int[] mSelectedColor;
 
     /**
-     * An {@link fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview.OnColorPickedListener} that will be called each time a new color is being picked.
+     * An {@link fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview.OnColorSelectedListener} that will be called each time a new color is being selected.
      */
-    protected OnColorPickedListener mOnColorPickedListener;
+    protected OnColorSelectedListener mOnColorSelectedListener;
 
     public CameraColorPickerPreview(Context context, Camera camera) {
         super(context);
@@ -52,7 +52,7 @@ public class CameraColorPickerPreview extends TextureView implements TextureView
         this.setSurfaceTextureListener(this);
 
         mPreviewSize = mCamera.getParameters().getPreviewSize();
-        mPickedColor = new int[3];
+        mSelectedColor = new int[3];
     }
 
 
@@ -87,25 +87,25 @@ public class CameraColorPickerPreview extends TextureView implements TextureView
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
-        if (mOnColorPickedListener != null) {
+        if (mOnColorSelectedListener != null) {
             final int midX = mPreviewSize.width / 2;
             final int midY = mPreviewSize.height / 2;
 
-            // Reset the picked color.
-            mPickedColor[0] = 0;
-            mPickedColor[1] = 0;
-            mPickedColor[2] = 0;
+            // Reset the selected color.
+            mSelectedColor[0] = 0;
+            mSelectedColor[1] = 0;
+            mSelectedColor[2] = 0;
 
-            // Compute the average picked color.
+            // Compute the average selected color.
             for (int i = 0; i <= POINTER_RADIUS; i++) {
                 for (int j = 0; j <= POINTER_RADIUS; j++) {
-                    addColorFromYUV420(data, mPickedColor, (i * POINTER_RADIUS + j + 1),
+                    addColorFromYUV420(data, mSelectedColor, (i * POINTER_RADIUS + j + 1),
                             (midX - POINTER_RADIUS) + i, (midY - POINTER_RADIUS) + j,
                             mPreviewSize.width, mPreviewSize.height);
                 }
             }
 
-            mOnColorPickedListener.onColorPicked(Color.rgb(mPickedColor[0], mPickedColor[1], mPickedColor[2]));
+            mOnColorSelectedListener.onColorSelected(Color.rgb(mSelectedColor[0], mSelectedColor[1], mSelectedColor[2]));
         }
     }
 
@@ -136,26 +136,26 @@ public class CameraColorPickerPreview extends TextureView implements TextureView
 
 
     /**
-     * Set a {@link fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview.OnColorPickedListener} that will be called each time a new color is picked.
+     * Set a {@link fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview.OnColorSelectedListener} that will be called each time a new color is selected.
      *
-     * @param onColorPickedListener the {@link fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview.OnColorPickedListener} that will be called.
+     * @param onColorSelectedListener the {@link fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview.OnColorSelectedListener} that will be called.
      */
-    public void setOnColorPickedListener(OnColorPickedListener onColorPickedListener) {
-        mOnColorPickedListener = onColorPickedListener;
+    public void setOnColorSelectedListener(OnColorSelectedListener onColorSelectedListener) {
+        mOnColorSelectedListener = onColorSelectedListener;
     }
 
 
     /**
      * An interface for callback.
      */
-    public interface OnColorPickedListener {
+    public interface OnColorSelectedListener {
 
         /**
-         * Called when a new color has just been picked.
+         * Called when a new color has just been selected.
          *
-         * @param newColor the new color that has just been picked.
+         * @param newColor the new color that has just been selected.
          */
-        void onColorPicked(int newColor);
+        void onColorSelected(int newColor);
     }
 
 }
