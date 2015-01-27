@@ -20,11 +20,9 @@ import java.util.List;
  */
 public final class ColorItems {
 
-    private static final String COLOR_DELIMITER = ",";
     private static final String KEY_SAVED_COLORS = "Colors.Keys.SAVED_COLORS";
     private static final String KEY_LAST_PICKED_COLOR = "Colors.Keys.LAST_PICKED_COLOR";
     private static final int DEFAULT_LAST_PICKED_COLOR = Color.WHITE;
-    private static final ColorItem DEFAULT_LAST_PICKED_COLOR_ITEM = new ColorItem(1, Color.WHITE);
     private static final Gson GSON = new Gson();
     private static final Type COLOR_ITEM_LIST_TYPE = new TypeToken<List<ColorItem>>() {
     }.getType();
@@ -33,20 +31,13 @@ public final class ColorItems {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static ColorItem getLastPickedColorItem(Context context) {
-        final String colorItemString = getPreferences(context).getString(KEY_LAST_PICKED_COLOR, null);
-
-        if (colorItemString == null) {
-            return DEFAULT_LAST_PICKED_COLOR_ITEM;
-        }
-
-        return GSON.fromJson(colorItemString, ColorItem.class);
+    public static int getLastPickedColor(Context context) {
+        return getPreferences(context).getInt(KEY_LAST_PICKED_COLOR, DEFAULT_LAST_PICKED_COLOR);
     }
 
-    public static boolean saveLastPickedColorItem(Context context, ColorItem lastPickedColorItem) {
-        final String colorItemString = GSON.toJson(lastPickedColorItem);
+    public static boolean saveLastPickedColor(Context context, int lastPickedColor) {
         final SharedPreferences.Editor editor = getPreferences(context).edit();
-        editor.putString(KEY_LAST_PICKED_COLOR, colorItemString);
+        editor.putInt(KEY_LAST_PICKED_COLOR, lastPickedColor);
         return editor.commit();
     }
 

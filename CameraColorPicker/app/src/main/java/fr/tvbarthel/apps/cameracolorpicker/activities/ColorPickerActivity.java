@@ -51,18 +51,17 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     protected CameraAsyncTask mCameraAsyncTask;
 
     protected int mSelectedColor;
+    protected int mLastPickedColor;
 
     protected View mColorPreview;
     protected View mColorPreviewAnimated;
     protected ObjectAnimator mPickedColorProgressAnimator;
+
     protected TextView mColorPreviewText;
 
     protected View mPointerRing;
-
     protected float mTranslationDeltaX;
     protected float mTranslationDeltaY;
-
-    protected ColorItem mLastPickedColorItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +131,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         if (v == mCameraPreview) {
             animatePickedColor(mSelectedColor);
         } else if (v.getId() == R.id.activity_color_picker_save_button) {
-            ColorItems.saveColor(this, new ColorItem(mLastPickedColorItem.getColor()));
+            ColorItems.saveColor(this, new ColorItem(mLastPickedColor));
         }
     }
 
@@ -145,8 +144,8 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mPointerRing = findViewById(R.id.activity_color_picker_pointer_ring);
         findViewById(R.id.activity_color_picker_save_button).setOnClickListener(this);
 
-        mLastPickedColorItem = ColorItems.getLastPickedColorItem(this);
-        applyPreviewColor(mLastPickedColorItem.getColor());
+        mLastPickedColor = ColorItems.getLastPickedColor(this);
+        applyPreviewColor(mLastPickedColor);
     }
 
     protected void initTranslationDeltas() {
@@ -187,8 +186,8 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                ColorItems.saveLastPickedColorItem(ColorPickerActivity.this, mLastPickedColorItem);
-                applyPreviewColor(mLastPickedColorItem.getColor());
+                ColorItems.saveLastPickedColor(ColorPickerActivity.this, mLastPickedColor);
+                applyPreviewColor(mLastPickedColor);
                 mColorPreviewAnimated.setVisibility(View.INVISIBLE);
             }
 
@@ -210,7 +209,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     }
 
     protected void animatePickedColor(int pickedColor) {
-        mLastPickedColorItem.setColor(pickedColor);
+        mLastPickedColor = pickedColor;
         if (mPickedColorProgressAnimator.isRunning()) {
             mPickedColorProgressAnimator.cancel();
         }
