@@ -21,6 +21,11 @@ public class ColorItem {
     protected final long mCreationTime;
 
     /**
+     * A human readable string representation of the hexadecimal value of the color.
+     */
+    protected transient String mHexString;
+
+    /**
      * Create a new {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem} with an id and a color.
      *
      * @param id    the id of the {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}. Should be unique.
@@ -68,7 +73,10 @@ public class ColorItem {
      * @param color an integer representing the new color value of the {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}.
      */
     public void setColor(int color) {
-        mColor = color;
+        if (mColor != color) {
+            mColor = color;
+            mHexString = makeHexString(mColor);
+        }
     }
 
     /**
@@ -78,6 +86,28 @@ public class ColorItem {
      */
     public long getCreationTime() {
         return mCreationTime;
+    }
+
+    /**
+     * Get a human readable representation of the hexadecimal value of the color.
+     *
+     * @return a human readable representation of the hexadecimal value.
+     */
+    public String getHexString() {
+        if (mHexString == null) {
+            mHexString = makeHexString(mColor);
+        }
+        return mHexString;
+    }
+
+    /**
+     * Make a human readable representation of the hexadecimal value of a color.
+     *
+     * @param value the integer representation the color.
+     * @return a human readable representation of the hexadecimal value.
+     */
+    protected static String makeHexString(int value) {
+        return "#" + Integer.toHexString(value).substring(2);
     }
 
 }
