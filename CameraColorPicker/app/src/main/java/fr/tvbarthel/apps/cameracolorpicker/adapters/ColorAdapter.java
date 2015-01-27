@@ -43,9 +43,9 @@ public class ColorAdapter extends ArrayAdapter<ColorItem> {
     }
 
     protected void bindViewHolder(ViewHolder viewHolder, int position) {
-        final int color = getItem(position).getColor();
-        viewHolder.mColorPreview.getBackground().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
-        viewHolder.mColorText.setText(Integer.toHexString(color));
+        final ColorItem colorItem = getItem(position);
+        viewHolder.mColorPreview.getBackground().setColorFilter(colorItem.getColor(), PorterDuff.Mode.MULTIPLY);
+        viewHolder.mColorText.setText(colorItem.getHexString());
     }
 
     private static class ViewHolder {
