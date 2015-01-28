@@ -30,6 +30,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
     protected String mClipColorItemLabel;
 
+    /**
+     * A reference to the current {@link android.widget.Toast}.
+     * <p/>
+     * Used for hiding the current {@link android.widget.Toast} before showing a new one or the activity is paused.
+     * {@link }
+     */
+    protected Toast mToast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +57,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 final ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 final ClipData clip = ClipData.newPlainText(mClipColorItemLabel, colorItem.getHexString());
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(view.getContext(), R.string.activity_main_color_success_copy_message, Toast.LENGTH_SHORT).show();
+                showToast(R.string.activity_main_color_success_copy_message);
                 return true;
             }
         });
@@ -68,6 +76,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        hideToast();
+    }
+
+    @Override
     public void onClick(View v) {
         final int viewId = v.getId();
 
@@ -80,5 +94,26 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             default:
                 throw new IllegalArgumentException("View clicked unsupported. Found " + v);
         }
+    }
+
+    /**
+     * Hide the current {@link android.widget.Toast}.
+     */
+    protected void hideToast() {
+        if (mToast != null) {
+            mToast.cancel();
+            mToast = null;
+        }
+    }
+
+    /**
+     * Show a toast text message.
+     *
+     * @param resId The resource id of the string resource to use.
+     */
+    protected void showToast(int resId) {
+        hideToast();
+        mToast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
+        mToast.show();
     }
 }
