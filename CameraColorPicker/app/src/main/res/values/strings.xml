@@ -7,6 +7,8 @@
 
     <!-- Main activity -->
     <string name="activity_main_empty_view">You have no colors :(</string>
+    <string name="activity_main_clip_color_item_label">Color item.</string>
+    <string name="activity_main_color_success_copy_message">Copied to clipboard.</string>
 
     <!-- Color picker activity -->
     <string name="activity_color_picker_label">Pick a color</string>
