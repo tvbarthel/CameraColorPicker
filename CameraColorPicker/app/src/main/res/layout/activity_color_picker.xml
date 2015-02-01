@@ -65,6 +65,15 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_save" />
 
+        <ImageView
+            android:id="@+id/activity_color_picker_save_completed"
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:scaleType="center"
+            android:src="@drawable/ic_check" />
+
     </RelativeLayout>
 
     <View

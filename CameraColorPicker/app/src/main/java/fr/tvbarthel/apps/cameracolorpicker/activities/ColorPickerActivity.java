@@ -28,7 +28,8 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
     protected static final String TAG = ColorPickerActivity.class.getSimpleName();
 
-    protected static final String ANIMATED_PROPERTY_NAME = "pickedColorProgress";
+    protected static final String PICKED_COLOR_PROGRESS_PROPERTY_NAME = "pickedColorProgress";
+    protected static final String SAVE_COMPLETED_PROGRESS_PROPERTY_NAME = "saveCompletedProgress";
 
     /**
      * A safe way to get an instance of the back {@link android.hardware.Camera}.
@@ -63,13 +64,19 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     protected float mTranslationDeltaX;
     protected float mTranslationDeltaY;
 
+    protected View mSaveCompletedIcon;
+    protected View mSaveButton;
+    protected ObjectAnimator mSaveEnableProgressAnimator;
+    protected float mSaveCompletedProgress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_picker);
 
-        initViews();
         initPickedColorProgressAnimator();
+        initSaveEnableProgressAnimator();
+        initViews();
         initTranslationDeltas();
     }
 
@@ -132,6 +139,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
             animatePickedColor(mSelectedColor);
         } else if (v.getId() == R.id.activity_color_picker_save_button) {
             ColorItems.saveColorItem(this, new ColorItem(mLastPickedColor));
+            setSaveCompleted(true);
         }
     }
 
@@ -142,7 +150,9 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mColorPreviewAnimated = findViewById(R.id.activity_color_picker_animated_preview);
         mColorPreviewText = (TextView) findViewById(R.id.activity_color_picker_color_preview_text);
         mPointerRing = findViewById(R.id.activity_color_picker_pointer_ring);
-        findViewById(R.id.activity_color_picker_save_button).setOnClickListener(this);
+        mSaveCompletedIcon = findViewById(R.id.activity_color_picker_save_completed);
+        mSaveButton = findViewById(R.id.activity_color_picker_save_button);
+        mSaveButton.setOnClickListener(this);
 
         mLastPickedColor = ColorItems.getLastPickedColor(this);
         applyPreviewColor(mLastPickedColor);
@@ -175,7 +185,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
 
     protected void initPickedColorProgressAnimator() {
-        mPickedColorProgressAnimator = ObjectAnimator.ofFloat(this, ANIMATED_PROPERTY_NAME, 1f, 0f);
+        mPickedColorProgressAnimator = ObjectAnimator.ofFloat(this, PICKED_COLOR_PROGRESS_PROPERTY_NAME, 1f, 0f);
         mPickedColorProgressAnimator.setDuration(400);
         mPickedColorProgressAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -203,7 +213,12 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         });
     }
 
+    protected void initSaveEnableProgressAnimator() {
+        mSaveEnableProgressAnimator = ObjectAnimator.ofFloat(this, SAVE_COMPLETED_PROGRESS_PROPERTY_NAME, 1f, 0f);
+    }
+
     protected void applyPreviewColor(int previewColor) {
+        setSaveCompleted(false);
         mColorPreview.getBackground().setColorFilter(previewColor, PorterDuff.Mode.SRC_ATOP);
         mColorPreviewText.setText(ColorItem.makeHexString(previewColor));
     }
@@ -216,6 +231,13 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mPickedColorProgressAnimator.start();
     }
 
+    protected void setSaveCompleted(boolean isSaveCompleted) {
+        mSaveButton.setEnabled(!isSaveCompleted);
+        mSaveEnableProgressAnimator.cancel();
+        mSaveEnableProgressAnimator.setFloatValues(mSaveCompletedProgress, isSaveCompleted ? 0f : 1f);
+        mSaveEnableProgressAnimator.start();
+    }
+
     protected void setPickedColorProgress(float progress) {
         final float fastOppositeProgress = (float) Math.pow(1 - progress, 0.3f);
         final float translationX = (float) (mTranslationDeltaX * Math.pow(progress, 2f));
@@ -225,6 +247,13 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mColorPreviewAnimated.setTranslationY(translationY);
         mColorPreviewAnimated.setScaleX(fastOppositeProgress);
         mColorPreviewAnimated.setScaleY(fastOppositeProgress);
+    }
+
+    protected void setSaveCompletedProgress(float progress) {
+        mSaveButton.setScaleX(progress);
+        mSaveButton.setRotation(45 * (1 - progress));
+        mSaveCompletedIcon.setScaleX(1 - progress);
+        mSaveCompletedProgress = progress;
     }
 
     /**
