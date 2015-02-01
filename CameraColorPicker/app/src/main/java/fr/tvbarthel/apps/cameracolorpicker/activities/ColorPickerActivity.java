@@ -24,6 +24,9 @@ import fr.tvbarthel.apps.cameracolorpicker.utils.Cameras;
 import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
 
 
+/**
+ * TODO comment.
+ */
 public class ColorPickerActivity extends ActionBarActivity implements CameraColorPickerPreview.OnColorSelectedListener, View.OnClickListener {
 
     protected static final String TAG = ColorPickerActivity.class.getSimpleName();
