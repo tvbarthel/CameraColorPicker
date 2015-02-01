@@ -31,7 +31,18 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
     protected static final String TAG = ColorPickerActivity.class.getSimpleName();
 
+    /**
+     * The name of the property that animates the 'picked color'.
+     * <p/>
+     * Used by {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity#mPickedColorProgressAnimator}.
+     */
     protected static final String PICKED_COLOR_PROGRESS_PROPERTY_NAME = "pickedColorProgress";
+
+    /**
+     * The name of the property that animates the 'save completed'.
+     * <p/>
+     * Used by {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity#mSaveCompletedProgressAnimator}.
+     */
     protected static final String SAVE_COMPLETED_PROGRESS_PROPERTY_NAME = "saveCompletedProgress";
 
     /**
@@ -47,6 +58,9 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         return c;
     }
 
+    /**
+     * An instance of the {@link android.hardware.Camera} used for displaying the preview.
+     */
     protected Camera mCamera;
     protected boolean mIsPortrait;
     protected FrameLayout mPreviewContainer;
@@ -69,7 +83,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
     protected View mSaveCompletedIcon;
     protected View mSaveButton;
-    protected ObjectAnimator mSaveEnableProgressAnimator;
+    protected ObjectAnimator mSaveCompletedProgressAnimator;
     protected float mSaveCompletedProgress;
 
     @Override
@@ -217,7 +231,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     }
 
     protected void initSaveEnableProgressAnimator() {
-        mSaveEnableProgressAnimator = ObjectAnimator.ofFloat(this, SAVE_COMPLETED_PROGRESS_PROPERTY_NAME, 1f, 0f);
+        mSaveCompletedProgressAnimator = ObjectAnimator.ofFloat(this, SAVE_COMPLETED_PROGRESS_PROPERTY_NAME, 1f, 0f);
     }
 
     protected void applyPreviewColor(int previewColor) {
@@ -236,9 +250,9 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
     protected void setSaveCompleted(boolean isSaveCompleted) {
         mSaveButton.setEnabled(!isSaveCompleted);
-        mSaveEnableProgressAnimator.cancel();
-        mSaveEnableProgressAnimator.setFloatValues(mSaveCompletedProgress, isSaveCompleted ? 0f : 1f);
-        mSaveEnableProgressAnimator.start();
+        mSaveCompletedProgressAnimator.cancel();
+        mSaveCompletedProgressAnimator.setFloatValues(mSaveCompletedProgress, isSaveCompleted ? 0f : 1f);
+        mSaveCompletedProgressAnimator.start();
     }
 
     protected void setPickedColorProgress(float progress) {
