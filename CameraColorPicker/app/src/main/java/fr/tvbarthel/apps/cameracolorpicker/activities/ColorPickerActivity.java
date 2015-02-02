@@ -25,10 +25,19 @@ import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
 
 
 /**
- * TODO comment.
+ * An {@link android.support.v7.app.ActionBarActivity} for picking colors by using the camera of the device.
+ * <p/>
+ * The user aims at a color with the camera of the device, when they click on the preview the color is selected.
+ * An animation notifies the user of the selection.
+ * <p/>
+ * The last selected color can be saved by clicking the save button.
+ * An animation notifies the user of the save.
  */
 public class ColorPickerActivity extends ActionBarActivity implements CameraColorPickerPreview.OnColorSelectedListener, View.OnClickListener {
 
+    /**
+     * A tag used in the logs.
+     */
     protected static final String TAG = ColorPickerActivity.class.getSimpleName();
 
     /**
@@ -62,29 +71,95 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
      * An instance of the {@link android.hardware.Camera} used for displaying the preview.
      */
     protected Camera mCamera;
+
+    /**
+     * A boolean for knowing the orientation of the activity.
+     */
     protected boolean mIsPortrait;
+
+    /**
+     * A simple {@link android.widget.FrameLayout} that contains the preview.
+     */
     protected FrameLayout mPreviewContainer;
-    protected FrameLayout.LayoutParams mPreviewParams;
+
+    /**
+     * The {@link fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview} used for the preview.
+     */
     protected CameraColorPickerPreview mCameraPreview;
+
+    /**
+     * A reference to the {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity.CameraAsyncTask} that gets the {@link android.hardware.Camera}.
+     */
     protected CameraAsyncTask mCameraAsyncTask;
 
+    /**
+     * The color selected by the user.
+     * <p/>
+     * The user "selects" a color by pointing a color with the camera.
+     */
     protected int mSelectedColor;
+
+    /**
+     * The last picked color.
+     * <p/>
+     * The user "picks" a color by clicking the preview.
+     */
     protected int mLastPickedColor;
 
-    protected View mColorPreview;
-    protected View mColorPreviewAnimated;
+    /**
+     * A simple {@link android.view.View} used for showing the picked color.
+     */
+    protected View mPickedColorPreview;
+
+    /**
+     * A simple {@link android.view.View} used for animating the color being picked.
+     */
+    protected View mPickedColorPreviewAnimated;
+
+    /**
+     * An {@link android.animation.ObjectAnimator} used for animating the color being picked.
+     */
     protected ObjectAnimator mPickedColorProgressAnimator;
 
-    protected TextView mColorPreviewText;
-
-    protected View mPointerRing;
+    /**
+     * The delta for the translation on the x-axis of the mPickedColorPreviewAnimated.
+     */
     protected float mTranslationDeltaX;
+
+    /**
+     * The delta for the translation on the y-axis of the mPickedColorPreviewAnimated.
+     */
     protected float mTranslationDeltaY;
 
+    /**
+     * A simple {@link android.widget.TextView} used for showing a human readable representation of the picked color.
+     */
+    protected TextView mColorPreviewText;
+
+    /**
+     * A simple {@link android.view.View} used for showing the selected color.
+     */
+    protected View mPointerRing;
+
+    /**
+     * An icon representing the "save completed" state.
+     */
     protected View mSaveCompletedIcon;
+
+    /**
+     * The save button.
+     */
     protected View mSaveButton;
-    protected ObjectAnimator mSaveCompletedProgressAnimator;
+
+    /**
+     * A float representing the progress of the "save completed" state.
+     */
     protected float mSaveCompletedProgress;
+
+    /**
+     * An {@link android.animation.ObjectAnimator} used for animating the "save completed" state.
+     */
+    protected ObjectAnimator mSaveCompletedProgressAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +167,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         setContentView(R.layout.activity_color_picker);
 
         initPickedColorProgressAnimator();
-        initSaveEnableProgressAnimator();
+        initSaveCompletedProgressAnimator();
         initViews();
         initTranslationDeltas();
     }
@@ -160,11 +235,16 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         }
     }
 
+    /**
+     * Initialize the views used in this activity.
+     * <p/>
+     * Internally find the view by their ids and set the click listeners.
+     */
     protected void initViews() {
         mIsPortrait = getResources().getBoolean(R.bool.is_portrait);
         mPreviewContainer = (FrameLayout) findViewById(R.id.activity_color_picker_preview_container);
-        mColorPreview = findViewById(R.id.activity_color_picker_color_preview);
-        mColorPreviewAnimated = findViewById(R.id.activity_color_picker_animated_preview);
+        mPickedColorPreview = findViewById(R.id.activity_color_picker_color_preview);
+        mPickedColorPreviewAnimated = findViewById(R.id.activity_color_picker_animated_preview);
         mColorPreviewText = (TextView) findViewById(R.id.activity_color_picker_color_preview_text);
         mPointerRing = findViewById(R.id.activity_color_picker_pointer_ring);
         mSaveCompletedIcon = findViewById(R.id.activity_color_picker_save_completed);
@@ -175,6 +255,9 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         applyPreviewColor(mLastPickedColor);
     }
 
+    /**
+     * Initialize the deltas used for the translation of the preview of the picked color.
+     */
     protected void initTranslationDeltas() {
         ViewTreeObserver vto = mPointerRing.getViewTreeObserver();
         if (vto.isAlive()) {
@@ -191,7 +274,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
                     final Rect pointerRingRect = new Rect();
                     final Rect colorPreviewAnimatedRect = new Rect();
                     mPointerRing.getGlobalVisibleRect(pointerRingRect);
-                    mColorPreviewAnimated.getGlobalVisibleRect(colorPreviewAnimatedRect);
+                    mPickedColorPreviewAnimated.getGlobalVisibleRect(colorPreviewAnimatedRect);
 
                     mTranslationDeltaX = pointerRingRect.left - colorPreviewAnimatedRect.left;
                     mTranslationDeltaY = pointerRingRect.top - colorPreviewAnimatedRect.top;
@@ -201,26 +284,29 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     }
 
 
+    /**
+     * Initialize the animator used for the progress of the picked color.
+     */
     protected void initPickedColorProgressAnimator() {
         mPickedColorProgressAnimator = ObjectAnimator.ofFloat(this, PICKED_COLOR_PROGRESS_PROPERTY_NAME, 1f, 0f);
         mPickedColorProgressAnimator.setDuration(400);
         mPickedColorProgressAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                mColorPreviewAnimated.setVisibility(View.VISIBLE);
-                mColorPreviewAnimated.getBackground().setColorFilter(mSelectedColor, PorterDuff.Mode.SRC_ATOP);
+                mPickedColorPreviewAnimated.setVisibility(View.VISIBLE);
+                mPickedColorPreviewAnimated.getBackground().setColorFilter(mSelectedColor, PorterDuff.Mode.SRC_ATOP);
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 ColorItems.saveLastPickedColor(ColorPickerActivity.this, mLastPickedColor);
                 applyPreviewColor(mLastPickedColor);
-                mColorPreviewAnimated.setVisibility(View.INVISIBLE);
+                mPickedColorPreviewAnimated.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                mColorPreviewAnimated.setVisibility(View.INVISIBLE);
+                mPickedColorPreviewAnimated.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -230,16 +316,31 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         });
     }
 
-    protected void initSaveEnableProgressAnimator() {
+    /**
+     * Initialize the animator used for the progress of the "save completed" state.
+     */
+    protected void initSaveCompletedProgressAnimator() {
         mSaveCompletedProgressAnimator = ObjectAnimator.ofFloat(this, SAVE_COMPLETED_PROGRESS_PROPERTY_NAME, 1f, 0f);
     }
 
+    /**
+     * Apply the preview color.
+     * <p/>
+     * Display the preview color and its human representation.
+     *
+     * @param previewColor the preview color to apply.
+     */
     protected void applyPreviewColor(int previewColor) {
         setSaveCompleted(false);
-        mColorPreview.getBackground().setColorFilter(previewColor, PorterDuff.Mode.SRC_ATOP);
+        mPickedColorPreview.getBackground().setColorFilter(previewColor, PorterDuff.Mode.SRC_ATOP);
         mColorPreviewText.setText(ColorItem.makeHexString(previewColor));
     }
 
+    /**
+     * Animate the color being picked.
+     *
+     * @param pickedColor the color being picked.
+     */
     protected void animatePickedColor(int pickedColor) {
         mLastPickedColor = pickedColor;
         if (mPickedColorProgressAnimator.isRunning()) {
@@ -248,6 +349,13 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mPickedColorProgressAnimator.start();
     }
 
+    /**
+     * Set the "save completed" state.
+     * <p/>
+     * True means that the save is completed. The preview color should not be saved again.
+     *
+     * @param isSaveCompleted the "save completed" state.
+     */
     protected void setSaveCompleted(boolean isSaveCompleted) {
         mSaveButton.setEnabled(!isSaveCompleted);
         mSaveCompletedProgressAnimator.cancel();
@@ -255,17 +363,31 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mSaveCompletedProgressAnimator.start();
     }
 
+    /**
+     * Set the progress of the picked color animation.
+     * <p/>
+     * Used by {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity#mPickedColorProgressAnimator}.
+     *
+     * @param progress A value in closed range [0,1] representing the progress of the picked color animation.
+     */
     protected void setPickedColorProgress(float progress) {
         final float fastOppositeProgress = (float) Math.pow(1 - progress, 0.3f);
         final float translationX = (float) (mTranslationDeltaX * Math.pow(progress, 2f));
         final float translationY = mTranslationDeltaY * progress;
 
-        mColorPreviewAnimated.setTranslationX(translationX);
-        mColorPreviewAnimated.setTranslationY(translationY);
-        mColorPreviewAnimated.setScaleX(fastOppositeProgress);
-        mColorPreviewAnimated.setScaleY(fastOppositeProgress);
+        mPickedColorPreviewAnimated.setTranslationX(translationX);
+        mPickedColorPreviewAnimated.setTranslationY(translationY);
+        mPickedColorPreviewAnimated.setScaleX(fastOppositeProgress);
+        mPickedColorPreviewAnimated.setScaleY(fastOppositeProgress);
     }
 
+    /**
+     * Set the progress of the animation of the "save completed" state.
+     * <p/>
+     * Used by {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity#mSaveCompletedProgressAnimator}.
+     *
+     * @param progress A value in closed range [0,1] representing the progress of the animation of the "save completed" state.
+     */
     protected void setSaveCompletedProgress(float progress) {
         mSaveButton.setScaleX(progress);
         mSaveButton.setRotation(45 * (1 - progress));
@@ -274,9 +396,14 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     }
 
     /**
-     * Async task used to configure and start camera
+     * Async task used to configure and start the camera preview.
      */
     private class CameraAsyncTask extends AsyncTask<Void, Void, Camera> {
+
+        /**
+         * The {@link android.view.ViewGroup.LayoutParams} used for adding the preview to its container.
+         */
+        protected FrameLayout.LayoutParams mPreviewParams;
 
         @Override
         protected Camera doInBackground(Void... params) {
