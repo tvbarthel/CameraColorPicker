@@ -19,10 +19,13 @@ import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
 
 /**
- * TODO comment
+ * An {@link android.support.v7.app.ActionBarActivity} that shows the list of the colors that the user saved.
  */
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
+    /**
+     * A {@link fr.tvbarthel.apps.cameracolorpicker.adapters.ColorAdapter} used for adapting the {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}s.
+     */
     protected ColorAdapter mColorAdapter;
 
     /**
