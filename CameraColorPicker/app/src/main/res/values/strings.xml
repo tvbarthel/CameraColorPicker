@@ -12,5 +12,6 @@
 
     <!-- Color picker activity -->
     <string name="activity_color_picker_label">Pick a color</string>
+    <string name="title_activity_color_detail">Detail</string>
 
 </resources>

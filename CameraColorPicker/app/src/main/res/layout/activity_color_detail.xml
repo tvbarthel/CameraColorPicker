@@ -1,0 +1,47 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fr.tvbarthel.apps.cameracolorpicker.activities.ColorDetailActivity">
+
+    <View
+        android:id="@+id/activity_color_detail_preview"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        tools:background="#ffEE00" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/activity_color_detail_hexadecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="#ffEE00" />
+
+        <TextView
+            android:id="@+id/activity_color_detail_rgb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="rgb(255, 238, 0)" />
+
+        <TextView
+            android:id="@+id/activity_color_detail_hsv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="hsv(56, 100, 100)" />
+
+    </LinearLayout>
+
+
+</FrameLayout>
