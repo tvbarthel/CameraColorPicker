@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.cameracolorpicker.data;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -27,6 +28,11 @@ public class ColorItem implements Parcelable {
      * A human readable string representation of the hexadecimal value of the color.
      */
     protected transient String mHexString;
+
+    /**
+     * A human readable string representation of the RGB value of the color.
+     */
+    protected transient String mRgbString;
 
     /**
      * Create a new {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem} with an id and a color.
@@ -93,6 +99,7 @@ public class ColorItem implements Parcelable {
         if (mColor != color) {
             mColor = color;
             mHexString = makeHexString(mColor);
+            mRgbString = makeRgbString(mColor);
         }
     }
 
@@ -118,6 +125,18 @@ public class ColorItem implements Parcelable {
     }
 
     /**
+     * Get a human readable representation of the RGB value of the color.
+     *
+     * @return a human readable representation of the RGB value.
+     */
+    public String getRgbString() {
+        if (mRgbString == null) {
+            mRgbString = makeRgbString(mColor);
+        }
+        return mRgbString;
+    }
+
+    /**
      * Make a human readable representation of the hexadecimal value of a color.
      *
      * @param value the integer representation the color.
@@ -125,6 +144,16 @@ public class ColorItem implements Parcelable {
      */
     public static String makeHexString(int value) {
         return "#" + Integer.toHexString(value).substring(2);
+    }
+
+    /**
+     * Make a human readable representation of the RGB value of a color.
+     *
+     * @param value the integer representation the color.
+     * @return a human readable representation of the RGB value.
+     */
+    public static String makeRgbString(int value) {
+        return "rgb(" + Color.red(value) + ", " + Color.green(value) + ", " + Color.blue(value) + ")";
     }
 
 

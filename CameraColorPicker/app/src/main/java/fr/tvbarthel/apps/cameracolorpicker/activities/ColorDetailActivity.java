@@ -73,6 +73,7 @@ public class ColorDetailActivity extends ActionBarActivity {
         // Display the color item data.
         mPreview.setBackgroundColor(colorItem.getColor());
         mHexadecimal.setText(colorItem.getHexString());
+        mRgb.setText(colorItem.getRgbString());
     }
 
 
