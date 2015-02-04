@@ -53,6 +53,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         final ListView colorList = (ListView) findViewById(R.id.activity_main_list_view);
         colorList.setAdapter(mColorAdapter);
         colorList.setEmptyView(emptyView);
+
+        colorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final ColorItem colorItem = mColorAdapter.getItem(position);
+                ColorDetailActivity.startWithColorItem(MainActivity.this, colorItem);
+            }
+        });
+
         colorList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {

@@ -1,5 +1,8 @@
 package fr.tvbarthel.apps.cameracolorpicker.activities;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -8,8 +11,24 @@ import android.view.View;
 import android.widget.TextView;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
+import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 
 public class ColorDetailActivity extends ActionBarActivity {
+
+    /**
+     * A key for passing a color item as extra.
+     */
+    protected static final String EXTRA_COLOR_ITEM = "ColorDetailActivity.Extras.EXTRA_COLOR_ITEM";
+
+    public static void startWithColorItem(Context context, ColorItem colorItem) {
+        final Intent intent = new Intent(context, ColorDetailActivity.class);
+        intent.putExtra(EXTRA_COLOR_ITEM, colorItem);
+
+        if (!(context instanceof Activity)) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        context.startActivity(intent);
+    }
 
     /**
      * A {@link android.view.View} for showing the color preview.
@@ -36,10 +55,24 @@ public class ColorDetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_detail);
 
+        // ensure correct extras
+        final Intent intent = getIntent();
+        if (!intent.hasExtra(EXTRA_COLOR_ITEM)) {
+            throw new IllegalStateException("No color item extra found. Please use startWithColorItem.");
+        }
+
+        // Retrieve the color item extra.
+        final ColorItem colorItem = intent.getParcelableExtra(EXTRA_COLOR_ITEM);
+
+        // Find the views.
         mPreview = findViewById(R.id.activity_color_detail_preview);
         mHexadecimal = (TextView) findViewById(R.id.activity_color_detail_hexadecimal);
         mRgb = (TextView) findViewById(R.id.activity_color_detail_rgb);
         mHsv = (TextView) findViewById(R.id.activity_color_detail_hsv);
+
+        // Display the color item data.
+        mPreview.setBackgroundColor(colorItem.getColor());
+        mHexadecimal.setText(colorItem.getHexString());
     }
 
 
