@@ -35,6 +35,11 @@ public class ColorItem implements Parcelable {
     protected transient String mRgbString;
 
     /**
+     * A human readable string representation of the HSV value of the color.
+     */
+    protected transient String mHsvString;
+
+    /**
      * Create a new {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem} with an id and a color.
      *
      * @param id    the id of the {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}. Should be unique.
@@ -100,6 +105,7 @@ public class ColorItem implements Parcelable {
             mColor = color;
             mHexString = makeHexString(mColor);
             mRgbString = makeRgbString(mColor);
+            mHsvString = makeHsvString(mColor);
         }
     }
 
@@ -137,6 +143,18 @@ public class ColorItem implements Parcelable {
     }
 
     /**
+     * Get a human readable representation of the HSV value of the color.
+     *
+     * @return a human readable representation of the HSV value.
+     */
+    public String getHsvString() {
+        if (mHsvString == null) {
+            mHsvString = makeHsvString(mColor);
+        }
+        return mHsvString;
+    }
+
+    /**
      * Make a human readable representation of the hexadecimal value of a color.
      *
      * @param value the integer representation the color.
@@ -154,6 +172,18 @@ public class ColorItem implements Parcelable {
      */
     public static String makeRgbString(int value) {
         return "rgb(" + Color.red(value) + ", " + Color.green(value) + ", " + Color.blue(value) + ")";
+    }
+
+    /**
+     * Make a human readable representation of the HSV value of a color.
+     *
+     * @param value the integer representation the color.
+     * @return a human readable representation of the HSV value.
+     */
+    public static String makeHsvString(int value) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(value, hsv);
+        return "hsv(" + (int) hsv[0] + "°, " + (int) (hsv[1] * 100) + "%, " + (int) (hsv[2] * 100) + "%)";
     }
 
 
