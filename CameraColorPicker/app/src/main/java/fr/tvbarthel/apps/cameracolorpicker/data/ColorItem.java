@@ -1,9 +1,12 @@
 package fr.tvbarthel.apps.cameracolorpicker.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * A simple data class representing a color.
  */
-public class ColorItem {
+public class ColorItem implements Parcelable {
 
     /**
      * The id of the color.
@@ -35,6 +38,20 @@ public class ColorItem {
         mId = id;
         mColor = color;
         mCreationTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Create a new {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem} from a {@link android.os.Parcel}.
+     * <p/>
+     * Used by the parcelable creator.
+     * {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem#CREATOR}.
+     *
+     * @param in the {@link android.os.Parcel}.
+     */
+    private ColorItem(Parcel in) {
+        this.mId = in.readLong();
+        this.mColor = in.readInt();
+        this.mCreationTime = in.readLong();
     }
 
     /**
@@ -110,4 +127,29 @@ public class ColorItem {
         return "#" + Integer.toHexString(value).substring(2);
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.mId);
+        dest.writeInt(this.mColor);
+        dest.writeLong(this.mCreationTime);
+    }
+
+    /**
+     * A {@link android.os.Parcelable.Creator} for creating {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem} from {@link android.os.Parcel}.
+     */
+    public static final Creator<ColorItem> CREATOR = new Creator<ColorItem>() {
+        public ColorItem createFromParcel(Parcel source) {
+            return new ColorItem(source);
+        }
+
+        public ColorItem[] newArray(int size) {
+            return new ColorItem[size];
+        }
+    };
 }
