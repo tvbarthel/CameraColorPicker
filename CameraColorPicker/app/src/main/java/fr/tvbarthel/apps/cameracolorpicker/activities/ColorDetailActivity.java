@@ -40,7 +40,7 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
     /**
      * A {@link android.widget.TextView} for showing the hexadecimal value of the color.
      */
-    protected TextView mHexadecimal;
+    protected TextView mHex;
 
     /**
      * A {@link android.widget.TextView} for showing the RGB value of the color.
@@ -76,18 +76,18 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
 
         // Find the views.
         mPreview = findViewById(R.id.activity_color_detail_preview);
-        mHexadecimal = (TextView) findViewById(R.id.activity_color_detail_hexadecimal);
+        mHex = (TextView) findViewById(R.id.activity_color_detail_hex);
         mRgb = (TextView) findViewById(R.id.activity_color_detail_rgb);
         mHsv = (TextView) findViewById(R.id.activity_color_detail_hsv);
 
         // Set the click listeners.
-        mHexadecimal.setOnClickListener(this);
+        mHex.setOnClickListener(this);
         mRgb.setOnClickListener(this);
         mHsv.setOnClickListener(this);
 
         // Display the color item data.
         mPreview.setBackgroundColor(colorItem.getColor());
-        mHexadecimal.setText(colorItem.getHexString());
+        mHex.setText(colorItem.getHexString());
         mRgb.setText(colorItem.getRgbString());
         mHsv.setText(colorItem.getHsvString());
     }
@@ -125,8 +125,8 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
         final int viewId = view.getId();
 
         switch (viewId) {
-            case R.id.activity_color_detail_hexadecimal:
-                clipColor(R.string.color_clip_color_label_hex, mHexadecimal.getText());
+            case R.id.activity_color_detail_hex:
+                clipColor(R.string.color_clip_color_label_hex, mHex.getText());
                 break;
 
             case R.id.activity_color_detail_rgb:
