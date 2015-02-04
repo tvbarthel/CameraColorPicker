@@ -1,8 +1,5 @@
 package fr.tvbarthel.apps.cameracolorpicker.activities;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -17,6 +14,7 @@ import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.adapters.ColorAdapter;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
+import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
 
 /**
  * An {@link android.support.v7.app.ActionBarActivity} that shows the list of the colors that the user saved.
@@ -46,7 +44,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mClipColorItemLabel = getString(R.string.activity_main_clip_color_item_label);
+        mClipColorItemLabel = getString(R.string.color_clip_color_label_hex);
 
         mColorAdapter = new ColorAdapter(this);
         final View emptyView = findViewById(R.id.activity_main_empty_view);
@@ -66,10 +64,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final ColorItem colorItem = mColorAdapter.getItem(position);
-                final ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                final ClipData clip = ClipData.newPlainText(mClipColorItemLabel, colorItem.getHexString());
-                clipboard.setPrimaryClip(clip);
-                showToast(R.string.activity_main_color_success_copy_message);
+                ClipDatas.clipPainText(MainActivity.this, mClipColorItemLabel, colorItem.getHexString());
+                showToast(R.string.color_clip_success_copy_message);
                 return true;
             }
         });

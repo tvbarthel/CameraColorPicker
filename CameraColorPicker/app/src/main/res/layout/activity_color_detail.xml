@@ -19,24 +19,27 @@
 
         <TextView
             android:id="@+id/activity_color_detail_hexadecimal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:padding="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             tools:text="#ffEE00" />
 
         <TextView
             android:id="@+id/activity_color_detail_rgb"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:padding="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             tools:text="rgb(255, 238, 0)" />
 
         <TextView
             android:id="@+id/activity_color_detail_hsv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:padding="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             tools:text="hsv(56, 100, 100)" />

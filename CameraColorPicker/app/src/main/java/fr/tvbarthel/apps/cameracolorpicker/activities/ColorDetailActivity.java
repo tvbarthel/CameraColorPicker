@@ -9,11 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
+import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
 
-public class ColorDetailActivity extends ActionBarActivity {
+public class ColorDetailActivity extends ActionBarActivity implements View.OnClickListener {
 
     /**
      * A key for passing a color item as extra.
@@ -49,6 +51,14 @@ public class ColorDetailActivity extends ActionBarActivity {
      * A {@link android.widget.TextView} for showing the HSV value of the color.
      */
     protected TextView mHsv;
+    /**
+     * A reference to the current {@link android.widget.Toast}.
+     * <p/>
+     * Used for hiding the current {@link android.widget.Toast} before showing a new one or the activity is paused.
+     * {@link }
+     */
+    protected Toast mToast;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +80,11 @@ public class ColorDetailActivity extends ActionBarActivity {
         mRgb = (TextView) findViewById(R.id.activity_color_detail_rgb);
         mHsv = (TextView) findViewById(R.id.activity_color_detail_hsv);
 
+        // Set the click listeners.
+        mHexadecimal.setOnClickListener(this);
+        mRgb.setOnClickListener(this);
+        mHsv.setOnClickListener(this);
+
         // Display the color item data.
         mPreview.setBackgroundColor(colorItem.getColor());
         mHexadecimal.setText(colorItem.getHexString());
@@ -77,6 +92,11 @@ public class ColorDetailActivity extends ActionBarActivity {
         mHsv.setText(colorItem.getHsvString());
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideToast();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,6 +118,56 @@ public class ColorDetailActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        final int viewId = view.getId();
+
+        switch (viewId) {
+            case R.id.activity_color_detail_hexadecimal:
+                clipColor(R.string.color_clip_color_label_hex, mHexadecimal.getText());
+                break;
+
+            case R.id.activity_color_detail_rgb:
+                clipColor(R.string.color_clip_color_label_rgb, mRgb.getText());
+                break;
+
+            case R.id.activity_color_detail_hsv:
+                clipColor(R.string.color_clip_color_label_hsv, mHsv.getText());
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unsupported view clicked. Found: " + view);
+        }
+    }
+
+
+    protected void clipColor(int labelResourceId, CharSequence colorString) {
+        ClipDatas.clipPainText(this, getString(labelResourceId), colorString);
+        showToast(R.string.color_clip_success_copy_message);
+    }
+
+
+    /**
+     * Hide the current {@link android.widget.Toast}.
+     */
+    protected void hideToast() {
+        if (mToast != null) {
+            mToast.cancel();
+            mToast = null;
+        }
+    }
+
+    /**
+     * Show a toast text message.
+     *
+     * @param resId The resource id of the string resource to use.
+     */
+    protected void showToast(int resId) {
+        hideToast();
+        mToast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
+        mToast.show();
     }
 
 }
