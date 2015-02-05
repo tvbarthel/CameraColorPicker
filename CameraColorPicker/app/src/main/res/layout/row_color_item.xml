@@ -6,8 +6,8 @@
 
     <View
         android:id="@+id/row_color_item_preview"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/row_color_item_preview_size"
+        android:layout_height="@dimen/row_color_item_preview_size"
         android:layout_margin="16dp"
         android:background="@drawable/oval_white" />
 

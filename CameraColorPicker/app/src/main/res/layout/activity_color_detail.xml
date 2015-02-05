@@ -5,10 +5,27 @@
     tools:context="fr.tvbarthel.apps.cameracolorpicker.activities.ColorDetailActivity">
 
     <View
-        android:id="@+id/activity_color_detail_preview"
+        android:id="@+id/activity_color_detail_preview_translating"
+        android:layout_width="@dimen/row_color_item_preview_size"
+        android:layout_height="@dimen/row_color_item_preview_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="55dp"
+        android:background="@drawable/oval_white" />
+
+    <FrameLayout
+        android:id="@+id/activity_color_detail_preview_container"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        tools:background="#ffEE00" />
+        android:layout_height="150dp">
+
+        <View
+            android:id="@+id/activity_color_detail_preview_scaling"
+            android:layout_width="@dimen/row_color_item_preview_size"
+            android:layout_height="@dimen/row_color_item_preview_size"
+            android:layout_gravity="center"
+            android:background="@drawable/oval_white"
+            android:visibility="invisible" />
+
+    </FrameLayout>
 
 
     <LinearLayout
@@ -24,7 +41,9 @@
             android:background="?attr/selectableItemBackground"
             android:padding="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            tools:text="#ffEE00" />
+            android:visibility="invisible"
+            tools:text="#ffEE00"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/activity_color_detail_rgb"
@@ -33,7 +52,9 @@
             android:background="?attr/selectableItemBackground"
             android:padding="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            tools:text="rgb(255, 238, 0)" />
+            android:visibility="invisible"
+            tools:text="rgb(255, 238, 0)"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/activity_color_detail_hsv"
@@ -42,7 +63,9 @@
             android:background="?attr/selectableItemBackground"
             android:padding="16dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            tools:text="hsv(56, 100, 100)" />
+            android:visibility="invisible"
+            tools:text="hsv(56, 100, 100)"
+            tools:visibility="visible" />
 
     </LinearLayout>
 

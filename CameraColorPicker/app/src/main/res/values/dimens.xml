@@ -8,4 +8,7 @@
     <dimen name="activity_color_picker_pointer_ring_size">48dp</dimen>
     <dimen name="activity_color_picker_pointer_ring_thickness">8dp</dimen>
 
+    <!-- Row Color Item -->
+    <dimen name="row_color_item_preview_size">40dp</dimen>
+
 </resources>
