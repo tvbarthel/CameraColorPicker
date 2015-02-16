@@ -43,7 +43,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     protected ListView mListView;
 
-    protected ColorItems.OnColorItemChangedListener mOnColorItemChangedListener;
+    protected ColorItems.OnColorItemChangeListener mOnColorItemChangeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         fab.attachToListView(mListView);
         fab.setOnClickListener(this);
 
-        mOnColorItemChangedListener = new ColorItems.OnColorItemChangedListener() {
+        mOnColorItemChangeListener = new ColorItems.OnColorItemChangeListener() {
             @Override
             public void onColorItemChanged(List<ColorItem> colorItems) {
                 mColorAdapter.clear();
@@ -90,7 +90,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         };
 
-        ColorItems.registerListener(this, mOnColorItemChangedListener);
+        ColorItems.registerListener(this, mOnColorItemChangeListener);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     protected void onDestroy() {
-        ColorItems.unregisterListener(this, mOnColorItemChangedListener);
+        ColorItems.unregisterListener(this, mOnColorItemChangeListener);
         super.onDestroy();
     }
 

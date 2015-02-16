@@ -78,15 +78,15 @@ public final class ColorItems {
         return editor.commit();
     }
 
-    public static void registerListener(Context context, OnColorItemChangedListener onColorItemChangedListener) {
-        getPreferences(context).registerOnSharedPreferenceChangeListener(onColorItemChangedListener);
+    public static void registerListener(Context context, OnColorItemChangeListener onColorItemChangeListener) {
+        getPreferences(context).registerOnSharedPreferenceChangeListener(onColorItemChangeListener);
     }
 
-    public static void unregisterListener(Context context, OnColorItemChangedListener onColorItemChangedListener) {
-        getPreferences(context).unregisterOnSharedPreferenceChangeListener(onColorItemChangedListener);
+    public static void unregisterListener(Context context, OnColorItemChangeListener onColorItemChangeListener) {
+        getPreferences(context).unregisterOnSharedPreferenceChangeListener(onColorItemChangeListener);
     }
 
-    public abstract static class OnColorItemChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public abstract static class OnColorItemChangeListener implements SharedPreferences.OnSharedPreferenceChangeListener {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (KEY_SAVED_COLOR_ITEMS.equals(key)) {
