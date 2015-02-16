@@ -58,8 +58,9 @@ public final class ColorItems {
         // Parse the json into colorItems.
         final List<ColorItem> colorItems = GSON.fromJson(jsonColorItems, COLOR_ITEM_LIST_TYPE);
 
-        // Return a new list of with the color items.
-        return new ArrayList<>(colorItems);
+        // Reverse the color items.
+        Collections.reverse(colorItems);
+        return colorItems;
     }
 
     public static boolean saveColorItem(Context context, ColorItem colorToSave) {
