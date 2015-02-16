@@ -41,9 +41,13 @@ public final class ColorItems {
         return editor.commit();
     }
 
-    @SuppressWarnings("unchecked")
     public static List<ColorItem> getSavedColorItems(Context context) {
-        final String jsonColorItems = getPreferences(context).getString(KEY_SAVED_COLOR_ITEMS, "");
+        return getSavedColorItems(getPreferences(context));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<ColorItem> getSavedColorItems(SharedPreferences sharedPreferences) {
+        final String jsonColorItems = sharedPreferences.getString(KEY_SAVED_COLOR_ITEMS, "");
 
         // No saved colors were found.
         // Return an empty list.
@@ -54,8 +58,8 @@ public final class ColorItems {
         // Parse the json into colorItems.
         final List<ColorItem> colorItems = GSON.fromJson(jsonColorItems, COLOR_ITEM_LIST_TYPE);
 
-        // Return an unmodifiable list of the color items.
-        return Collections.unmodifiableList(colorItems);
+        // Return a new list of with the color items.
+        return new ArrayList<>(colorItems);
     }
 
     public static boolean saveColorItem(Context context, ColorItem colorToSave) {
@@ -74,7 +78,26 @@ public final class ColorItems {
         return editor.commit();
     }
 
-    // Non-instantibility
+    public static void registerListener(Context context, OnColorItemChangedListener onColorItemChangedListener) {
+        getPreferences(context).registerOnSharedPreferenceChangeListener(onColorItemChangedListener);
+    }
+
+    public static void unregisterListener(Context context, OnColorItemChangedListener onColorItemChangedListener) {
+        getPreferences(context).unregisterOnSharedPreferenceChangeListener(onColorItemChangedListener);
+    }
+
+    public abstract static class OnColorItemChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (KEY_SAVED_COLOR_ITEMS.equals(key)) {
+                onColorItemChanged(getSavedColorItems(sharedPreferences));
+            }
+        }
+
+        public abstract void onColorItemChanged(List<ColorItem> colorItems);
+    }
+
+    // Non-instantiability
     private ColorItems() {
     }
 }

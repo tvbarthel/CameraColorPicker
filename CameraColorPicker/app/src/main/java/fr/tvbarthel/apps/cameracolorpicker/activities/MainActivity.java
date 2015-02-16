@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 
+import java.util.List;
+
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.adapters.ColorAdapter;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
@@ -39,6 +41,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
     protected Toast mToast;
 
+    protected ListView mListView;
+
+    protected ColorItems.OnColorItemChangedListener mOnColorItemChangedListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +53,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         mClipColorItemLabel = getString(R.string.color_clip_color_label_hex);
 
         mColorAdapter = new ColorAdapter(this);
+        mColorAdapter.addAll(ColorItems.getSavedColorItems(this));
         final View emptyView = findViewById(R.id.activity_main_empty_view);
-        final ListView colorList = (ListView) findViewById(R.id.activity_main_list_view);
-        colorList.setAdapter(mColorAdapter);
-        colorList.setEmptyView(emptyView);
+        mListView = (ListView) findViewById(R.id.activity_main_list_view);
+        mListView.setAdapter(mColorAdapter);
+        mListView.setEmptyView(emptyView);
 
-        colorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final ColorItem colorItem = mColorAdapter.getItem(position);
@@ -60,7 +67,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
 
-        colorList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final ColorItem colorItem = mColorAdapter.getItem(position);
@@ -71,22 +78,31 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         });
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
-        fab.attachToListView(colorList);
+        fab.attachToListView(mListView);
         fab.setOnClickListener(this);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mColorAdapter.clear();
-        mColorAdapter.addAll(ColorItems.getSavedColorItems(this));
-        mColorAdapter.notifyDataSetChanged();
+        mOnColorItemChangedListener = new ColorItems.OnColorItemChangedListener() {
+            @Override
+            public void onColorItemChanged(List<ColorItem> colorItems) {
+                mColorAdapter.clear();
+                mColorAdapter.addAll(colorItems);
+                mColorAdapter.notifyDataSetChanged();
+            }
+        };
+
+        ColorItems.registerListener(this, mOnColorItemChangedListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         hideToast();
+    }
+
+    @Override
+    protected void onDestroy() {
+        ColorItems.unregisterListener(this, mOnColorItemChangedListener);
+        super.onDestroy();
     }
 
     @Override
