@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
+import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
 import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
 
 public class ColorDetailActivity extends ActionBarActivity implements View.OnClickListener {
@@ -85,6 +86,11 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
      */
     protected Toast mToast;
 
+    /**
+     * The {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem} being displayed.
+     */
+    protected ColorItem mColorItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +104,7 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
         }
 
         // Retrieve the extras.
-        final ColorItem colorItem = intent.getParcelableExtra(EXTRA_COLOR_ITEM);
+        mColorItem = intent.getParcelableExtra(EXTRA_COLOR_ITEM);
         final Rect startBounds = intent.getParcelableExtra(EXTRA_START_BOUNDS);
 
         // Create a rect that will be used to retrieve the stop bounds.
@@ -117,11 +123,11 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
         mHsv.setOnClickListener(this);
 
         // Display the color item data.
-        mTranslatedPreview.getBackground().setColorFilter(colorItem.getColor(), PorterDuff.Mode.MULTIPLY);
-        mScaledPreview.getBackground().setColorFilter(colorItem.getColor(), PorterDuff.Mode.MULTIPLY);
-        mHex.setText(colorItem.getHexString());
-        mRgb.setText(colorItem.getRgbString());
-        mHsv.setText(colorItem.getHsvString());
+        mTranslatedPreview.getBackground().setColorFilter(mColorItem.getColor(), PorterDuff.Mode.MULTIPLY);
+        mScaledPreview.getBackground().setColorFilter(mColorItem.getColor(), PorterDuff.Mode.MULTIPLY);
+        mHex.setText(mColorItem.getHexString());
+        mRgb.setText(mColorItem.getRgbString());
+        mHsv.setText(mColorItem.getHsvString());
 
         final View previewContainer = findViewById(R.id.activity_color_detail_preview_container);
         final ViewTreeObserver viewTreeObserver = previewContainer.getViewTreeObserver();
@@ -196,7 +202,10 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.menu_color_detail_action_delete) {
+            if (ColorItems.deleteColorItem(this, mColorItem)) {
+                finish();
+            }
             return true;
         }
 

@@ -12,6 +12,9 @@
     <string name="activity_color_picker_label">Pick a color</string>
     <string name="title_activity_color_detail">Detail</string>
 
+    <!-- Color detail menu -->
+    <string name="menu_color_detail_action_delete">Delete</string>
+
     <!-- Color Clip -->
     <string name="color_clip_success_copy_message">Copied to clipboard.</string>
     <string name="color_clip_color_label_hex">Color item hexadecimal value.</string>

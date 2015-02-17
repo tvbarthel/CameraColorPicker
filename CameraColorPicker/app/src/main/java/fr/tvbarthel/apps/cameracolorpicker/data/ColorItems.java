@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -77,6 +78,27 @@ public final class ColorItems {
         editor.putString(KEY_SAVED_COLOR_ITEMS, GSON.toJson(colorItems));
 
         return editor.commit();
+    }
+
+    public static boolean deleteColorItem(Context context, ColorItem colorItemToDelete) {
+        if (colorItemToDelete == null) {
+            throw new IllegalArgumentException("Can't delete a null color item");
+        }
+
+        final SharedPreferences sharedPreferences = getPreferences(context);
+        final List<ColorItem> savedColorsItems = getSavedColorItems(sharedPreferences);
+
+        for (Iterator<ColorItem> it = savedColorsItems.iterator(); it.hasNext(); ) {
+            final ColorItem candidate = it.next();
+            if (candidate.getId() == colorItemToDelete.getId()) {
+                it.remove();
+                final SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(KEY_SAVED_COLOR_ITEMS, GSON.toJson(savedColorsItems));
+                return editor.commit();
+            }
+        }
+
+        return false;
     }
 
     public static void registerListener(Context context, OnColorItemChangeListener onColorItemChangeListener) {
