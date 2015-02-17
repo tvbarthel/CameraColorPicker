@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,6 +28,13 @@ public final class ColorItems {
     private static final Gson GSON = new Gson();
     private static final Type COLOR_ITEM_LIST_TYPE = new TypeToken<List<ColorItem>>() {
     }.getType();
+
+    public static final Comparator<ColorItem> CHRONOLOGICAL_COMPARATOR = new Comparator<ColorItem>() {
+        @Override
+        public int compare(ColorItem lhs, ColorItem rhs) {
+            return (int) (rhs.getId() - lhs.getId());
+        }
+    };
 
     private static SharedPreferences getPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -59,8 +67,8 @@ public final class ColorItems {
         // Parse the json into colorItems.
         final List<ColorItem> colorItems = GSON.fromJson(jsonColorItems, COLOR_ITEM_LIST_TYPE);
 
-        // Reverse the color items.
-        Collections.reverse(colorItems);
+        // Sort the color items chronologically.
+        Collections.sort(colorItems, CHRONOLOGICAL_COMPARATOR);
         return colorItems;
     }
 
