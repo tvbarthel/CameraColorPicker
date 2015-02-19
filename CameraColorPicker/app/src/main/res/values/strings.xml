@@ -2,15 +2,22 @@
 <resources>
 
     <string name="app_name">Camera Color Picker</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
 
     <!-- Main activity -->
     <string name="activity_main_empty_view">You have no colors :(</string>
 
     <!-- Color picker activity -->
     <string name="activity_color_picker_label">Pick a color</string>
-    <string name="title_activity_color_detail">Detail</string>
+
+    <!-- Color detail activity -->
+    <string name="activity_color_detail_label">Detail</string>
+
+    <!-- License activity -->
+    <string name="activity_license_label">Licenses</string>
+
+
+    <!-- Main menu -->
+    <string name="menu_main_action_licenses">Licenses</string>
 
     <!-- Color detail menu -->
     <string name="menu_color_detail_action_delete">Delete</string>

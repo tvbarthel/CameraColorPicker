@@ -3,6 +3,8 @@ package fr.tvbarthel.apps.cameracolorpicker.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -103,6 +105,25 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onDestroy() {
         ColorItems.unregisterListener(this, mOnColorItemChangeListener);
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //noinspection SimplifiableIfStatement
+        if (item.getItemId() == R.id.menu_main_action_licenses) {
+            final Intent intent = new Intent(this, LicenseActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

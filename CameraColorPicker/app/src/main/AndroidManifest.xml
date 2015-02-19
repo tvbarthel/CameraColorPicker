@@ -14,6 +14,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name" >
@@ -23,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.ColorPickerActivity"
             android:label="@string/activity_color_picker_label"
@@ -31,14 +33,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
+
         <activity
             android:name=".activities.ColorDetailActivity"
-            android:label="@string/title_activity_color_detail"
+            android:label="@string/activity_color_detail_label"
             android:parentActivityName=".activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fr.tvbarthel.apps.cameracolorpicker.activities.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".activities.LicenseActivity"
+            android:label="@string/activity_license_label"
+            android:parentActivityName=".activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>
