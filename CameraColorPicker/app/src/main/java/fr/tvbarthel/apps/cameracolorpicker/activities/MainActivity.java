@@ -18,6 +18,7 @@ import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.adapters.ColorAdapter;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
+import fr.tvbarthel.apps.cameracolorpicker.fragments.AboutDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
 
 /**
@@ -43,8 +44,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
     protected Toast mToast;
 
+    /**
+     * A {@link android.widget.ListView} used for displaying the {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}s
+     */
     protected ListView mListView;
 
+    /**
+     * A {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItems.OnColorItemChangeListener} for listening the creation of new {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}s.
+     */
     protected ColorItems.OnColorItemChangeListener mOnColorItemChangeListener;
 
     @Override
@@ -116,14 +123,26 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //noinspection SimplifiableIfStatement
-        if (item.getItemId() == R.id.menu_main_action_licenses) {
-            final Intent intent = new Intent(this, LicenseActivity.class);
-            startActivity(intent);
-            return true;
+        final int itemId = item.getItemId();
+        boolean handled;
+
+        switch (itemId) {
+            case R.id.menu_main_action_licenses:
+                handled = true;
+                final Intent intent = new Intent(this, LicenseActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.menu_main_action_about:
+                handled = true;
+                AboutDialogFragment.newInstance().show(getSupportFragmentManager(), null);
+                break;
+
+            default:
+                handled = super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+        return handled;
     }
 
     @Override

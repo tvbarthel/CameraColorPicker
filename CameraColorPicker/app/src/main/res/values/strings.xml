@@ -13,8 +13,11 @@
     <string name="activity_color_detail_label">Detail</string>
 
     <!-- License activity -->
-    <string name="activity_license_label">Licenses</string>
+    <string name="activity_license_label">Content and Licenses</string>
 
+    <!-- About fragment -->
+    <string name="fragment_about_title">About</string>
+    <string name="fragment_about_message">Camera Color Picker version %1$s\n\nMade in France with love by vbarthel &amp; tbarthel.</string>
 
     <!-- Main menu -->
     <string name="menu_main_action_licenses">Licenses</string>

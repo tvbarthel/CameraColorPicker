@@ -9,4 +9,10 @@
         android:title="@string/menu_main_action_licenses"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_main_action_about"
+        android:orderInCategory="200"
+        android:title="About"
+        app:showAsAction="never" />
+
 </menu>
