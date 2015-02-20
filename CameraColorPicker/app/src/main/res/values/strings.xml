@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- General -->
     <string name="app_name">Camera Color Picker</string>
+    <string name="contact_us_email" translatable="false">tvbarthel@gmail.com</string>
+    <string name="contact_us_uri" translatable="false">mailto:%1$s?subject=%2$s</string>
+    <string name="contact_us_default_subject">[Camera Color Picker] Suggestion</string>
 
     <!-- Main activity -->
     <string name="activity_main_empty_view">You have no colors :(</string>
@@ -20,7 +24,9 @@
     <string name="fragment_about_message">Camera Color Picker version %1$s\n\nMade in France with love by vbarthel &amp; tbarthel.</string>
 
     <!-- Main menu -->
-    <string name="menu_main_action_licenses">Licenses</string>
+    <string name="menu_main_action_contact_us">Contact us</string>
+    <string name="menu_main_action_licenses">Content &amp; Licenses</string>
+    <string name="menu_main_action_about">About</string>
 
     <!-- Color detail menu -->
     <string name="menu_color_detail_action_delete">Delete</string>

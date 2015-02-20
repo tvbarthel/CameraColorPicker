@@ -1,6 +1,7 @@
 package fr.tvbarthel.apps.cameracolorpicker.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -136,6 +137,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.menu_main_action_about:
                 handled = true;
                 AboutDialogFragment.newInstance().show(getSupportFragmentManager(), null);
+                break;
+
+            case R.id.menu_main_action_contact_us:
+                handled = true;
+                final String uriString = getString(R.string.contact_us_uri,
+                        Uri.encode(getString(R.string.contact_us_email)),
+                        Uri.encode(getString(R.string.contact_us_default_subject)));
+                final Uri mailToUri = Uri.parse(uriString);
+                final Intent sendToIntent = new Intent(Intent.ACTION_SENDTO);
+                sendToIntent.setData(mailToUri);
+                startActivity(sendToIntent);
                 break;
 
             default:
