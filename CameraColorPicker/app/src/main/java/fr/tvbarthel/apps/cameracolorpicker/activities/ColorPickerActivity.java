@@ -422,7 +422,6 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
                         , mIsPortrait);
                 //set optimal camera preview
                 cameraParameters.setPreviewSize(bestSize.width, bestSize.height);
-                cameraParameters.setPictureSize(bestSize.width, bestSize.height);
                 camera.setParameters(cameraParameters);
 
                 //set camera orientation to match with current device orientation
