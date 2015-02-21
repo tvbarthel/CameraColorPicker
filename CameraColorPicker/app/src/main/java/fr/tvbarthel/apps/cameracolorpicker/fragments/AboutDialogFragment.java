@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.view.View;
+import android.widget.TextView;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.utils.Versions;
@@ -38,9 +40,14 @@ public class AboutDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Activity activity = getActivity();
+        final View dialogView = View.inflate(activity, R.layout.fragment_dialog_about, null);
+
+        ((TextView) dialogView.findViewById(R.id.fragment_dialog_about_version_name))
+                .setText(getString(R.string.fragment_dialog_about_version_name,
+                        Versions.getVersionName(activity)));
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                .setTitle(R.string.fragment_about_title)
-                .setMessage(getString(R.string.fragment_about_message, Versions.getVersionName(activity)))
+                .setView(dialogView)
                 .setCancelable(true)
                 .setPositiveButton(android.R.string.ok, null);
 

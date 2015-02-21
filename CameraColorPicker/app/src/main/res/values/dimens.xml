@@ -3,6 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="default_padding">16dp</dimen>
+
     <!-- Activity Main -->
     <dimen name="activity_color_picker_pointer_size">8dp</dimen>
     <dimen name="activity_color_picker_pointer_ring_size">48dp</dimen>
