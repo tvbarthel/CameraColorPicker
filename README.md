@@ -1,6 +1,6 @@
 # Camera Color Picker
 
-Camera Color Picker is an Android application that lets you capture, in real time, the colors around you using the camera of your device.
+[Camera Color Picker](http://tvbarthel.github.io/CameraColorPicker/) is an Android application that lets you capture, in real time, the colors around you using the camera of your device.
 
 Contributing
 =======
