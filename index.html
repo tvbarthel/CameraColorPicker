@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>    
+    <script src="./bower_components/webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="./bower_components/core-header-panel/core-header-panel.html">
+    <link rel="import" href="./bower_components/core-toolbar/core-toolbar.html">
+    <link rel="import" href="./bower_components/paper-shadow/paper-shadow.html">
+    <link rel="import" href="./bower_components/paper-ripple/paper-ripple.html">
+  
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        
+        h1, h2, h3, h4 {
+            color: #5A727B;
+        }
+        
+        core-header-panel {
+            background: #eee;
+        }
+        
+        core-toolbar {
+            background-color: #4CAF50;
+        }
+        
+        #ic-header {            
+            height: 85px;
+            display: block;
+            margin: 0 auto;
+            padding-top: 100px;
+        }
+        
+        .card {
+            margin: 0 auto;
+            padding: 16px;
+            border-radius: 4px;
+            background-color: white;
+            max-width: 900px;
+        }
+        
+        .content {
+            margin: 160px 0px 60px 0;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+        
+        paper-ripple {
+            color: #4CAF50;
+        }
+        
+        .screenshot {
+            width: 200px;
+            height: 340px;
+            display: inline-block;
+            position: relative;
+            background-repeat: no-repeat;
+            background-size: 200px 340px;
+        }
+        
+        #screenshot-1 {
+            background-image: url("resources/Screenshot_2015-02-21-19-29-14_framed_thumbnail.png");
+        }
+        
+        #screenshot-2 {
+            background-image: url("resources/Screenshot_2015-02-21-19-29-51_framed_thumbnail.png");
+        }
+        
+        #screenshot-3 {
+            background-image: url("resources/Screenshot_2015-02-21-19-30-34_framed_thumbnail.png");
+        }
+        
+        #screenshot-4 {
+            background-image: url("resources/Screenshot_2015-02-21-19-32-26_framed_thumbnail.png");
+        }
+        
+    </style>  
+  
+  </head>
+  
+    <body fullbleed vertical layout unresolved>
+    
+        <core-header-panel mode="cover" flex>
+
+            <core-toolbar class="tall" id="mainheader" end>                
+                <img id="ic-header" src="resources/ic_header.png" />                
+            </core-toolbar>
+            
+            <div class="content">
+
+                <paper-shadow class="card" z="2">
+                
+                    <h1>Camera Color Picker</h1>
+                    <p>
+                        Camera Color Picker is a free and open source Android app that lets you capture, in real time, the colors around you using the camera of your device.
+                    </p> 
+                    
+                    <div style="text-align: center;">
+                        
+                        <div class="screenshot" id="screenshot-1">
+                            <a href="resources/Screenshot_2015-02-21-19-29-14_framed.png" fit>
+                                <paper-ripple class="recenteringTouch" fit></paper-ripple>
+                            </a>                                
+                        </div>
+                        
+                        
+                        <div class="screenshot" id="screenshot-2">
+                            <a href="resources/Screenshot_2015-02-21-19-29-51_framed.png" fit>
+                                <paper-ripple class="recenteringTouch" fit></paper-ripple>
+                            </a>
+                        </div>
+                        
+                        <div class="screenshot" id="screenshot-3">
+                            <a href="resources/Screenshot_2015-02-21-19-30-34_framed.png" fit>
+                                <paper-ripple class="recenteringTouch" fit></paper-ripple>
+                            </a>
+                        </div>
+                        
+                        <div class="screenshot" id="screenshot-4">
+                            <a href="resources/Screenshot_2015-02-21-19-32-26_framed.png" fit>
+                                <paper-ripple class="recenteringTouch" fit></paper-ripple>
+                            </a>
+                        </div>
+                        
+                    </div>                      
+                    
+                    <h2>Road map</h2>
+                    <ul>
+                        <li>Add the possiblity to choose the default color code format. (html/rgb/hsv).</li>
+                        <li>Add a button to turn on/off the flash of the camera.</li>
+                        <li>Add a confirmation dialog before deleting a color.</li>
+                        <li>Add a subtle message when a color is successfully saved.</li>
+                        <li>Add french translation.</li>                        
+                        <li>Add the possibility to create <i>palettes</i> with current saved colors.</li>
+                        <li>Add a <i>swipe to remove</i> mechanism for deleting colors from the list.</li>
+                        <li>Support tablets</li>
+                    </ul>
+                    
+                    <h2>Change log</h2>
+                    <h3>Version 0.0.1 <i>(In Development)</i></h3>
+                    <ul>
+                        <li>Capture and save the colors with your device camera.</li>
+                        <li>List all the colors saved.</li>
+                        <li>Copy the html code of a color to the clipboard.</li>
+                        <li>Copy the rgb code of a color to the clipboard.</li>
+                        <li>Copy the hsv code of a color to the clipboard.</li>
+                    </ul>                    
+
+                    <h2>Contributing</h2>
+                    <p>                        
+                        Contributions are more than welcome (:
+                        <br>
+                        <br>
+                        You can contribute through GitHub by forking the repository and sending a pull request.
+                        When submitting code, please make every effort to follow existing conventions and style in order to keep the code as readable as possible. For this project, we tries to follow the code style guidelines of the Android open source project.
+                        <br>
+                        <br>
+                        The code source of this project can be found on <a href="https://github.com/tvbarthel/CameraColorPicker">GitHub</a>.                                            
+                    </p>
+                    
+                    <h2>Credits</h2>
+                    <p>
+                        Credits go to Thomas <a href="https://github.com/tbarthel-fr">tbarthel</a> Barthélémy and Vincent <a href="https://github.com/vbarthel-fr">vbarthel</a> Barthélémy.
+                    <p>
+                    
+                    <h2>License</h2>
+                    <p style="white-space: pre-wrap;">Copyright (C) 2014 tvbarthel
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a>
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+                    </p>
+                    
+                </paper-shadow>
+ 
+            </div>
+            
+        </core-header-panel>
+        
+    </body>
+    
+</html>
