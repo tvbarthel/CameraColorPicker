@@ -1,5 +1,7 @@
 package fr.tvbarthel.apps.cameracolorpicker.activities;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -55,6 +57,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
     protected ColorItems.OnColorItemChangeListener mOnColorItemChangeListener;
 
+    /**
+     * A {@link com.melnykov.fab.FloatingActionButton} for launching the {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity}.
+     */
+    private FloatingActionButton mFab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,9 +94,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             }
         });
 
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
-        fab.attachToListView(mListView);
-        fab.setOnClickListener(this);
+        mFab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
+        mFab.attachToListView(mListView);
+        mFab.setOnClickListener(this);
 
         mOnColorItemChangeListener = new ColorItems.OnColorItemChangeListener() {
             @Override
@@ -101,6 +108,14 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         };
 
         ColorItems.registerListener(this, mOnColorItemChangeListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mColorAdapter.getCount() == 0) {
+            animateFab(mFab);
+        }
     }
 
     @Override
@@ -191,5 +206,35 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         hideToast();
         mToast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
         mToast.show();
+    }
+
+    /**
+     * Make a subtle animation for a {@link com.melnykov.fab.FloatingActionButton} drawing attention to the button.
+     *
+     * @param fab the {@link com.melnykov.fab.FloatingActionButton} to animate.
+     */
+    private void animateFab(final FloatingActionButton fab) {
+        fab.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Play a subtle animation
+                final long duration = 450;
+
+                final ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(fab, View.SCALE_X, 1f, 0.8f, 1f);
+                scaleXAnimator.setDuration(duration);
+                scaleXAnimator.setRepeatCount(1);
+
+                final ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(fab, View.SCALE_Y, 1f, 0.8f, 1f);
+                scaleYAnimator.setDuration(duration);
+                scaleYAnimator.setRepeatCount(1);
+
+                scaleXAnimator.start();
+                scaleYAnimator.start();
+
+                final AnimatorSet animatorSet = new AnimatorSet();
+                animatorSet.play(scaleXAnimator).with(scaleYAnimator);
+                animatorSet.start();
+            }
+        }, 400);
     }
 }
