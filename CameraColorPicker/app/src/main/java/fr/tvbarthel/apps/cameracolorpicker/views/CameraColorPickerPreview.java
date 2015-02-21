@@ -110,6 +110,7 @@ public class CameraColorPickerPreview extends TextureView implements TextureView
     }
 
     protected void addColorFromYUV420(byte[] data, int[] averageColor, int count, int x, int y, int width, int height) {
+        // The code converting YUV420 to rgb format is highly inspired from this post http://stackoverflow.com/a/10125048
         final int size = width * height;
         final int Y = data[y * width + x] & 0xff;
         final int xby2 = x / 2;
