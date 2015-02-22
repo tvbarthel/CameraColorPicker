@@ -220,11 +220,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 // Play a subtle animation
                 final long duration = 450;
 
-                final ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(fab, View.SCALE_X, 1f, 0.8f, 1f);
+                final ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(fab, View.SCALE_X, 1f, 1.2f, 1f);
                 scaleXAnimator.setDuration(duration);
                 scaleXAnimator.setRepeatCount(1);
 
-                final ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(fab, View.SCALE_Y, 1f, 0.8f, 1f);
+                final ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(fab, View.SCALE_Y, 1f, 1.2f, 1f);
                 scaleYAnimator.setDuration(duration);
                 scaleYAnimator.setRepeatCount(1);
 
