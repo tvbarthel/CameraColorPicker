@@ -1,0 +1,16 @@
+# Title 
+Camera Color Picker
+
+# Short description
+Capture and share the colors around you using the camera of your device.
+
+# Full description
+Camera Color Picker is a very light weight app that uses the camera of your device to capture a color. It analyses in real time the camera preview and extracts the color that you are pointing at. You can save the color on your phone and copy several color formats to the clipboard. Currenlty the app support hexadecimal, RGB and HSV format.
+
+We hope that you will find this small app usefull and elegant =)
+
+The app is 100% free. The in-app purchases are here to support us by making small donation.
+
+Camera Color Picker is open source! It can't hide anything from you. if you want to learn more about how it works under the hood, you can find the code here: https://github.com/tvbarthel/CameraColorPicker happy hacking :)
+
+
