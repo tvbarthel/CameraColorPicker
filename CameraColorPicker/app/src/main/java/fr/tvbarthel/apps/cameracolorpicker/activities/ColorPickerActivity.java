@@ -2,6 +2,7 @@ package fr.tvbarthel.apps.cameracolorpicker.activities;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.hardware.Camera;
@@ -258,6 +259,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     /**
      * Initialize the deltas used for the translation of the preview of the picked color.
      */
+    @SuppressLint("NewApi")
     protected void initTranslationDeltas() {
         ViewTreeObserver vto = mPointerRing.getViewTreeObserver();
         if (vto.isAlive()) {
