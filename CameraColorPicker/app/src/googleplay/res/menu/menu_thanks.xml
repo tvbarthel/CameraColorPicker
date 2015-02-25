@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="fr.tvbarthel.apps.simpleweatherforcast.MainActivity">
+    <item
+        android:id="@+id/menu_thanks_action_thanks"
+        android:orderInCategory="0"
+        android:title="@string/support_menu_thanks_item_thanks"
+        app:showAsAction="never" />
+</menu>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="fr.tvbarthel.apps.cameracolorpicker" >
+<manifest
+    package="fr.tvbarthel.apps.cameracolorpicker"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Camera ! -->
     <uses-permission android:name="android.permission.CAMERA" />

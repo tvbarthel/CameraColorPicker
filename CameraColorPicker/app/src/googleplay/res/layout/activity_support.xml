@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/support_purchase_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/support_title"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/support_list_divider_height"
+        android:listSelector="@android:color/transparent"
+        android:padding="@dimen/support_list_padding"
+        android:scrollbarStyle="outsideOverlay"
+        tools:listitem="@layout/support_entry" />
+
+    <ProgressBar
+        android:id="@+id/support_progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/support_horizontal_margin"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/support_progress_bar" />
+
+    <TextView
+        android:id="@+id/support_error_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:text="@string/support_error"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/support_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/support_title_background"
+        android:gravity="center"
+        android:padding="@dimen/support_entry_padding"
+        android:text="@string/support_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/support_text" />
+
+</RelativeLayout>

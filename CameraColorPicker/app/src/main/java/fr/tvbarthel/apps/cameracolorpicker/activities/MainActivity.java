@@ -17,6 +17,7 @@ import com.melnykov.fab.FloatingActionButton;
 
 import java.util.List;
 
+import cameracolorpicker.flavors.MainActivityFlavor;
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.adapters.ColorAdapter;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
@@ -62,11 +63,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
      */
     private FloatingActionButton mFab;
 
+    /**
+     * A {@link cameracolorpicker.flavors.MainActivityFlavor} for behaviors specific to flavors.
+     */
+    private MainActivityFlavor mMainActivityFlavor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mMainActivityFlavor = new MainActivityFlavor(this);
         mClipColorItemLabel = getString(R.string.color_clip_color_label_hex);
 
         mColorAdapter = new ColorAdapter(this);
@@ -134,6 +141,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        // Inflate the menu specific to the flavor.
+        mMainActivityFlavor.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -166,7 +175,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 break;
 
             default:
-                handled = super.onOptionsItemSelected(item);
+                handled = mMainActivityFlavor.onOptionsItemSelected(item);
+                if (!handled) {
+                    handled = super.onOptionsItemSelected(item);
+                }
         }
 
         return handled;
