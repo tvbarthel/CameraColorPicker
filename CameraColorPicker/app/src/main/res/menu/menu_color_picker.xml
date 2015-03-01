@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/menu_color_picker_flash"
-        android:icon="@drawable/ic_action_flash"
+        android:icon="@drawable/ic_action_flash_on"
         android:orderInCategory="100"
         android:title="Flash"
         app:showAsAction="ifRoom" />
