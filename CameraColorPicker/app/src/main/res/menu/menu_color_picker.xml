@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_color_picker_flash"
+        android:id="@+id/menu_color_picker_action_flash"
         android:icon="@drawable/ic_action_flash_on"
         android:orderInCategory="100"
         android:title="@string/menu_color_picker_action_flash"

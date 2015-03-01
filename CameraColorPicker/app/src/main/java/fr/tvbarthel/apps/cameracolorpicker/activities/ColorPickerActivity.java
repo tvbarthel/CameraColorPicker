@@ -214,7 +214,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     public boolean onCreateOptionsMenu(Menu menu) {
         if (isFlashSupported()) {
             getMenuInflater().inflate(R.menu.menu_color_picker, menu);
-            final MenuItem flashItem = menu.findItem(R.id.menu_color_picker_flash);
+            final MenuItem flashItem = menu.findItem(R.id.menu_color_picker_action_flash);
             int flashIcon = mIsFlashOn ? R.drawable.ic_action_flash_off : R.drawable.ic_action_flash_on;
             flashItem.setIcon(flashIcon);
         }
@@ -231,7 +231,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
                 handled = true;
                 break;
 
-            case R.id.menu_color_picker_flash:
+            case R.id.menu_color_picker_action_flash:
                 toggleFlash();
                 handled = true;
                 break;
