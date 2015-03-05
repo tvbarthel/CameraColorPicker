@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,9 +21,10 @@ import android.widget.Toast;
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
+import fr.tvbarthel.apps.cameracolorpicker.fragments.DeleteColorDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
 
-public class ColorDetailActivity extends ActionBarActivity implements View.OnClickListener {
+public class ColorDetailActivity extends ActionBarActivity implements View.OnClickListener, DeleteColorDialogFragment.Callback {
 
     /**
      * A key for passing a color item as extra.
@@ -203,9 +205,7 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menu_color_detail_action_delete) {
-            if (ColorItems.deleteColorItem(this, mColorItem)) {
-                finish();
-            }
+            DeleteColorDialogFragment.newInstance(mColorItem).show(getSupportFragmentManager(), null);
             return true;
         }
 
@@ -231,6 +231,13 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
 
             default:
                 throw new IllegalArgumentException("Unsupported view clicked. Found: " + view);
+        }
+    }
+
+    @Override
+    public void onColorDeletionConfirmed(@NonNull ColorItem colorItemToDelete) {
+        if (ColorItems.deleteColorItem(this, colorItemToDelete)) {
+            finish();
         }
     }
 
