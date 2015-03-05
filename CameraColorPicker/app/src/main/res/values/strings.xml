@@ -19,12 +19,12 @@
     <!-- License activity -->
     <string name="activity_license_label">Content and Licenses</string>
 
-    <!-- About fragment -->
+    <!-- About dialog fragment -->
     <string name="fragment_dialog_about_version_name">Version %1$s</string>
-    <string name="fragment_about_message">Camera Color Picker is a free and open source Android app that lets you capture the colors around you using the camera of your device.</string>
-    <string name="fragment_about_made_by">Made in France with love by tbarthel &amp; vbarthel.</string>
+    <string name="fragment_dialog_about_message">Camera Color Picker is a free and open source Android app that lets you capture the colors around you using the camera of your device.</string>
+    <string name="fragment_dialog_about_made_by">Made in France with love by tbarthel &amp; vbarthel.</string>
 
-    <!-- Delete color fragment -->
+    <!-- Delete color dialog fragment -->
     <string name="fragment_dialog_delete_color_title">Warning</string>
     <string name="fragment_dialog_delete_color_message">Delete the color from your phone?</string>
 

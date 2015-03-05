@@ -35,14 +35,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/fragment_about_message"
+            android:text="@string/fragment_dialog_about_message"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/fragment_about_made_by"
+            android:text="@string/fragment_dialog_about_made_by"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="italic" />
 
