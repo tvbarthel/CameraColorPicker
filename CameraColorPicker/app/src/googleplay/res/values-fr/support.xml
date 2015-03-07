@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- String !-->
+    <string name="activity_support_label">Supporter les développeurs</string>
+    <string name="support_title">Supportez nos applications gratuites et aidez nous à donner naissance à nos projets open-source.</string>
+    <string name="support_error">Échec du chargement de la liste des cafés.\n Vérifiez votre connexion internet.</string>
+    <string name="support_thanks_positive_btn">Merci !</string>
+    <string name="support_has_supported_us">Merci de votre support !</string>
+    <string name="support_thanks">Nous vous sommes très reconnaissant pour votre support! Ce %1$s nous aidera à developper plus d\'applications gratuites</string>
+    <string name="support_bar_text"> %1$d %%</string>
+    <string name="support_menu_support_item_support">Achetez nous un café</string>
+    <string name="support_menu_thanks_item_thanks">Merci !</string>
+
+</resources>
