@@ -36,6 +36,9 @@
     <!-- Color detail menu -->
     <string name="menu_color_detail_action_delete">Delete</string>
 
+    <!-- Color picker menu -->
+    <string name="menu_color_picker_action_flash">Flash</string>
+
     <!-- Color Clip -->
     <string name="color_clip_success_copy_message">Copied to clipboard.</string>
     <string name="color_clip_color_label_hex">Color item hexadecimal value.</string>
