@@ -9,4 +9,7 @@
     <!-- Row Color Item -->
     <dimen name="row_color_item_preview_size">40dp</dimen>
 
+    <!-- Delete color dialog fragment -->
+    <dimen name="fragment_dialog_delete_color_message_padding_bottom">16dp</dimen>
+
 </resources>

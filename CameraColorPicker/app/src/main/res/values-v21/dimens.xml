@@ -1,0 +1,6 @@
+<resources>
+
+    <!-- Delete color dialog fragment -->
+    <dimen name="fragment_dialog_delete_color_message_padding_bottom">0dp</dimen>
+
+</resources>
