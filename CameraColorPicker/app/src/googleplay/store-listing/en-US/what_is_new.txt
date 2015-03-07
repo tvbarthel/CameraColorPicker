@@ -1,0 +1,6 @@
+#Version 0.0.5
+
+New feature: you can now activate the flash of the device's camera.
+Add a dialog to confirm the deletion of a color.
+Add french translations.
+Add a subtle message when a color is successfully saved.
