@@ -27,6 +27,17 @@
 
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/activity_color_picker_confirm_save_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/activity_color_picker_confirm_save_message"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
 
     <RelativeLayout
         android:id="@+id/activity_color_picker_bottom_bar"
