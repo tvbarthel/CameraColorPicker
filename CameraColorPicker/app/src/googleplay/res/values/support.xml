@@ -20,11 +20,11 @@
     <!-- String !-->
     <string name="activity_support_label">Support Developers</string>
     <string name="support_key" translatable="false">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuGyG3PTYP5rNQa0O+5BOK9qQNO2ELJm26kr7sgTIHt/N+sLR3tHXzLwDxh6Xr2QD6T35IIZMf8V4yLVXIzou1IByqqrm9chi0rnaZHwMoK4+Id0E3ko7i61WCCC15qqm9VX84D2OCN8kPK2O+qDGgRgeqBCO5ZdnLxXldJhmW5CboCCv/qQW41lZavFpBq9uMcGviyfQmkX+gcbwrQ7jvBFVMtLDO25xZJT52GNWM623A5gO9m+xfHFN5VC7DcgkNE15tV21sKakOlkm5invRJ6Y9kHbnFK11gTQ69VjcOO/eGeoYd8rI8y3Wv9Fqn1lykJgGYe3+IGtLHnboHCD5wIDAQAB</string>
-    <string name="support_title">Support free content app and help us bringing our open-source projects to life.</string>
+    <string name="support_title">Support free content apps and help us bringing our open-source projects to life.</string>
     <string name="support_error">Fail to load coffee list. \n Please, check your network connection.</string>
     <string name="support_thanks_positive_btn">Thanks!</string>
     <string name="support_has_supported_us">Thanks for your support!</string>
-    <string name="support_thanks">We are very grateful for your support ! This %1$s will help us to develop more free content apps !</string>
+    <string name="support_thanks">We are very grateful for your support! This %1$s will help us to develop more free content apps!</string>
     <string name="support_bar_text"> %1$d %%</string>
     <string name="support_menu_support_item_support">Buy us a coffee</string>
     <string name="support_menu_thanks_item_thanks">Thanks !</string>
