@@ -6,6 +6,11 @@
     <link rel="import" href="./bower_components/core-toolbar/core-toolbar.html">
     <link rel="import" href="./bower_components/paper-shadow/paper-shadow.html">
     <link rel="import" href="./bower_components/paper-ripple/paper-ripple.html">
+    <link rel="import" href="./bower_components/paper-button/paper-button.html">
+    <link rel="import" href="./bower_components/paper-fab/paper-fab.html">
+    <link rel="import" href="./bower_components/paper-dialog/paper-action-dialog.html">
+    <link rel="import" href="./bower_components/core-icons/core-icons.html" >
+
   
     <style>
         body {
@@ -48,6 +53,9 @@
         paper-ripple {
             color: #4CAF50;
         }
+        paper-fab  {
+            background: #4CAF50;
+        }
         
         .screenshot {
             width: 200px;
@@ -78,7 +86,7 @@
   
   </head>
   
-    <body fullbleed vertical layout unresolved>      
+    <body fullbleed vertical layout unresolved>    
     
         <core-header-panel mode="cover" flex>
 
@@ -89,7 +97,8 @@
             <div class="content">
 
                 <paper-shadow class="card" z="2">
-                        <a href="https://github.com/tvbarthel/CameraColorPicker"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+                
+                    <a href="https://github.com/tvbarthel/CameraColorPicker"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
                 
                     <h1>Camera Color Picker</h1>
                     <p style="padding-right: 50px">
@@ -202,10 +211,35 @@ Unless required by applicable law or agreed to in writing, software distributed 
                     
                 </paper-shadow>
  
-            </div>            
+            </div>                 
         
         </core-header-panel>
         
+        <template is="auto-binding" bind>
+                <paper-fab style="position: absolute; bottom: 72px; right: 72px; border: 0;" src="./resources/ic_action_support.png" on-tap="{{toggleSupportDialog}}"></paper-fab>
+        </template>    
+
+                <paper-action-dialog id="dialog-support" style="max-width: 700px;" heading="Support us" backdrop>
+                    <p>Support free content apps and help us bringing our open-source projets to life! Donate for a shot of caffeine for a whole night of coding, or for a cup of British tea for a coding session on a rainy Sunday afternoon!</p>
+                    
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="text-align: center;" target="_top">
+                        <input type="hidden" name="cmd" value="_s-xclick">
+                        <input type="hidden" name="hosted_button_id" value="BVNPEARANWLQL">
+                        <input type="image" src="https://www.paypalobjects.com/en_US/FR/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                    </form>
+                    
+                    <paper-button dismissive>Cancel</paper-button>
+                </paper-action-dialog>           
+
+        <script>
+            var scope = document.querySelector('template[is=auto-binding]');
+            
+            scope.toggleSupportDialog = function(e) {
+                document.querySelector('#dialog-support').toggle();
+                console.log("coucou");
+            };
+        </script>
         
     </body>
     
