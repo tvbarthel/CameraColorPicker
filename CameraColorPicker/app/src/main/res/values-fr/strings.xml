@@ -13,6 +13,7 @@
 
     <!-- Color detail activity -->
     <string name="activity_color_detail_label">Détail</string>
+    <string name="activity_color_picker_confirm_save_message">Couleur enregistrée</string>
 
     <!-- License activity -->
     <string name="activity_license_label">Contenu et Licenses</string>
