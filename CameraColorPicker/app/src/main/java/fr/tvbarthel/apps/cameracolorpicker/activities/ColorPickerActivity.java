@@ -3,6 +3,7 @@ package fr.tvbarthel.apps.cameracolorpicker.activities;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.hardware.Camera;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -194,6 +196,11 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
      */
     protected Runnable mHideConfirmSaveMessage;
 
+    /**
+     * A simple boolean for keeping track of the device's camera flash state.
+     */
+    protected boolean mIsFlashOn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,12 +251,28 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (isFlashSupported()) {
+            getMenuInflater().inflate(R.menu.menu_color_picker, menu);
+            final MenuItem flashItem = menu.findItem(R.id.menu_color_picker_action_flash);
+            int flashIcon = mIsFlashOn ? R.drawable.ic_action_flash_off : R.drawable.ic_action_flash_on;
+            flashItem.setIcon(flashIcon);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final int itemId = item.getItemId();
         boolean handled;
         switch (itemId) {
             case android.R.id.home:
                 finish();
+                handled = true;
+                break;
+
+            case R.id.menu_color_picker_action_flash:
+                toggleFlash();
                 handled = true;
                 break;
 
@@ -281,6 +304,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
      * <p/>
      * Internally find the view by their ids and set the click listeners.
      */
+
     protected void initViews() {
         mIsPortrait = getResources().getBoolean(R.bool.is_portrait);
         mPreviewContainer = (FrameLayout) findViewById(R.id.activity_color_picker_preview_container);
@@ -388,6 +412,32 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
             }
         });
+    }
+
+    /**
+     * Check if the device's camera supports flash.
+     *
+     * @return Returns true if the device's camera supports flash, false otherwise.
+     */
+    protected boolean isFlashSupported() {
+        return getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    }
+
+    /**
+     * Toggle the device's camera flash.
+     * {@link ColorPickerActivity#isFlashSupported()} should be called before using this methods.
+     */
+    protected void toggleFlash() {
+        if (mCamera != null) {
+            final Camera.Parameters parameters = mCamera.getParameters();
+            final String flashParameter = mIsFlashOn ? Camera.Parameters.FLASH_MODE_OFF : Camera.Parameters.FLASH_MODE_TORCH;
+            parameters.setFlashMode(flashParameter);
+            mCamera.stopPreview();
+            mCamera.setParameters(parameters);
+            mCamera.startPreview();
+            mIsFlashOn = !mIsFlashOn;
+            invalidateOptionsMenu();
+        }
     }
 
     /**
