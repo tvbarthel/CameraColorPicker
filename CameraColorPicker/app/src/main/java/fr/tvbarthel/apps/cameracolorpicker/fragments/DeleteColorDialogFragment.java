@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.view.LayoutInflater;
+import android.view.View;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
@@ -73,9 +75,11 @@ public final class DeleteColorDialogFragment extends DialogFragment {
         final ColorItem colorItemToDelete = arguments.getParcelable(ARG_COLOR_ITEM);
 
         final Context context = getActivity();
+        final View view = LayoutInflater.from(context).inflate(R.layout.fragment_dialog_delete_color, null);
+        view.findViewById(R.id.fragment_dialog_delete_color_preview).setBackgroundColor(colorItemToDelete.getColor());
+        
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.fragment_dialog_delete_color_title)
-                .setMessage(R.string.fragment_dialog_delete_color_message)
+        builder.setView(view)
                 .setCancelable(true)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
