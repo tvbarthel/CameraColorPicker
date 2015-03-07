@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -56,6 +58,19 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
      * Used by {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity#mSaveCompletedProgressAnimator}.
      */
     protected static final String SAVE_COMPLETED_PROGRESS_PROPERTY_NAME = "saveCompletedProgress";
+
+    /**
+     * The duration of the animation of the confirm save message. (in millis).
+     */
+    protected static final long DURATION_CONFIRM_SAVE_MESSAGE = 400;
+
+    /**
+     * The delay before the confirm save message is hidden. (in millis).
+     * <p/>
+     * 1000 + DURATION_CONFIRM_SAVE_MESSAGE = 1400
+     * The confirm save message should stay on screen for 1 second.
+     */
+    protected static final long DELAY_HIDE_CONFIRM_SAVE_MESSAGE = 1400;
 
     /**
      * A safe way to get an instance of the back {@link android.hardware.Camera}.
@@ -165,6 +180,23 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     protected ObjectAnimator mSaveCompletedProgressAnimator;
 
     /**
+     * A simple {@link android.widget.TextView} that confirms the user that the color has been saved successfully.
+     */
+    protected TextView mConfirmSaveMessage;
+
+    /**
+     * An {@link android.view.animation.Interpolator} used for showing the mConfirmSaveMessage.
+     */
+    protected Interpolator mConfirmSaveMessageInterpolator;
+
+    /**
+     * A {@link java.lang.Runnable} that hide the confirm save message.
+     * <p/>
+     * This runnable is posted with some delayed on mConfirmSaveMessage each time a color is successfully saved.
+     */
+    protected Runnable mHideConfirmSaveMessage;
+
+    /**
      * A simple boolean for keeping track of the device's camera flash state.
      */
     protected boolean mIsFlashOn;
@@ -208,6 +240,14 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         if (mCameraPreview != null) {
             mPreviewContainer.removeView(mCameraPreview);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Remove any pending mHideConfirmSaveMessage.
+        mConfirmSaveMessage.removeCallbacks(mHideConfirmSaveMessage);
+
+        super.onDestroy();
     }
 
     @Override
@@ -264,6 +304,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
      * <p/>
      * Internally find the view by their ids and set the click listeners.
      */
+
     protected void initViews() {
         mIsPortrait = getResources().getBoolean(R.bool.is_portrait);
         mPreviewContainer = (FrameLayout) findViewById(R.id.activity_color_picker_preview_container);
@@ -274,9 +315,41 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mSaveCompletedIcon = findViewById(R.id.activity_color_picker_save_completed);
         mSaveButton = findViewById(R.id.activity_color_picker_save_button);
         mSaveButton.setOnClickListener(this);
+        mConfirmSaveMessage = (TextView) findViewById(R.id.activity_color_picker_confirm_save_message);
+        mHideConfirmSaveMessage = new Runnable() {
+            @Override
+            public void run() {
+                mConfirmSaveMessage.animate()
+                        .translationY(-mConfirmSaveMessage.getMeasuredHeight())
+                        .setDuration(DURATION_CONFIRM_SAVE_MESSAGE)
+                        .start();
+            }
+        };
+        positionConfirmSaveMessage();
+        mConfirmSaveMessageInterpolator = new DecelerateInterpolator();
 
         mLastPickedColor = ColorItems.getLastPickedColor(this);
         applyPreviewColor(mLastPickedColor);
+    }
+
+    /**
+     * Position mConfirmSaveMessage.
+     * <p/>
+     * Set the translationY of mConfirmSaveMessage to - mConfirmSaveMessage.getMeasuredHeight() so that it is correctly placed before the first animation.
+     */
+    protected void positionConfirmSaveMessage() {
+        ViewTreeObserver vto = mConfirmSaveMessage.getViewTreeObserver();
+        if (vto.isAlive()) {
+            vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    ViewTreeObserver vto = mConfirmSaveMessage.getViewTreeObserver();
+                    vto.removeOnPreDrawListener(this);
+                    mConfirmSaveMessage.setTranslationY(-mConfirmSaveMessage.getMeasuredHeight());
+                    return true;
+                }
+            });
+        }
     }
 
     /**
@@ -412,6 +485,13 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
         mSaveCompletedProgressAnimator.cancel();
         mSaveCompletedProgressAnimator.setFloatValues(mSaveCompletedProgress, isSaveCompleted ? 0f : 1f);
         mSaveCompletedProgressAnimator.start();
+
+        if (isSaveCompleted) {
+            mConfirmSaveMessage.setVisibility(View.VISIBLE);
+            mConfirmSaveMessage.animate().translationY(0).setDuration(DURATION_CONFIRM_SAVE_MESSAGE).setInterpolator(mConfirmSaveMessageInterpolator).start();
+            mConfirmSaveMessage.removeCallbacks(mHideConfirmSaveMessage);
+            mConfirmSaveMessage.postDelayed(mHideConfirmSaveMessage, DELAY_HIDE_CONFIRM_SAVE_MESSAGE);
+        }
     }
 
     /**
