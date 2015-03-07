@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -182,6 +183,11 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
     protected TextView mConfirmSaveMessage;
 
     /**
+     * An {@link android.view.animation.Interpolator} used for showing the mConfirmSaveMessage.
+     */
+    protected Interpolator mConfirmSaveMessageInterpolator;
+
+    /**
      * A {@link java.lang.Runnable} that hide the confirm save message.
      * <p/>
      * This runnable is posted with some delayed on mConfirmSaveMessage each time a color is successfully saved.
@@ -296,6 +302,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
             }
         };
         positionConfirmSaveMessage();
+        mConfirmSaveMessageInterpolator = new DecelerateInterpolator();
 
         mLastPickedColor = ColorItems.getLastPickedColor(this);
         applyPreviewColor(mLastPickedColor);
@@ -431,7 +438,7 @@ public class ColorPickerActivity extends ActionBarActivity implements CameraColo
 
         if (isSaveCompleted) {
             mConfirmSaveMessage.setVisibility(View.VISIBLE);
-            mConfirmSaveMessage.animate().translationY(0).setDuration(DURATION_CONFIRM_SAVE_MESSAGE).setInterpolator(new DecelerateInterpolator()).start();
+            mConfirmSaveMessage.animate().translationY(0).setDuration(DURATION_CONFIRM_SAVE_MESSAGE).setInterpolator(mConfirmSaveMessageInterpolator).start();
             mConfirmSaveMessage.removeCallbacks(mHideConfirmSaveMessage);
             mConfirmSaveMessage.postDelayed(mHideConfirmSaveMessage, DELAY_HIDE_CONFIRM_SAVE_MESSAGE);
         }
