@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.cameracolorpicker.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -63,6 +64,7 @@ public final class DeleteColorDialogFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("InflateParams")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -77,7 +79,7 @@ public final class DeleteColorDialogFragment extends DialogFragment {
         final Context context = getActivity();
         final View view = LayoutInflater.from(context).inflate(R.layout.fragment_dialog_delete_color, null);
         view.findViewById(R.id.fragment_dialog_delete_color_preview).setBackgroundColor(colorItemToDelete.getColor());
-        
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setView(view)
                 .setCancelable(true)
