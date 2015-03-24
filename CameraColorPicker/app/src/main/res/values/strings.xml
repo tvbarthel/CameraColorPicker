@@ -35,6 +35,7 @@
     <string name="menu_main_action_about">About</string>
 
     <!-- Color detail menu -->
+    <string name="menu_color_detail_action_share">Share</string>
     <string name="menu_color_detail_action_delete">Delete</string>
 
     <!-- Color picker menu -->

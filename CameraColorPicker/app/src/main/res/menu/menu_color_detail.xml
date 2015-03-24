@@ -4,6 +4,13 @@
     tools:context="fr.tvbarthel.apps.cameracolorpicker.activities.ColorDetailActivity">
 
     <item
+        android:id="@+id/menu_color_detail_action_share"
+        android:title="@string/menu_color_detail_action_share"
+        android:icon="@drawable/ic_share"
+        android:orderInCategory="10"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_color_detail_action_delete"
         android:icon="@drawable/ic_action_delete"
         android:orderInCategory="100"
