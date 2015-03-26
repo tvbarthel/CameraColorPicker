@@ -50,7 +50,7 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
     /**
      * The quality of the image compressed before sharing.
      */
-    private static final int SHARED_IMAGE_QUALITY = 95;
+    private static final int SHARED_IMAGE_QUALITY = 100;
 
     /**
      * The size in pixels of the shared image.
@@ -342,6 +342,8 @@ public class ColorDetailActivity extends ActionBarActivity implements View.OnCli
                 // Send an intent to share the image.
                 final Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                intent.putExtra(Intent.EXTRA_TEXT, mColorItem.getHexString() + "\n"
+                        + mColorItem.getRgbString() + "\n" + mColorItem.getHsvString());
                 intent.setType("image/jpeg");
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivity(Intent.createChooser(intent, null));
