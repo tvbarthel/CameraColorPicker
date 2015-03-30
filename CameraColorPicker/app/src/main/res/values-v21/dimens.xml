@@ -3,4 +3,7 @@
     <!-- Delete color dialog fragment -->
     <dimen name="fragment_dialog_delete_color_message_padding_bottom">0dp</dimen>
 
+    <!-- Delete color palette fragment -->
+    <dimen name="fragment_dialog_delete_palette_message_padding_bottom">0dp</dimen>
+
 </resources>

@@ -12,11 +12,11 @@ import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 
 /**
- * TODO comment.
+ * A simple {@link ArrayAdapter} of {@link ColorItem}s that binds each {@link ColorItem} to a {@link R.layout#row_color_item}.
  */
-public class ColorAdapter extends ArrayAdapter<ColorItem> {
+public class ColorItemAdapter extends ArrayAdapter<ColorItem> {
 
-    public ColorAdapter(Context context) {
+    public ColorItemAdapter(Context context) {
         super(context, R.layout.row_color_item);
     }
 
@@ -34,6 +34,13 @@ public class ColorAdapter extends ArrayAdapter<ColorItem> {
         return view;
     }
 
+    /**
+     * Create a {@link View} associated with a {@link fr.tvbarthel.apps.cameracolorpicker.adapters.ColorItemAdapter.ViewHolder}
+     * that can be bound to a {@link ColorItem}.
+     *
+     * @param parent the parent {@link ViewGroup}.
+     * @return the newly created {@link View}.
+     */
     protected View createView(ViewGroup parent) {
         final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_color_item, parent, false);
@@ -42,14 +49,32 @@ public class ColorAdapter extends ArrayAdapter<ColorItem> {
         return view;
     }
 
+    /**
+     * Bind a {@link fr.tvbarthel.apps.cameracolorpicker.adapters.ColorItemAdapter.ViewHolder}
+     * to the {@link ColorItem} at the given position.
+     *
+     * @param viewHolder the {@link fr.tvbarthel.apps.cameracolorpicker.adapters.ColorItemAdapter.ViewHolder}.
+     * @param position the position of the {@link ColorItem} in the underlying data set.
+     */
     protected void bindViewHolder(ViewHolder viewHolder, int position) {
         final ColorItem colorItem = getItem(position);
         viewHolder.mColorPreview.getBackground().setColorFilter(colorItem.getColor(), PorterDuff.Mode.MULTIPLY);
         viewHolder.mColorText.setText(colorItem.getHexString());
     }
 
+    /**
+     * A simple class for the view holder pattern associated with {@link R.layout#row_color_item}.
+     */
     private static class ViewHolder {
+
+        /**
+         * The {@link View} to show a preview of the color item.
+         */
         public View mColorPreview;
+
+        /**
+         * The {@link TextView} to display the hexadecimal code of the color item.
+         */
         public TextView mColorText;
 
         public ViewHolder(View view) {

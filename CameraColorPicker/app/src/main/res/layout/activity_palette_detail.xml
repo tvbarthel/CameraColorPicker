@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fr.tvbarthel.apps.cameracolorpicker.activities.PaletteDetailActivity">
+
+    <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView
+        android:id="@+id/activity_palette_detail_preview_translating"
+        android:layout_width="@dimen/row_color_palette_thumbnail_size"
+        android:layout_height="@dimen/row_color_palette_thumbnail_size"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="55dp" />
+
+
+    <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView
+        android:id="@+id/activity_palette_detail_preview_scaling"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
+    <ListView
+        android:id="@+id/activity_palette_detail_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="150dp"
+        android:visibility="invisible"
+        tools:listitem="@layout/row_palette"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/activity_palette_detail_list_view_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/linear_gradient_bottom"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
+</merge>

@@ -1,35 +1,54 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/activity_main_empty_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/activity_main_empty_view"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/abc_secondary_text_material_light"
-        android:textStyle="italic" />
-
-    <ListView
-        android:id="@+id/activity_main_list_view"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/activity_main_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/row_color_item" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_primary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/activity_main_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_image_colorize"
-        app:fab_colorNormal="@color/color_accent"
-        app:fab_colorPressed="@color/color_accent"
-        app:fab_colorRipple="?attr/colorControlHighlight" />
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/activity_main_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_primary"
+        android:textColor="@color/secondary_text_default_material_dark"
+        app:pstsTabBackground="@drawable/bg_tab"
+        app:pstsIndicatorColor="@android:color/white"
+        app:pstsShouldExpand="true"
+        app:pstsTextColorSelected="@android:color/white" />
 
-</merge>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@drawable/linear_gradient_bottom" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/activity_main_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/activity_main_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_image_colorize"
+            app:fab_colorNormal="@color/color_accent"
+            app:fab_colorPressed="@color/color_accent"
+            app:fab_colorRipple="?attr/colorControlHighlight" />
+    </FrameLayout>
+
+</LinearLayout>

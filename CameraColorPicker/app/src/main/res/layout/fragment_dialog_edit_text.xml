@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:paddingEnd="24dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingStart="24dp"
+    android:paddingTop="8dp">
+
+    <EditText
+        android:id="@+id/fragment_dialog_edit_text_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLines="1"
+        android:minLines="1"
+        android:singleLine="true"
+        tools:hint="Hint to define" />
+
+</FrameLayout>

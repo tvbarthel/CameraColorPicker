@@ -14,10 +14,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/CCPTheme.Light" >
 
         <activity
             android:name=".activities.MainActivity"
+            android:theme="@style/CCPTheme.NoActionBar"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +38,11 @@
 
         <activity
             android:name=".activities.ColorDetailActivity"
-            android:label="@string/activity_color_detail_label"
+            android:label="@string/activity_color_detail_label"/>
+
+        <activity
+            android:name=".activities.PaletteDetailActivity"
+            android:label="@string/activity_palette_detail_label"
             android:parentActivityName=".activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -47,6 +52,15 @@
         <activity
             android:name=".activities.LicenseActivity"
             android:label="@string/activity_license_label"
+            android:parentActivityName=".activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".activities.PaletteCreationActivity"
+            android:label="@string/activity_palette_creation_label"
             android:parentActivityName=".activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
