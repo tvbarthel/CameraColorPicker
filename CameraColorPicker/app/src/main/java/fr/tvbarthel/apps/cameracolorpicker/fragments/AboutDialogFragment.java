@@ -1,11 +1,12 @@
 package fr.tvbarthel.apps.cameracolorpicker.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -40,7 +41,7 @@ public class AboutDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Activity activity = getActivity();
-        final View dialogView = View.inflate(activity, R.layout.fragment_dialog_about, null);
+        final View dialogView = LayoutInflater.from(activity).inflate(R.layout.fragment_dialog_about, null);
 
         ((TextView) dialogView.findViewById(R.id.fragment_dialog_about_version_name))
                 .setText(getString(R.string.fragment_dialog_about_version_name,
