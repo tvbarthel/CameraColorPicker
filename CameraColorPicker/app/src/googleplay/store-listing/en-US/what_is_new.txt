@@ -1,5 +1,12 @@
 #Version 0.0.5
 
+New feature: you can now combine the colors to create beautiful palette.
+New feature: you can now share easily the colors and the palettes that you created.
+Increase UI consistency accross Android version using the latest support library.
+
+
+#Version 0.0.4
+
 New feature: you can now activate the flash of the device's camera.
 Add a dialog to confirm the deletion of a color.
 Add french translations.
