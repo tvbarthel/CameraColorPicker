@@ -6,7 +6,7 @@ Pick the colors around you using the camera of your device.
 
 # Full description
 Camera Color Picker is a very light weight app that uses the camera of your device to capture a color. It analyses in real time the camera preview and extracts the color that you are pointing at. You can save the color on your phone and copy several color formats to the clipboard. Currenlty the app support hexadecimal, RGB and HSV format.
-The colors that you pick can be combine to create beautiful palette that you can save and share for future use.
+The colors that you pick can be combined to create beautiful palette that you can save and share for future use.
 
 We hope that you will find this small app usefull and elegant =)
 
