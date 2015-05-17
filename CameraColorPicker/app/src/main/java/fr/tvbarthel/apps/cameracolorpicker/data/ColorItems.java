@@ -111,7 +111,7 @@ public final class ColorItems {
 
         // No saved colors were found.
         // Return an empty list.
-        if (jsonColorItems.equals("")) {
+        if ("".equals(jsonColorItems)) {
             return Collections.EMPTY_LIST;
         }
 
@@ -151,7 +151,7 @@ public final class ColorItems {
      *
      * @param context           a {@link android.content.Context}.
      * @param colorItemToDelete the {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem} to be deleted.
-     * @return Returns true if the new color was successfully deleted from persistent storage.
+     * @return Returns true if the color was successfully deleted from persistent storage.
      */
     public static boolean deleteColorItem(Context context, ColorItem colorItemToDelete) {
         if (colorItemToDelete == null) {

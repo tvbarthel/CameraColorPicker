@@ -4,25 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="72dp">
 
-    <View
-        android:id="@+id/row_color_item_preview"
-        android:layout_width="@dimen/row_color_item_preview_size"
-        android:layout_height="@dimen/row_color_item_preview_size"
-        android:layout_margin="16dp"
-        android:background="@drawable/oval_white" />
+    <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView
+        android:id="@+id/row_color_palette_thumbnail"
+        android:layout_width="@dimen/row_color_palette_thumbnail_size"
+        android:layout_height="@dimen/row_color_palette_thumbnail_size"
+        android:layout_margin="16dp" />
 
     <TextView
-        android:id="@+id/row_color_item_text"
+        android:id="@+id/row_color_palette_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_toEndOf="@+id/row_color_item_preview"
-        android:layout_toRightOf="@+id/row_color_item_preview"
+        android:layout_toEndOf="@+id/row_color_palette_thumbnail"
+        android:layout_toRightOf="@+id/row_color_palette_thumbnail"
         android:gravity="center_vertical"
+        android:maxLines="1"
+        android:minLines="1"
         android:padding="16dp"
+        android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/abc_primary_text_material_light"
-        tools:text="#FF4455" />
+        tools:text="My awesome color palette" />
 
 </RelativeLayout>

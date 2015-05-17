@@ -8,7 +8,7 @@
     <string name="contact_us_default_subject">[Camera Color Picker] Suggestion</string>
 
     <!-- Main activity -->
-    <string name="activity_main_empty_view">You have no colors :(</string>
+    <string name="activity_main_error_not_enough_colors">You need at least 2 colors to create a palette.</string>
 
     <!-- Color picker activity -->
     <string name="activity_color_picker_label">Pick a color</string>
@@ -20,6 +20,20 @@
     <!-- License activity -->
     <string name="activity_license_label">Content and Licenses</string>
 
+    <!-- Palette creation activity -->
+    <string name="activity_palette_creation_label">New palette</string>
+    <string name="activity_palette_creation_instruction">To add colors to your palette\nsimply click on the list bellow.</string>
+    <string name="activity_palette_creation_empty_color_palette_builder">Add at least 1 color to the palette.</string>
+    <string name="activity_palette_creation_edit_text_dialog_fragment_title">Create your palette</string>
+    <string name="activity_palette_creation_edit_text_dialog_fragment_hint">My new awesome palette</string>
+    <string name="activity_palette_creation_edit_text_dialog_fragment_positive_button">Create</string>
+
+    <!-- Palette detail activity -->
+    <string name="activity_palette_detail_label">Detail</string>
+    <string name="activity_palette_detail_edit_palette_name_dialog_title">Edit the name of the palette</string>
+    <string name="activity_palette_detail_edit_palette_name_dialog_hint">Your awesome palette</string>
+    <string name="activity_palette_detail_edit_palette_name_dialog_positive_action">Edit</string>
+
     <!-- About dialog fragment -->
     <string name="fragment_dialog_about_version_name">Version %1$s</string>
     <string name="fragment_dialog_about_message">Camera Color Picker is a free and open source Android app that lets you capture the colors around you using the camera of your device.</string>
@@ -29,6 +43,10 @@
     <string name="fragment_dialog_delete_color_title">Warning</string>
     <string name="fragment_dialog_delete_color_message">Delete the color from your phone?</string>
 
+    <!-- Delete palette dialog fragment -->
+    <string name="fragment_dialog_delete_palette_title">Warning</string>
+    <string name="fragment_dialog_delete_palette_message">Delete the palette %1$s from your phone?</string>
+
     <!-- Main menu -->
     <string name="menu_main_action_contact_us">Contact us</string>
     <string name="menu_main_action_licenses">Content &amp; Licenses</string>
@@ -37,13 +55,23 @@
     <!-- Color detail menu -->
     <string name="menu_color_detail_action_delete">Delete</string>
 
+    <!-- Palette detail menu -->
+    <string name="menu_palette_detail_action_edit">Edit</string>
+    <string name="menu_palette_detail_action_delete">Delete</string>
+
     <!-- Color picker menu -->
     <string name="menu_color_picker_action_flash">Flash</string>
 
-    <!-- Color Clip -->
+    <!-- Color clip -->
     <string name="color_clip_success_copy_message">Copied to clipboard.</string>
     <string name="color_clip_color_label_hex">Color item hexadecimal value.</string>
     <string name="color_clip_color_label_rgb">Color item RGB value.</string>
     <string name="color_clip_color_label_hsv">Color item HSV value.</string>
+
+    <!-- View color item list page -->
+    <string name="view_color_item_list_page_empty_view">You have no colors :(\n\nCapture a color with the button on the bottom right.</string>
+
+    <!-- View palette list page -->
+    <string name="view_palette_list_page_empty_view">You have no palettes :(\n\nCreate a palette with the button on the bottom right.</string>
 
 </resources>

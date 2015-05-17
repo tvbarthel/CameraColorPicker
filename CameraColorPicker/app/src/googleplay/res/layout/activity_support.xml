@@ -44,9 +44,9 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="4dp"
+        android:layout_height="6dp"
         android:layout_above="@+id/support_title"
-        android:background="@drawable/shadow_top" />
+        android:background="@drawable/linear_gradient_top" />
 
     <TextView
         android:id="@+id/support_title"
