@@ -6,12 +6,18 @@
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
+        <item name="colorControlActivated">@color/color_accent</item>
+        <item name="android:alertDialogTheme">@style/CPPTheme.AlertDialog</item>
+        <item name="alertDialogTheme">@style/CPPTheme.AlertDialog</item>
     </style>
 
-    <style name="CCPTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="CCPTheme.NoActionBar" parent="CCPTheme.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>µ
+    </style>
+
+    <style name="CPPTheme.AlertDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/color_accent</item>
     </style>
 
