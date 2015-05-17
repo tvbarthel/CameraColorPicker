@@ -6,10 +6,16 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +24,12 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.adapters.ColorItemAdapter;
@@ -34,6 +46,31 @@ import fr.tvbarthel.apps.cameracolorpicker.views.PaletteView;
  */
 public class PaletteDetailActivity extends ActionBarActivity implements DeletePaletteDialogFragment.Callback,
         EditTextDialogFragment.Callback {
+
+    /**
+     * The quality of the image compressed before sharing.
+     */
+    private static final int SHARED_IMAGE_QUALITY = 100;
+
+    /**
+     * The size in pixels of the shared image.
+     */
+    private static final int SHARED_IMAGE_SIZE = 150;
+
+    /**
+     * The name of the directory where the shared image is created.
+     */
+    private static final String SHARED_DIRECTORY = "palettes";
+
+    /**
+     * The name of the file used to write the shared image.
+     */
+    private static final String SHARED_IMAGE_FILE = "shared_palettes.jpg";
+
+    /**
+     * The authority of the file provider declared in our manifest.
+     */
+    private static final String FILE_PROVIDER_AUTHORITY = "fr.tvbarthel.apps.cameracolorpicker.fileprovider";
 
     /**
      * A key for passing a color palette as extra.
@@ -220,13 +257,9 @@ public class PaletteDetailActivity extends ActionBarActivity implements DeletePa
             DeletePaletteDialogFragment.newInstance(mPalette).show(getSupportFragmentManager(), null);
             return true;
         } else if (id == R.id.menu_palette_detail_action_edit) {
-            EditTextDialogFragment.newInstance(0,
-                    R.string.activity_palette_detail_edit_palette_name_dialog_title,
-                    R.string.activity_palette_detail_edit_palette_name_dialog_positive_action,
-                    android.R.string.cancel,
-                    R.string.activity_palette_detail_edit_palette_name_dialog_hint,
-                    mPalette.getName()).show(getSupportFragmentManager(), null);
-            return true;
+            return handleActionEditName();
+        } else if (id == R.id.menu_palette_detail_action_share) {
+            return handleActionShare();
         }
 
         return super.onOptionsItemSelected(item);
@@ -252,6 +285,87 @@ public class PaletteDetailActivity extends ActionBarActivity implements DeletePa
     @Override
     public void onEditTextDialogFragmentNegativeButtonClick(int requestCode) {
         // Nothing to do. The user aborted the edition of the name of the palette.
+    }
+
+    /**
+     * Handle the action 'edit' from the menu item.
+     */
+    private boolean handleActionEditName() {
+        EditTextDialogFragment.newInstance(0,
+                R.string.activity_palette_detail_edit_palette_name_dialog_title,
+                R.string.activity_palette_detail_edit_palette_name_dialog_positive_action,
+                android.R.string.cancel,
+                R.string.activity_palette_detail_edit_palette_name_dialog_hint,
+                mPalette.getName()).show(getSupportFragmentManager(), null);
+        return true;
+    }
+
+    /**
+     * Handle the share action from the menu item.
+     * <p/>
+     * Create a bitmap, draw the colors of the palette and send an intent for sharing the palette.
+     *
+     * @return Returns true if the share action was handled correctly, false otherwise.
+     */
+    private boolean handleActionShare() {
+        boolean handled;
+        try {
+            // Create a bitmap and draw the color.
+            final Bitmap bitmap = Bitmap.createBitmap(SHARED_IMAGE_SIZE, SHARED_IMAGE_SIZE, Bitmap.Config.ARGB_8888);
+            final Canvas canvas = new Canvas(bitmap);
+            final List<ColorItem> colorItems = mPalette.getColors();
+            final float itemSize = canvas.getWidth() / ((float) colorItems.size());
+            final RectF rectF = new RectF(0, 0, itemSize, canvas.getHeight());
+            final Paint paint = new Paint();
+            paint.setStyle(Paint.Style.FILL);
+            final StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(mPalette.getName())
+                    .append("\n")
+                    .append("\n");
+
+            for (ColorItem colorItem : colorItems) {
+                paint.setColor(colorItem.getColor());
+                canvas.drawRect(rectF, paint);
+                rectF.left = rectF.right;
+                rectF.right += itemSize;
+                stringBuilder.append(colorItem.getHexString())
+                        .append("\n");
+            }
+
+            // Compress the bitmap before saving and sharing.
+            final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, SHARED_IMAGE_QUALITY, bytes);
+            bitmap.recycle();
+
+            // Write the compressed bytes to a files
+            final File outputDirectory = new File(getFilesDir(), SHARED_DIRECTORY);
+            if (outputDirectory.isDirectory() || outputDirectory.mkdirs()) {
+                final File shareColorFile = new File(outputDirectory, SHARED_IMAGE_FILE);
+                final FileOutputStream fo = new FileOutputStream(shareColorFile);
+                fo.write(bytes.toByteArray());
+                fo.close();
+
+                // Get the content uri.
+                final Uri contentUri = FileProvider.getUriForFile(this,
+                        FILE_PROVIDER_AUTHORITY, shareColorFile);
+
+                // Send an intent to share the image.
+                final Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_STREAM, contentUri);
+                intent.putExtra(Intent.EXTRA_TEXT, stringBuilder.toString());
+                intent.setType("image/jpeg");
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(Intent.createChooser(intent, null));
+                handled = true;
+            } else {
+                handled = false;
+            }
+
+        } catch (IOException e) {
+            handled = false;
+        }
+
+        return handled;
     }
 
     /**

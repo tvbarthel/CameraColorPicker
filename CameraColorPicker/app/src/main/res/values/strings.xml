@@ -57,6 +57,7 @@
     <string name="menu_color_detail_action_delete">Delete</string>
 
     <!-- Palette detail menu -->
+    <string name="menu_palette_detail_action_share">Share</string>
     <string name="menu_palette_detail_action_edit">Edit</string>
     <string name="menu_palette_detail_action_delete">Delete</string>
 
