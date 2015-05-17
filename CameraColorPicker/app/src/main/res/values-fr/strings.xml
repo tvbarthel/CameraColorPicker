@@ -7,6 +7,9 @@
 
     <!-- Main activity -->
     <string name="activity_main_error_not_enough_colors">Vous avez besoin d\'au moins 2 couleurs pour créer une palette.</string>
+    <string name="activity_main_view_pager_title_color">Couleur</string>
+    <string name="activity_main_view_pager_title_palette">Palette</string>
+    <string name="activity_main_view_pager_title_unknown">Inconnu</string>
 
     <!-- Color picker activity -->
     <string name="activity_color_picker_label">Choisir une couleur</string>

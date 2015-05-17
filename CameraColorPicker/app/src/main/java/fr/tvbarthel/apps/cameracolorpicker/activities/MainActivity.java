@@ -34,7 +34,6 @@ import fr.tvbarthel.apps.cameracolorpicker.views.PaletteListPage;
 /**
  * An {@link android.support.v7.app.AppCompatActivity} that shows the list of the colors that the user saved.
  * <p/>
- * TODO remove hard coded strings.
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
@@ -329,13 +328,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Color";
+                    return getString(R.string.activity_main_view_pager_title_color);
 
                 case 1:
-                    return "Palette";
+                    return getString(R.string.activity_main_view_pager_title_palette);
 
                 default:
-                    return "unkown tab";
+                    return getString(R.string.activity_main_view_pager_title_unknown);
             }
         }
 
