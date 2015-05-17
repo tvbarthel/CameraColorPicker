@@ -4,4 +4,8 @@
         name="colors"
         path="colors/" />
 
+    <files-path
+        name="palettes"
+        path="palettes/" />
+
 </paths>

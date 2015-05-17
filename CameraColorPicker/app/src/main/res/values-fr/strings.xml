@@ -55,6 +55,7 @@
     <string name="menu_color_detail_action_delete">Supprimer</string>
 
     <!-- Palette detail menu -->
+    <string name="menu_palette_detail_action_share">Partager</string>
     <string name="menu_palette_detail_action_edit">Editer</string>
     <string name="menu_palette_detail_action_delete">Supprimer</string>
 
