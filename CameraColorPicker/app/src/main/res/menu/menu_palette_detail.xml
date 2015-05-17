@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/menu_palette_detail_action_share"
-        android:title="@string/menu_color_detail_action_share"
+        android:title="@string/menu_palette_detail_action_share"
         android:icon="@drawable/ic_share"
         android:orderInCategory="10"
         app:showAsAction="ifRoom" />
