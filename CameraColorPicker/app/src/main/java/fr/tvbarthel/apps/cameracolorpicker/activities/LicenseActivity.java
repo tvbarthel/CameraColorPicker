@@ -1,15 +1,15 @@
 package fr.tvbarthel.apps.cameracolorpicker.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
 
 /**
- * A simple {@link android.support.v7.app.ActionBarActivity} for displaying the licenses of the open source projects used in this application.
+ * A simple {@link android.support.v7.app.AppCompatActivity} for displaying the licenses of the open source projects used in this application.
  */
-public class LicenseActivity extends ActionBarActivity {
+public class LicenseActivity extends AppCompatActivity {
 
     /**
      * The url of the license html page.

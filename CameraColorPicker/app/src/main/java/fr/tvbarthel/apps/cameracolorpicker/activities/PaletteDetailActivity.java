@@ -16,7 +16,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,9 +42,9 @@ import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
 import fr.tvbarthel.apps.cameracolorpicker.views.PaletteView;
 
 /**
- * A simple {@link ActionBarActivity} for displaying a {@link Palette} with its {@link ColorItem}s
+ * A simple {@link AppCompatActivity} for displaying a {@link Palette} with its {@link ColorItem}s
  */
-public class PaletteDetailActivity extends ActionBarActivity implements DeletePaletteDialogFragment.Callback,
+public class PaletteDetailActivity extends AppCompatActivity implements DeletePaletteDialogFragment.Callback,
         EditTextDialogFragment.Callback {
 
     /**

@@ -3,7 +3,7 @@ package fr.tvbarthel.apps.cameracolorpicker.activities;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -22,9 +22,9 @@ import fr.tvbarthel.apps.cameracolorpicker.fragments.EditTextDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.views.PaletteMakerView;
 
 /**
- * An {@link ActionBarActivity} for creating a {@link Palette} from the {@link ColorItem}s that the user saved.
+ * An {@link AppCompatActivity} for creating a {@link Palette} from the {@link ColorItem}s that the user saved.
  */
-public class PaletteCreationActivity extends ActionBarActivity implements OnClickListener, EditTextDialogFragment.Callback {
+public class PaletteCreationActivity extends AppCompatActivity implements OnClickListener, EditTextDialogFragment.Callback {
 
     /**
      * The {@link PaletteMakerView} used for building a palette of colors.

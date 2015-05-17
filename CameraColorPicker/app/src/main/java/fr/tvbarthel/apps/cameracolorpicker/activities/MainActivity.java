@@ -9,7 +9,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,11 +32,11 @@ import fr.tvbarthel.apps.cameracolorpicker.views.ColorItemListPage;
 import fr.tvbarthel.apps.cameracolorpicker.views.PaletteListPage;
 
 /**
- * An {@link android.support.v7.app.ActionBarActivity} that shows the list of the colors that the user saved.
+ * An {@link android.support.v7.app.AppCompatActivity} that shows the list of the colors that the user saved.
  * <p/>
  * TODO remove hard coded strings.
  */
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
     @IntDef({PAGE_ID_COLOR_ITEM_LIST, PAGE_ID_PALETTE_LIST})
     @Retention(RetentionPolicy.SOURCE)

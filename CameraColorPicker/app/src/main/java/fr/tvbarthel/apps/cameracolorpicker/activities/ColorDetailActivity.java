@@ -14,7 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +33,7 @@ import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.DeleteColorDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
 
-public class ColorDetailActivity extends ActionBarActivity implements View.OnClickListener, DeleteColorDialogFragment.Callback {
+public class ColorDetailActivity extends AppCompatActivity implements View.OnClickListener, DeleteColorDialogFragment.Callback {
 
     /**
      * A key for passing a color item as extra.

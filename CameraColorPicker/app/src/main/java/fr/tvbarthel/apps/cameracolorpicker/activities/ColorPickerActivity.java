@@ -10,7 +10,7 @@ import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -30,7 +30,7 @@ import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
 
 
 /**
- * An {@link android.support.v7.app.ActionBarActivity} for picking colors by using the camera of the device.
+ * An {@link android.support.v7.app.AppCompatActivity} for picking colors by using the camera of the device.
  * <p/>
  * The user aims at a color with the camera of the device, when they click on the preview the color is selected.
  * An animation notifies the user of the selection.
@@ -38,7 +38,7 @@ import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
  * The last selected color can be saved by clicking the save button.
  * An animation notifies the user of the save.
  */
-public class ColorPickerActivity extends ActionBarActivity implements CameraColorPickerPreview.OnColorSelectedListener, View.OnClickListener {
+public class ColorPickerActivity extends AppCompatActivity implements CameraColorPickerPreview.OnColorSelectedListener, View.OnClickListener {
 
     /**
      * A tag used in the logs.
