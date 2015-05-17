@@ -51,6 +51,7 @@
     <string name="menu_main_action_about">À propos</string>
 
     <!-- Color detail menu -->
+    <string name="menu_color_detail_action_share">Partager</string>
     <string name="menu_color_detail_action_delete">Supprimer</string>
 
     <!-- Palette detail menu -->
