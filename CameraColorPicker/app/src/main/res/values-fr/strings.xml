@@ -13,10 +13,12 @@
 
     <!-- Color picker activity -->
     <string name="activity_color_picker_label">Choisir une couleur</string>
+    <string name="activity_color_picker_confirm_save_message">Couleur enregistrée</string>
 
     <!-- Color detail activity -->
     <string name="activity_color_detail_label">Détail</string>
-    <string name="activity_color_picker_confirm_save_message">Couleur enregistrée</string>
+    <string name="activity_color_detail_edit_text_dialog_fragment_title">Editer le nom de la couleur</string>
+    <string name="activity_color_detail_edit_text_dialog_fragment_positive_button">Editer</string>
 
     <!-- License activity -->
     <string name="activity_license_label">Contenu et Licenses</string>
@@ -55,6 +57,7 @@
 
     <!-- Color detail menu -->
     <string name="menu_color_detail_action_share">Partager</string>
+    <string name="menu_color_detail_action_edit">Editer</string>
     <string name="menu_color_detail_action_delete">Supprimer</string>
 
     <!-- Palette detail menu -->

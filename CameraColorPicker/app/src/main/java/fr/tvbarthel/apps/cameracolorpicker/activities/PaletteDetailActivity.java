@@ -295,7 +295,7 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
                 R.string.activity_palette_detail_edit_palette_name_dialog_title,
                 R.string.activity_palette_detail_edit_palette_name_dialog_positive_action,
                 android.R.string.cancel,
-                R.string.activity_palette_detail_edit_palette_name_dialog_hint,
+                getString(R.string.activity_palette_detail_edit_palette_name_dialog_hint),
                 mPalette.getName()).show(getSupportFragmentManager(), null);
         return true;
     }

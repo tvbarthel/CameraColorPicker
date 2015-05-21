@@ -15,12 +15,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,9 +34,11 @@ import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.DeleteColorDialogFragment;
+import fr.tvbarthel.apps.cameracolorpicker.fragments.EditTextDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
 
-public class ColorDetailActivity extends AppCompatActivity implements View.OnClickListener, DeleteColorDialogFragment.Callback {
+public class ColorDetailActivity extends AppCompatActivity implements View.OnClickListener,
+        DeleteColorDialogFragment.Callback, EditTextDialogFragment.Callback {
 
     /**
      * A key for passing a color item as extra.
@@ -76,6 +81,11 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
      * The authority of the file provider declared in our manifest.
      */
     private static final String FILE_PROVIDER_AUTHORITY = "fr.tvbarthel.apps.cameracolorpicker.fileprovider";
+
+    /**
+     * A request code to use in {@link EditTextDialogFragment#newInstance(int, int, int, int, int, String)}.
+     */
+    private static final int REQUEST_CODE_EDIT_COLOR_ITEM_NAME = 15;
 
     public static void startWithColorItem(Context context, ColorItem colorItem, View colorPreviewClicked,
                                           boolean canBeDeleted) {
@@ -160,6 +170,13 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
         mColorItem = intent.getParcelableExtra(EXTRA_COLOR_ITEM);
         final Rect startBounds = intent.getParcelableExtra(EXTRA_START_BOUNDS);
         mCanBeDeleted = intent.getBooleanExtra(EXTRA_CAN_BE_DELETED, true);
+
+        // Set the title of the activity with the name of the color, if not null.
+        if (!TextUtils.isEmpty(mColorItem.getName())) {
+            setTitle(mColorItem.getName());
+        } else {
+            setTitle(mColorItem.getHexString());
+        }
 
         // Create a rect that will be used to retrieve the stop bounds.
         final Rect stopBounds = new Rect();
@@ -266,6 +283,13 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
             finish();
         } else if (id == R.id.menu_color_detail_action_share) {
             return handleActionShare();
+        } else if (id == R.id.menu_color_detail_action_edit) {
+            EditTextDialogFragment.newInstance(REQUEST_CODE_EDIT_COLOR_ITEM_NAME,
+                    R.string.activity_color_detail_edit_text_dialog_fragment_title,
+                    R.string.activity_color_detail_edit_text_dialog_fragment_positive_button,
+                    android.R.string.cancel,
+                    mColorItem.getHexString(),
+                    mColorItem.getName(), true).show(getSupportFragmentManager(), null);
         }
 
         return super.onOptionsItemSelected(item);
@@ -298,6 +322,25 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
         if (ColorItems.deleteColorItem(this, colorItemToDelete)) {
             finish();
         }
+    }
+
+    @Override
+    public void onEditTextDialogFragmentPositiveButtonClick(int requestCode, String text) {
+        if (requestCode == REQUEST_CODE_EDIT_COLOR_ITEM_NAME) {
+            if (TextUtils.isEmpty(text)) {
+                setTitle(mColorItem.getHexString());
+            } else {
+                setTitle(text);
+            }
+
+            mColorItem.setName(text);
+            ColorItems.saveColorItem(this, mColorItem);
+        }
+    }
+
+    @Override
+    public void onEditTextDialogFragmentNegativeButtonClick(int requestCode) {
+        // nothing to do here.
     }
 
 
@@ -379,5 +422,4 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
 
         return handled;
     }
-
 }

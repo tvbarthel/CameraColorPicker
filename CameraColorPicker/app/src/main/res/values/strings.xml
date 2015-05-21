@@ -19,6 +19,8 @@
 
     <!-- Color detail activity -->
     <string name="activity_color_detail_label">Detail</string>
+    <string name="activity_color_detail_edit_text_dialog_fragment_title">Edit the name of the color</string>
+    <string name="activity_color_detail_edit_text_dialog_fragment_positive_button">Edit</string>
 
     <!-- License activity -->
     <string name="activity_license_label">Content and Licenses</string>
@@ -57,6 +59,7 @@
 
     <!-- Color detail menu -->
     <string name="menu_color_detail_action_share">Share</string>
+    <string name="menu_color_detail_action_edit">Edit</string>
     <string name="menu_color_detail_action_delete">Delete</string>
 
     <!-- Palette detail menu -->
