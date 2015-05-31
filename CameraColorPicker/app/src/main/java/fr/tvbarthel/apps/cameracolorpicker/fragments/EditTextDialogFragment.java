@@ -55,12 +55,17 @@ public class EditTextDialogFragment extends DialogFragment {
     /**
      * A key for passing the resource id of the hint text.
      */
-    private static final String ARG_EDIT_TEXT_HINT_RESOURCE_ID = "EditTextDialogFragment.Args.ARG_EDIT_TEXT_HINT_RESOURCE_ID";
+    private static final String ARG_EDIT_TEXT_HINT = "EditTextDialogFragment.Args.ARG_EDIT_TEXT_HINT";
 
     /**
      * A key for passing the initial text value.
      */
     private static final String ARG_EDIT_TEXT_INITIAL_TEXT = "EditTextDialogFragment.Args.ARG_EDIT_TEXT_INITIAL_TEXT";
+
+    /**
+     * A key for allowing empty string.
+     */
+    private static final String ARG_ALLOW_EMPTY_STRING = "EditTextDialogFragment.Args.ARG_ALLOW_EMPTY_STRING";
 
     /**
      * Create a new instance of a {@link EditTextDialogFragment} to ask the user to define the name of a {@link Palette}.
@@ -69,7 +74,7 @@ public class EditTextDialogFragment extends DialogFragment {
      * @param titleResourceId          the resource id of the title.
      * @param positiveButtonResourceId the resource id of the positive button.
      * @param negativeButtonResourceId the resource id of the negative button.
-     * @param editTextHintResourceId   the resource id of the edit text hint.
+     * @param editTextHint             the edit text hint.
      * @param editTextInitialText      the initial text of the edit text.
      * @return the newly created {@link EditTextDialogFragment}.
      */
@@ -77,16 +82,40 @@ public class EditTextDialogFragment extends DialogFragment {
                                                      @StringRes int titleResourceId,
                                                      @StringRes int positiveButtonResourceId,
                                                      @StringRes int negativeButtonResourceId,
-                                                     @StringRes int editTextHintResourceId,
+                                                     String editTextHint,
                                                      String editTextInitialText) {
+        return newInstance(requestCode, titleResourceId, positiveButtonResourceId,
+                negativeButtonResourceId, editTextHint, editTextInitialText, false);
+    }
+
+    /**
+     * Create a new instance of a {@link EditTextDialogFragment} to ask the user to define the name of a {@link Palette}.
+     *
+     * @param requestCode              the request code
+     * @param titleResourceId          the resource id of the title.
+     * @param positiveButtonResourceId the resource id of the positive button.
+     * @param negativeButtonResourceId the resource id of the negative button.
+     * @param editTextHint             the edit text hint.
+     * @param editTextInitialText      the initial text of the edit text.
+     * @param allowEmptyString         if true empty string will be allowed, otherwise a 'nope' animation will be played if the user tries to validate an empty string.
+     * @return the newly created {@link EditTextDialogFragment}.
+     */
+    public static EditTextDialogFragment newInstance(int requestCode,
+                                                     @StringRes int titleResourceId,
+                                                     @StringRes int positiveButtonResourceId,
+                                                     @StringRes int negativeButtonResourceId,
+                                                     String editTextHint,
+                                                     String editTextInitialText,
+                                                     boolean allowEmptyString) {
         final EditTextDialogFragment instance = new EditTextDialogFragment();
         final Bundle args = new Bundle();
         args.putInt(ARG_REQUEST_CODE, requestCode);
         args.putInt(ARG_TITLE_RESOURCE_ID, titleResourceId);
         args.putInt(ARG_POSITIVE_BUTTON_RESOURCE_ID, positiveButtonResourceId);
         args.putInt(ARG_NEGATIVE_BUTTON_RESOURCE_ID, negativeButtonResourceId);
-        args.putInt(ARG_EDIT_TEXT_HINT_RESOURCE_ID, editTextHintResourceId);
+        args.putString(ARG_EDIT_TEXT_HINT, editTextHint);
         args.putString(ARG_EDIT_TEXT_INITIAL_TEXT, editTextInitialText);
+        args.putBoolean(ARG_ALLOW_EMPTY_STRING, allowEmptyString);
         instance.setArguments(args);
         return instance;
     }
@@ -96,11 +125,26 @@ public class EditTextDialogFragment extends DialogFragment {
      */
     private Callback mCallback;
 
+    /**
+     * The {@link EditText}
+     */
     private EditText mEditText;
 
+    /**
+     * An {@link ObjectAnimator} for playing a nope animation when the users tries to validate an empty string,
+     * and mAllowEmptyString is false.
+     */
     private ObjectAnimator mNopeAnimator;
 
+    /**
+     * The request code.
+     */
     private int mRequestCode;
+
+    /**
+     * If true the users can validate empty string.
+     */
+    private boolean mAllowEmptyString;
 
     /**
      * Default Constructor.
@@ -138,17 +182,18 @@ public class EditTextDialogFragment extends DialogFragment {
 
         // Extract the arguments
         mRequestCode = args.getInt(ARG_REQUEST_CODE);
+        mAllowEmptyString= args.getBoolean(ARG_ALLOW_EMPTY_STRING);
         final int titleResourceId = args.getInt(ARG_TITLE_RESOURCE_ID);
         final int positiveButtonResourceId = args.getInt(ARG_POSITIVE_BUTTON_RESOURCE_ID);
         final int negativeButtonResourceId = args.getInt(ARG_NEGATIVE_BUTTON_RESOURCE_ID);
-        final int editTextHintResourceId = args.getInt(ARG_EDIT_TEXT_HINT_RESOURCE_ID);
+        final String editTextHint = args.getString(ARG_EDIT_TEXT_HINT);
         final String editTextInitialText = args.getString(ARG_EDIT_TEXT_INITIAL_TEXT);
 
         final Context context = getActivity();
         final View view = LayoutInflater.from(context).inflate(R.layout.fragment_dialog_edit_text, null);
 
         mEditText = (EditText) view.findViewById(R.id.fragment_dialog_edit_text_edit_text);
-        mEditText.setHint(editTextHintResourceId);
+        mEditText.setHint(editTextHint);
         mEditText.setText(editTextInitialText);
         mNopeAnimator = Views.nopeAnimation(mEditText, mEditText.getPaddingLeft());
 
@@ -156,8 +201,8 @@ public class EditTextDialogFragment extends DialogFragment {
         builder.setView(view)
                 .setTitle(titleResourceId)
                 .setCancelable(true)
-                // We don't want the positive button to always dismiss the alert dialog.
-                // The onClickListener is set in an OnShowListener bellow.
+                        // We don't want the positive button to always dismiss the alert dialog.
+                        // The onClickListener is set in an OnShowListener bellow.
                 .setPositiveButton(positiveButtonResourceId, null)
                 .setNegativeButton(negativeButtonResourceId, new DialogInterface.OnClickListener() {
                     @Override
@@ -199,7 +244,7 @@ public class EditTextDialogFragment extends DialogFragment {
 
     private void handlePositiveClick() {
         final String text = mEditText.getText().toString();
-        if (TextUtils.isEmpty(text)) {
+        if (TextUtils.isEmpty(text) && !mAllowEmptyString) {
             if (mNopeAnimator.isRunning()) {
                 mNopeAnimator.cancel();
             }
@@ -240,11 +285,15 @@ public class EditTextDialogFragment extends DialogFragment {
             throw new IllegalArgumentException("Missing negative button resource id. Please use EditTextDialogFragment#newInstance()");
         }
 
-        if (!args.containsKey(ARG_EDIT_TEXT_HINT_RESOURCE_ID)) {
+        if (!args.containsKey(ARG_EDIT_TEXT_HINT)) {
             throw new IllegalArgumentException("Missing edit text hint resource id. Please use EditTextDialogFragment#newInstance()");
         }
 
         if (!args.containsKey(ARG_EDIT_TEXT_INITIAL_TEXT)) {
+            throw new IllegalArgumentException("Missing edit text initial text. Please use EditTextDialogFragment#newInstance()");
+        }
+
+        if (!args.containsKey(ARG_ALLOW_EMPTY_STRING)) {
             throw new IllegalArgumentException("Missing edit text initial text. Please use EditTextDialogFragment#newInstance()");
         }
     }
@@ -257,7 +306,7 @@ public class EditTextDialogFragment extends DialogFragment {
         /**
          * Called when the user has just clicked on the positive button.
          *
-         * @param requestCode the request code passed in the {@link EditTextDialogFragment#newInstance(int, int, int, int, int, String)} method.
+         * @param requestCode the request code passed in the {@link EditTextDialogFragment#newInstance(int, int, int, int, String, String)} method.
          * @param text        the text of the edit text.
          */
         void onEditTextDialogFragmentPositiveButtonClick(int requestCode, String text);
@@ -265,7 +314,7 @@ public class EditTextDialogFragment extends DialogFragment {
         /**
          * Called when the user has just clicked the negative button.
          *
-         * @param requestCode the request code passed in the {@link EditTextDialogFragment#newInstance(int, int, int, int, int, String)} method.
+         * @param requestCode the request code passed in the {@link EditTextDialogFragment#newInstance(int, int, int, int, String, String)} method.
          */
         void onEditTextDialogFragmentNegativeButtonClick(int requestCode);
     }

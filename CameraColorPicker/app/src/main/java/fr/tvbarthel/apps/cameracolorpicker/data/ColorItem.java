@@ -20,6 +20,11 @@ public class ColorItem implements Parcelable {
     protected int mColor;
 
     /**
+     * An optional name that the user can give to a color.
+     */
+    protected String mName;
+
+    /**
      * A long representing the creation time of the color. (In milliseconds).
      */
     protected final long mCreationTime;
@@ -63,6 +68,7 @@ public class ColorItem implements Parcelable {
         this.mId = in.readLong();
         this.mColor = in.readInt();
         this.mCreationTime = in.readLong();
+        this.mName = in.readString();
     }
 
     /**
@@ -155,6 +161,24 @@ public class ColorItem implements Parcelable {
     }
 
     /**
+     * Get the name of the color.
+     *
+     * @return the name of the color.
+     */
+    public String getName() {
+        return mName;
+    }
+
+    /**
+     * Set the name of the color.
+     *
+     * @param name the new name of the color.
+     */
+    public void setName(String name) {
+        mName = name;
+    }
+
+    /**
      * Make a human readable representation of the hexadecimal value of a color.
      *
      * @param value the integer representation the color.
@@ -197,6 +221,7 @@ public class ColorItem implements Parcelable {
         dest.writeLong(this.mId);
         dest.writeInt(this.mColor);
         dest.writeLong(this.mCreationTime);
+        dest.writeString(this.mName);
     }
 
     /**

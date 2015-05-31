@@ -102,7 +102,7 @@ public class PaletteCreationActivity extends AppCompatActivity implements OnClic
                             R.string.activity_palette_creation_edit_text_dialog_fragment_title,
                             R.string.activity_palette_creation_edit_text_dialog_fragment_positive_button,
                             android.R.string.cancel,
-                            R.string.activity_palette_creation_edit_text_dialog_fragment_hint,
+                            getString(R.string.activity_palette_creation_edit_text_dialog_fragment_hint),
                             null);
                     editTextDialogFragment.show(getSupportFragmentManager(), null);
                 }

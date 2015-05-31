@@ -138,13 +138,25 @@ public final class ColorItems {
         final List<ColorItem> savedColorsItems = getSavedColorItems(context);
         final SharedPreferences.Editor editor = getPreferences(context).edit();
         final List<ColorItem> colorItems = new ArrayList<>(savedColorsItems.size() + 1);
-        colorItems.addAll(savedColorsItems);
+
+        // Add the saved color items except the one with the same ID. It will be overridden.
+        final int size = savedColorsItems.size();
+        for (int i = 0; i < size; i++) {
+            final ColorItem candidate = savedColorsItems.get(i);
+            if (candidate.getId() != colorToSave.getId()) {
+                colorItems.add(candidate);
+            }
+        }
+
+        // Add the new color to save
         colorItems.add(colorToSave);
 
         editor.putString(KEY_SAVED_COLOR_ITEMS, GSON.toJson(colorItems));
 
         return editor.commit();
     }
+
+
 
     /**
      * Delete a {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}.

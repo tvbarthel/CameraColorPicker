@@ -2,6 +2,7 @@ package fr.tvbarthel.apps.cameracolorpicker.adapters;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,11 @@ public class ColorItemAdapter extends ArrayAdapter<ColorItem> {
     protected void bindViewHolder(ViewHolder viewHolder, int position) {
         final ColorItem colorItem = getItem(position);
         viewHolder.mColorPreview.getBackground().setColorFilter(colorItem.getColor(), PorterDuff.Mode.MULTIPLY);
-        viewHolder.mColorText.setText(colorItem.getHexString());
+        if (!TextUtils.isEmpty(colorItem.getName())) {
+            viewHolder.mColorText.setText(colorItem.getName());
+        } else {
+            viewHolder.mColorText.setText(colorItem.getHexString());
+        }
     }
 
     /**
