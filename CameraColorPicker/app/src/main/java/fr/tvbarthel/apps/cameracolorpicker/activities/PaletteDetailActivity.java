@@ -13,6 +13,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.content.FileProvider;
@@ -129,6 +130,11 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
      */
     private Toast mToast;
 
+    /**
+     * A {@link fr.tvbarthel.apps.cameracolorpicker.data.Palettes.OnPaletteChangeListener} for updating the palette when the user change the name for instance.
+     */
+    private Palettes.OnPaletteChangeListener mOnPaletteChangeListener;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -144,7 +150,11 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
         }
 
         // Retrieve the extras.
-        mPalette = intent.getParcelableExtra(EXTRA_COLOR_PALETTE);
+        if (savedInstanceState == null) {
+            mPalette = intent.getParcelableExtra(EXTRA_COLOR_PALETTE);
+        } else {
+            mPalette = savedInstanceState.getParcelable(EXTRA_COLOR_PALETTE);
+        }
         final Rect startBounds = intent.getParcelableExtra(EXTRA_START_BOUNDS);
         setTitle(mPalette.getName());
 
@@ -164,7 +174,7 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final ColorItem colorItem = adapter.getItem(position);
                 ColorDetailActivity.startWithColorItem(view.getContext(), colorItem,
-                        view.findViewById(R.id.row_color_item_preview), false);
+                        view.findViewById(R.id.row_color_item_preview), mPalette);
             }
         });
 
@@ -230,12 +240,51 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
                 }
             });
         }
+
+        mOnPaletteChangeListener = new Palettes.OnPaletteChangeListener() {
+            @Override
+            public void onColorPaletteChanged(List<Palette> palettes) {
+                Palette newPalette = null;
+                for (Palette candidate : palettes) {
+                    if (candidate.getId() == mPalette.getId()) {
+                        newPalette = candidate;
+                        break;
+                    }
+                }
+
+                if (newPalette == null) {
+                    // The palette opened is not in the saved palettes.
+                    // It has been deleted, just finish the activity.
+                    finish();
+                } else {
+                    // Reload the palette.
+                    mPalette = newPalette;
+                    setTitle(mPalette.getName());
+                    adapter.clear();
+                    adapter.addAll(mPalette.getColors());
+                }
+            }
+        };
+
+        Palettes.registerListener(this, mOnPaletteChangeListener);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(EXTRA_COLOR_PALETTE, mPalette);
     }
 
     @Override
     protected void onPause() {
         hideToast();
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Palettes.unregisterListener(this, mOnPaletteChangeListener);
+        super.onDestroy();
     }
 
     @Override
@@ -267,18 +316,18 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
 
     @Override
     public void onPaletteDeletionConfirmed(@NonNull Palette paletteToDelete) {
-        if (Palettes.deleteColorPalette(this, paletteToDelete)) {
-            finish();
-        }
+        // Delete the palette
+        // Note: we don't finish the activity, it will be finished in mOnPaletteChangeListener.
+        Palettes.deleteColorPalette(this, paletteToDelete);
     }
 
     @Override
     public void onEditTextDialogFragmentPositiveButtonClick(int requestCode, String text) {
         if (!mPalette.getName().equals(text)) {
+            // Set the new name and save the palette.
+            // Note: we don't update the UI there, it will be updated in mOnPaletteChangeListener.
             mPalette.setName(text);
-            if (Palettes.saveColorPalette(this, mPalette)) {
-                setTitle(text);
-            }
+            Palettes.saveColorPalette(this, mPalette);
         }
     }
 

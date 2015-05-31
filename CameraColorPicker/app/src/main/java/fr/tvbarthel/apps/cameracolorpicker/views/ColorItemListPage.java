@@ -15,8 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.melnykov.fab.FloatingActionButton;
-
 import java.util.List;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
@@ -114,7 +112,7 @@ public class ColorItemListPage extends FrameLayout {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final ColorItem colorItem = mColorItemAdapter.getItem(position);
                 ColorDetailActivity.startWithColorItem(view.getContext(), colorItem,
-                        view.findViewById(R.id.row_color_item_preview), true);
+                        view.findViewById(R.id.row_color_item_preview));
             }
         });
 
@@ -173,7 +171,6 @@ public class ColorItemListPage extends FrameLayout {
             }
         };
     }
-
 
 
     /**

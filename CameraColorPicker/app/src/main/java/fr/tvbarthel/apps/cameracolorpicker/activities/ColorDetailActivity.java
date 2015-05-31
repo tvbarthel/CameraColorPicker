@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -29,10 +30,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
+import fr.tvbarthel.apps.cameracolorpicker.data.Palette;
+import fr.tvbarthel.apps.cameracolorpicker.data.Palettes;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.DeleteColorDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.EditTextDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
@@ -51,11 +55,10 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     private static final String EXTRA_START_BOUNDS = "ColorDetailActivity.Extras.EXTRA_START_BOUNDS";
 
     /**
-     * A key for knowing if the {@link ColorItem} can be deleted.
-     * <p/>
-     * If the color item can not be deleted, the delete action will be removed from the menu.
+     * A key for passing an optional palette that is associated with the color item displayed.
+     *
      */
-    private static final String EXTRA_CAN_BE_DELETED = "ColorDetailActivity.Extras.EXTRA_CAN_BE_DELETED";
+    private static final String EXTRA_PALETTE = "ColorDetailActivity.Extras.EXTRA_PALETTE";
 
     /**
      * The quality of the image compressed before sharing.
@@ -83,12 +86,17 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     private static final String FILE_PROVIDER_AUTHORITY = "fr.tvbarthel.apps.cameracolorpicker.fileprovider";
 
     /**
-     * A request code to use in {@link EditTextDialogFragment#newInstance(int, int, int, int, int, String)}.
+     * A request code to use in {@link EditTextDialogFragment#newInstance(int, int, int, int, String, String, boolean)}.
      */
     private static final int REQUEST_CODE_EDIT_COLOR_ITEM_NAME = 15;
 
-    public static void startWithColorItem(Context context, ColorItem colorItem, View colorPreviewClicked,
-                                          boolean canBeDeleted) {
+    public static void startWithColorItem(Context context, ColorItem colorItem,
+                                          View colorPreviewClicked){
+        startWithColorItem(context, colorItem, colorPreviewClicked, null);
+    }
+
+    public static void startWithColorItem(Context context, ColorItem colorItem,
+                                          View colorPreviewClicked, Palette palette) {
         final boolean isActivity = context instanceof Activity;
         final Rect startBounds = new Rect();
         colorPreviewClicked.getGlobalVisibleRect(startBounds);
@@ -96,7 +104,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
         final Intent intent = new Intent(context, ColorDetailActivity.class);
         intent.putExtra(EXTRA_COLOR_ITEM, colorItem);
         intent.putExtra(EXTRA_START_BOUNDS, startBounds);
-        intent.putExtra(EXTRA_CAN_BE_DELETED, canBeDeleted);
+        intent.putExtra(EXTRA_PALETTE, palette);
 
         if (!isActivity) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -147,11 +155,9 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     private ColorItem mColorItem;
 
     /**
-     * A boolean for knowing if the {@link ColorItem} can be deleted or not.
-     * <p/>
-     * If false, the delete action will be removed from the menu.
+     * An optional {@link Palette} that is associated with the {@link ColorItem}.
      */
-    private boolean mCanBeDeleted;
+    private Palette mPalette;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,14 +168,19 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
         // ensure correct extras.
         final Intent intent = getIntent();
         if (!intent.hasExtra(EXTRA_COLOR_ITEM) || !intent.hasExtra(EXTRA_START_BOUNDS)
-                || !intent.hasExtra(EXTRA_CAN_BE_DELETED)) {
+                || !intent.hasExtra(EXTRA_PALETTE)) {
             throw new IllegalStateException("Missing extras. Please use startWithColorItem.");
         }
 
         // Retrieve the extras.
-        mColorItem = intent.getParcelableExtra(EXTRA_COLOR_ITEM);
         final Rect startBounds = intent.getParcelableExtra(EXTRA_START_BOUNDS);
-        mCanBeDeleted = intent.getBooleanExtra(EXTRA_CAN_BE_DELETED, true);
+        if (savedInstanceState == null) {
+            mColorItem = intent.getParcelableExtra(EXTRA_COLOR_ITEM);
+            mPalette = intent.getParcelableExtra(EXTRA_PALETTE);
+        } else {
+            mColorItem = savedInstanceState.getParcelable(EXTRA_COLOR_ITEM);
+            mPalette = savedInstanceState.getParcelable(EXTRA_PALETTE);
+        }
 
         // Set the title of the activity with the name of the color, if not null.
         if (!TextUtils.isEmpty(mColorItem.getName())) {
@@ -259,10 +270,18 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(EXTRA_COLOR_ITEM, mColorItem);
+        outState.putParcelable(EXTRA_PALETTE, mPalette);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_color_detail, menu);
-        if (!mCanBeDeleted) {
+        if (mPalette != null) {
+            // A color associated with a palette can't be deleted.
             menu.removeItem(R.id.menu_color_detail_action_delete);
         }
         return true;
@@ -327,14 +346,34 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onEditTextDialogFragmentPositiveButtonClick(int requestCode, String text) {
         if (requestCode == REQUEST_CODE_EDIT_COLOR_ITEM_NAME) {
+            // Update the title of the activity.
             if (TextUtils.isEmpty(text)) {
                 setTitle(mColorItem.getHexString());
             } else {
                 setTitle(text);
             }
 
+            // Set the new name.
             mColorItem.setName(text);
-            ColorItems.saveColorItem(this, mColorItem);
+
+            // Persist the change.
+            if (mPalette == null) {
+                // The color item is a standalone color.
+                // It's not associated with a palette.
+                // Just save the color item.
+                ColorItems.saveColorItem(this, mColorItem);
+            } else {
+                // The color item is associated with a palette.
+                // Edit and save the palette.
+                final List<ColorItem> colorItems = mPalette.getColors();
+                for (ColorItem candidate : colorItems) {
+                    if (candidate.getId() == mColorItem.getId()) {
+                        candidate.setName(text);
+                        break;
+                    }
+                }
+                Palettes.saveColorPalette(this, mPalette);
+            }
         }
     }
 
