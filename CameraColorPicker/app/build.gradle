@@ -19,13 +19,13 @@ android {
 
     productFlavors {
         googleplay {
-            versionCode 7
-            versionName "gp-0.0.7"
+            versionCode 8
+            versionName "gp-0.0.8"
         }
 
         foss {
-            versionCode 7
-            versionName "foss-0.0.7"
+            versionCode 8
+            versionName "foss-0.0.8"
         }
     }
 }
