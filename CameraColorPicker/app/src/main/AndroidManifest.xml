@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="fr.tvbarthel.apps.cameracolorpicker"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="fr.tvbarthel.apps.cameracolorpicker">
 
     <!-- Camera ! -->
     <uses-permission android:name="android.permission.CAMERA" />
@@ -14,12 +13,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/CCPTheme.Light" >
+        android:theme="@style/CCPTheme.Light">
 
         <activity
             android:name=".activities.MainActivity"
-            android:theme="@style/CCPTheme.NoActionBar"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/CCPTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,12 +37,12 @@
 
         <activity
             android:name=".activities.ColorDetailActivity"
-            android:label="@string/activity_color_detail_label"/>
+            android:label="@string/activity_color_detail_label" />
 
         <activity
             android:name=".activities.PaletteDetailActivity"
             android:label="@string/activity_palette_detail_label"
-            android:parentActivityName=".activities.MainActivity" >
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fr.tvbarthel.apps.cameracolorpicker.activities.MainActivity" />
@@ -61,7 +60,7 @@
         <activity
             android:name=".activities.PaletteCreationActivity"
             android:label="@string/activity_palette_creation_label"
-            android:parentActivityName=".activities.MainActivity" >
+            android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -69,7 +68,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="fr.tvbarthel.apps.cameracolorpicker.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

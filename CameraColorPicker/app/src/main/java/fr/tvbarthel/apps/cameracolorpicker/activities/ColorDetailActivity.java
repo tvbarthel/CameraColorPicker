@@ -12,7 +12,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -23,8 +22,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,7 +53,6 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
 
     /**
      * A key for passing an optional palette that is associated with the color item displayed.
-     *
      */
     private static final String EXTRA_PALETTE = "ColorDetailActivity.Extras.EXTRA_PALETTE";
 
@@ -83,7 +79,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     /**
      * The authority of the file provider declared in our manifest.
      */
-    private static final String FILE_PROVIDER_AUTHORITY = "fr.tvbarthel.apps.cameracolorpicker.fileprovider";
+    private static final String FILE_PROVIDER_AUTHORITY = ".fileprovider";
 
     /**
      * A request code to use in {@link EditTextDialogFragment#newInstance(int, int, int, int, String, String, boolean)}.
@@ -91,7 +87,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     private static final int REQUEST_CODE_EDIT_COLOR_ITEM_NAME = 15;
 
     public static void startWithColorItem(Context context, ColorItem colorItem,
-                                          View colorPreviewClicked){
+                                          View colorPreviewClicked) {
         startWithColorItem(context, colorItem, colorPreviewClicked, null);
     }
 
@@ -301,7 +297,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
         } else if (id == android.R.id.home) {
             finish();
         } else if (id == R.id.menu_color_detail_action_share) {
-            return handleActionShare();
+            return handleActionShare(this);
         } else if (id == R.id.menu_color_detail_action_edit) {
             EditTextDialogFragment.newInstance(REQUEST_CODE_EDIT_COLOR_ITEM_NAME,
                     R.string.activity_color_detail_edit_text_dialog_fragment_title,
@@ -415,9 +411,10 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
      * <p/>
      * Create a bitmap, draw the color and send an intent for sharing the color.
      *
+     * @param context context used to initialize internal component.
      * @return Returns true if the share action was handled correctly, false otherwise.
      */
-    private boolean handleActionShare() {
+    private boolean handleActionShare(Context context) {
         boolean handled;
         try {
             // Create a bitmap and draw the color.
@@ -440,7 +437,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
 
                 // Get the content uri.
                 final Uri contentUri = FileProvider.getUriForFile(this,
-                        FILE_PROVIDER_AUTHORITY, shareColorFile);
+                        context.getPackageName() + FILE_PROVIDER_AUTHORITY, shareColorFile);
 
                 // Send an intent to share the image.
                 final Intent intent = new Intent(Intent.ACTION_SEND);

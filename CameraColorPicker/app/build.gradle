@@ -17,15 +17,31 @@ android {
         }
     }
 
+    flavorDimensions "store", "user"
+
     productFlavors {
         googleplay {
             versionCode 8
             versionName "gp-0.0.8"
+            dimension "store"
         }
 
         foss {
             versionCode 8
             versionName "foss-0.0.8"
+            applicationIdSuffix ".foss"
+            dimension "store"
+        }
+
+        // as opposed to kids
+        adult {
+            dimension "user"
+        }
+
+        // attempt to adapt app for children.
+        kids {
+            dimension "user"
+            applicationIdSuffix ".kids"
         }
     }
 }
