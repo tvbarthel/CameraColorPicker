@@ -4,10 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/view_color_item_list_page_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/row_color_item" />
+
     <TextView
         android:id="@+id/view_color_item_list_page_empty_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="32dp"
@@ -15,11 +21,5 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/abc_secondary_text_material_light"
         android:textStyle="italic" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/view_color_item_list_page_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/row_color_item" />
 
 </merge>

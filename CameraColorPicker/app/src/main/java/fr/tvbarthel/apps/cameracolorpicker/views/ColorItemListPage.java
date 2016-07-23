@@ -34,6 +34,16 @@ public class ColorItemListPage extends FrameLayout implements ColorItemListWrapp
      */
     private ColorItems.OnColorItemChangeListener mOnColorItemChangeListener;
 
+    /**
+     * Internal listener used to catch view events.
+     */
+    private OnClickListener internalListener;
+
+    /**
+     * Current listener used to catch view events.
+     */
+    private Listener listener;
+
     public ColorItemListPage(Context context) {
         super(context);
         init(context);
@@ -67,9 +77,22 @@ public class ColorItemListPage extends FrameLayout implements ColorItemListWrapp
         super.onDetachedFromWindow();
     }
 
+    /**
+     * Listener used to catch view events.
+     *
+     * @param listener listener used to catch view events.
+     */
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
     private void init(Context context) {
+
+        initInternalListener();
+
         final View view = LayoutInflater.from(context).inflate(R.layout.view_color_item_list_page, this, true);
         final View emptyView = view.findViewById(R.id.view_color_item_list_page_empty_view);
+        emptyView.setOnClickListener(internalListener);
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.view_color_item_list_page_list_view);
         mColorItemListWrapper = new FlavorColorItemListWrapper(recyclerView, this);
 
@@ -91,9 +114,35 @@ public class ColorItemListPage extends FrameLayout implements ColorItemListWrapp
         };
     }
 
+    /**
+     * Initialize listener used internally to avoid exposing onXXX to user of {@link ColorItemListPage}
+     */
+    private void initInternalListener() {
+        internalListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onEmphasisOnAddColorActionRequested();
+                }
+            }
+        };
+    }
+
 
     @Override
     public void onColorItemClicked(@NonNull ColorItem colorItem, @NonNull View colorPreview) {
         ColorDetailActivity.startWithColorItem(getContext(), colorItem, colorPreview);
+    }
+
+    /**
+     * Listener used to catch view events.
+     */
+    public interface Listener {
+        /**
+         * Called when the user request emphasis on the add color action.
+         * <p/>
+         * Currently, when user touch the empty view.
+         */
+        void onEmphasisOnAddColorActionRequested();
     }
 }

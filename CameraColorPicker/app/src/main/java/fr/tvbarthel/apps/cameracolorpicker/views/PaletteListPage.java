@@ -28,6 +28,17 @@ public class PaletteListPage extends FrameLayout implements PaletteListWrapper.P
      */
     private Palettes.OnPaletteChangeListener mOnPaletteChangeListener;
 
+    /**
+     * Listener used to catch internal event in order to avoid {@link PaletteListPage} exposing
+     * this onClick callback.
+     */
+    private OnClickListener internalListener;
+
+    /**
+     * Listener used to catch view events.
+     */
+    private Listener listener;
+
     public PaletteListPage(Context context) {
         super(context);
         init(context);
@@ -50,6 +61,15 @@ public class PaletteListPage extends FrameLayout implements PaletteListWrapper.P
     }
 
     /**
+     * Listener used to catch view events.
+     *
+     * @param listener listener used to catch view events.
+     */
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    /**
      * Initialize this palette list page.
      * <p/>
      * Must be called once in each constructor.
@@ -59,7 +79,10 @@ public class PaletteListPage extends FrameLayout implements PaletteListWrapper.P
     private void init(Context context) {
         final View view = View.inflate(context, R.layout.view_palette_list_page, this);
 
+        initInternalListener();
+
         final View emptyView = view.findViewById(R.id.view_palette_list_empty_view);
+        emptyView.setOnClickListener(internalListener);
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.view_palette_list_page_list_view);
         final FlavorPaletteListWrapper wrapper = FlavorPaletteListWrapper.create(recyclerView, this);
         final PaletteListWrapper.Adapter adapter = wrapper.installRecyclerView();
@@ -99,5 +122,31 @@ public class PaletteListPage extends FrameLayout implements PaletteListWrapper.P
     @Override
     public void onPaletteClicked(@NonNull Palette palette, @NonNull View palettePreview) {
         PaletteDetailActivity.startWithColorPalette(getContext(), palette, palettePreview);
+    }
+
+    /**
+     * Initialize internal listener.
+     */
+    private void initInternalListener() {
+        internalListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onEmphasisOnPaletteCreationRequested();
+                }
+            }
+        };
+    }
+
+    /**
+     * Listener used to catch view events.
+     */
+    public interface Listener {
+        /**
+         * Called when the user requested emphasis on the palette creation action.
+         * <p/>
+         * Currently, when the user touch the empty view.
+         */
+        void onEmphasisOnPaletteCreationRequested();
     }
 }

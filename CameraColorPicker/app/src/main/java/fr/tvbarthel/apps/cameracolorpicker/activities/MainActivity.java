@@ -31,11 +31,13 @@ import fr.tvbarthel.apps.cameracolorpicker.fragments.AboutDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.views.ColorItemListPage;
 import fr.tvbarthel.apps.cameracolorpicker.views.PaletteListPage;
 
+
 /**
  * An {@link android.support.v7.app.AppCompatActivity} that shows the list of the colors that the user saved.
  * <p/>
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+        ViewPager.OnPageChangeListener, ColorItemListPage.Listener, PaletteListPage.Listener {
 
     @IntDef({PAGE_ID_COLOR_ITEM_LIST, PAGE_ID_PALETTE_LIST})
     @Retention(RetentionPolicy.SOURCE)
@@ -113,7 +115,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mCurrentPageId = PAGE_ID_COLOR_ITEM_LIST;
         mColorItemListPage = new ColorItemListPage(this);
+        mColorItemListPage.setListener(this);
         mPaletteListPage = new PaletteListPage(this);
+        mPaletteListPage.setListener(this);
 
         mFab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
         mFab.setOnClickListener(this);
@@ -257,6 +261,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Nothing to do.
     }
 
+    @Override
+    public void onEmphasisOnAddColorActionRequested() {
+        animateFab(mFab, 0);
+    }
+
+    @Override
+    public void onEmphasisOnPaletteCreationRequested() {
+        mViewPager.setCurrentItem(0, true);
+        animateFab(mFab, 300);
+    }
+
     /**
      * Set the current page id.
      *
@@ -294,15 +309,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * Make a subtle animation for a {@link com.melnykov.fab.FloatingActionButton} drawing attention to the button.
+     * Apply a default delay of 400ms.
+     * <p/>
+     * See also : {@link MainActivity#animateFab(FloatingActionButton, int)}
      *
      * @param fab the {@link com.melnykov.fab.FloatingActionButton} to animate.
      */
     private void animateFab(final FloatingActionButton fab) {
+        animateFab(fab, 400);
+    }
+
+    /**
+     * Make a subtle animation for a {@link com.melnykov.fab.FloatingActionButton} drawing attention to the button.
+     *
+     * @param fab   the {@link com.melnykov.fab.FloatingActionButton} to animate.
+     * @param delay delay before the animation start.
+     */
+    private void animateFab(final FloatingActionButton fab, int delay) {
         fab.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Play a subtle animation
-                final long duration = 450;
+                final long duration = 300;
 
                 final ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(fab, View.SCALE_X, 1f, 1.2f, 1f);
                 scaleXAnimator.setDuration(duration);
@@ -319,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 animatorSet.play(scaleXAnimator).with(scaleYAnimator);
                 animatorSet.start();
             }
-        }, 400);
+        }, delay);
     }
 
     private class MyPagerAdapter extends PagerAdapter {
