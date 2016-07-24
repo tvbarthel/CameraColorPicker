@@ -16,7 +16,7 @@
         android:textColor="@color/abc_secondary_text_material_light"
         android:textStyle="italic" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/view_palette_list_page_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="72dp">
+    android:layout_height="72dp"
+    android:background="?selectableItemBackground">
 
     <View
         android:id="@+id/row_color_item_preview"
         android:layout_width="@dimen/row_color_item_preview_size"
         android:layout_height="@dimen/row_color_item_preview_size"
+        android:layout_gravity="start"
         android:layout_margin="16dp"
         android:background="@drawable/oval_white" />
 
@@ -15,14 +17,12 @@
         android:id="@+id/row_color_item_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_toEndOf="@+id/row_color_item_preview"
-        android:layout_toRightOf="@+id/row_color_item_preview"
+        android:layout_marginLeft="72dp"
+        android:layout_marginStart="72dp"
         android:gravity="center_vertical"
         android:padding="16dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/abc_primary_text_material_light"
         tools:text="#FF4455" />
 
-</RelativeLayout>
+</FrameLayout>
