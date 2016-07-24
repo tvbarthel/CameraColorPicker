@@ -40,7 +40,7 @@
         android:layout_marginTop="150dp"
         android:background="@drawable/linear_gradient_bottom" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/activity_palette_creation_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

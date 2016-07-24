@@ -20,7 +20,7 @@
         android:visibility="invisible"
         tools:visibility="visible" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/activity_palette_detail_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
