@@ -53,7 +53,7 @@ public class PaletteAdapter extends ArrayAdapter<Palette> {
      * Bind a {@link fr.tvbarthel.apps.cameracolorpicker.adapters.PaletteAdapter.ViewHolder}
      * to the {@link Palette} at the given position.
      *
-     * @param viewHolder the {@link fr.tvbarthel.apps.cameracolorpicker.adapters.ColorItemAdapter.ViewHolder}.
+     * @param viewHolder the {@link fr.tvbarthel.apps.cameracolorpicker.adapters.PaletteAdapter.ViewHolder}.
      * @param position the position of the {@link Palette} in the underlying data set.
      */
     protected void bindViewHolder(ViewHolder viewHolder, int position) {

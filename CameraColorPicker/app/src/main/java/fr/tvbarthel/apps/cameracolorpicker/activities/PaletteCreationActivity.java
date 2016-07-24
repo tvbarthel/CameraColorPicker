@@ -2,29 +2,28 @@ package fr.tvbarthel.apps.cameracolorpicker.activities;
 
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.List;
-
 import fr.tvbarthel.apps.cameracolorpicker.R;
-import fr.tvbarthel.apps.cameracolorpicker.adapters.ColorItemAdapter;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
 import fr.tvbarthel.apps.cameracolorpicker.data.Palette;
 import fr.tvbarthel.apps.cameracolorpicker.data.Palettes;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.EditTextDialogFragment;
+import fr.tvbarthel.apps.cameracolorpicker.wrappers.ColorItemListWrapper;
+import fr.tvbarthel.apps.cameracolorpicker.views.FlavorColorItemListWrapper;
 import fr.tvbarthel.apps.cameracolorpicker.views.PaletteMakerView;
 
 /**
  * An {@link AppCompatActivity} for creating a {@link Palette} from the {@link ColorItem}s that the user saved.
  */
-public class PaletteCreationActivity extends AppCompatActivity implements OnClickListener, EditTextDialogFragment.Callback {
+public class PaletteCreationActivity extends AppCompatActivity implements OnClickListener, EditTextDialogFragment.Callback, ColorItemListWrapper.ColorItemListWrapperListener {
 
     /**
      * The {@link PaletteMakerView} used for building a palette of colors.
@@ -46,25 +45,11 @@ public class PaletteCreationActivity extends AppCompatActivity implements OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_palette_creation);
 
-        final ColorItemAdapter colorItemAdapter = new ColorItemAdapter(this);
-        final List<ColorItem> colorItems = ColorItems.getSavedColorItems(this);
-        colorItemAdapter.addAll(colorItems);
-
         mPaletteMakerView = (PaletteMakerView) findViewById(R.id.activity_palette_creation_color_palette_builder);
-        final ListView listView = (ListView) findViewById(R.id.activity_palette_creation_list_view);
-        listView.setAdapter(colorItemAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final ColorItem colorItem = colorItemAdapter.getItem(position);
-                mPaletteMakerView.addColor(colorItem);
-                if (mPaletteMakerView.size() == 1) {
-                    mRemoveLastColorBtnAnimator.setFloatValues(1f);
-                    mRemoveLastColorBtnAnimator.start();
-                }
-            }
-        });
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.activity_palette_creation_list_view);
+        final ColorItemListWrapper colorItemListWrapper = new FlavorColorItemListWrapper(recyclerView, this);
+        colorItemListWrapper.installRecyclerView();
+        colorItemListWrapper.setItems(ColorItems.getSavedColorItems(this));
 
         final View removeButton = findViewById(R.id.activity_palette_creation_remove_button);
         removeButton.setOnClickListener(this);
@@ -118,6 +103,15 @@ public class PaletteCreationActivity extends AppCompatActivity implements OnClic
         final Palette newPalette = mPaletteMakerView.make(text);
         if (Palettes.saveColorPalette(this, newPalette)) {
             finish();
+        }
+    }
+
+    @Override
+    public void onColorItemClicked(@NonNull ColorItem colorItem, @NonNull View colorPreview) {
+        mPaletteMakerView.addColor(colorItem);
+        if (mPaletteMakerView.size() == 1) {
+            mRemoveLastColorBtnAnimator.setFloatValues(1f);
+            mRemoveLastColorBtnAnimator.start();
         }
     }
 
