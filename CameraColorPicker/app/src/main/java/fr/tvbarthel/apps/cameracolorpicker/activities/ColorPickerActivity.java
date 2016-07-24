@@ -432,9 +432,18 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
             final Camera.Parameters parameters = mCamera.getParameters();
             final String flashParameter = mIsFlashOn ? Camera.Parameters.FLASH_MODE_OFF : Camera.Parameters.FLASH_MODE_TORCH;
             parameters.setFlashMode(flashParameter);
+
+            // Set the preview callback to null and stop the preview
+            mCamera.setPreviewCallback(null);
             mCamera.stopPreview();
+
+            // Change the parameters
             mCamera.setParameters(parameters);
+
+            // Restore the preview callback and re-start the preview
+            mCamera.setPreviewCallback(mCameraPreview);
             mCamera.startPreview();
+
             mIsFlashOn = !mIsFlashOn;
             invalidateOptionsMenu();
         }
