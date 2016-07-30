@@ -8,7 +8,6 @@
         android:id="@+id/activity_color_picker_preview_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/activity_color_picker_bottom_bar"
         tools:background="#808080">
 
         <View
@@ -41,9 +40,11 @@
 
     <RelativeLayout
         android:id="@+id/activity_color_picker_bottom_bar"
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="72dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:background="@color/activity_color_picker_bottom_bar_background">
 
         <View
             android:id="@+id/activity_color_picker_color_preview"
