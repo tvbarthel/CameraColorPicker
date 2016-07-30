@@ -57,6 +57,7 @@ public class PaletteCreationActivity extends AppCompatActivity implements OnClic
         mRemoveLastColorBtnAnimator = ObjectAnimator.ofFloat(removeButton, View.SCALE_X, 0f, 1f);
 
         findViewById(R.id.activity_palette_creation_fab).setOnClickListener(this);
+        PaletteCreationActivityFlavor.onCreate(this);
     }
 
     @Override

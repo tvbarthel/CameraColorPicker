@@ -210,6 +210,8 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
         initSaveCompletedProgressAnimator();
         initViews();
         initTranslationDeltas();
+
+        ColorPickerActivityFlavor.onCreate(this);
     }
 
     @Override

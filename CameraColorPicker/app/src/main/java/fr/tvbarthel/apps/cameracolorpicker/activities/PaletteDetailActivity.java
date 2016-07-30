@@ -36,9 +36,9 @@ import fr.tvbarthel.apps.cameracolorpicker.data.Palette;
 import fr.tvbarthel.apps.cameracolorpicker.data.Palettes;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.DeletePaletteDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.EditTextDialogFragment;
-import fr.tvbarthel.apps.cameracolorpicker.wrappers.ColorItemListWrapper;
 import fr.tvbarthel.apps.cameracolorpicker.views.FlavorColorItemListWrapper;
 import fr.tvbarthel.apps.cameracolorpicker.views.PaletteView;
+import fr.tvbarthel.apps.cameracolorpicker.wrappers.ColorItemListWrapper;
 
 /**
  * A simple {@link AppCompatActivity} for displaying a {@link Palette} with its {@link ColorItem}s
@@ -244,6 +244,8 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
         };
 
         Palettes.registerListener(this, mOnPaletteChangeListener);
+
+        PaletteDetailActivityFlavor.onCreate(this);
     }
 
     @Override
@@ -268,6 +270,7 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_palette_detail, menu);
+        PaletteDetailActivityFlavor.onCreateOptionsMenu(menu);
         return true;
     }
 

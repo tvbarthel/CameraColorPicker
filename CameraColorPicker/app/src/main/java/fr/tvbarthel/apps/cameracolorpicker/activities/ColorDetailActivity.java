@@ -257,6 +257,8 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
                 }
             });
         }
+
+        ColorDetailActivityFlavor.onCreate(this);
     }
 
     @Override
@@ -280,6 +282,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
             // A color associated with a palette can't be deleted.
             menu.removeItem(R.id.menu_color_detail_action_delete);
         }
+        ColorDetailActivityFlavor.onCreateOptionsMenu(menu);
         return true;
     }
 
