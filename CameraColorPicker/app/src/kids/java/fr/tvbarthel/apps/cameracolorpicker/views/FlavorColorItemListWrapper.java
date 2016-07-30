@@ -42,4 +42,10 @@ public class FlavorColorItemListWrapper extends ColorItemListWrapper implements 
     public void setItems(List<ColorItem> items) {
         mAdapter.setItems(items);
     }
+
+    @Override
+    public void addItems(List<ColorItem> colorJustAdded) {
+        super.addItems(colorJustAdded);
+        mAdapter.addItems(colorJustAdded);
+    }
 }

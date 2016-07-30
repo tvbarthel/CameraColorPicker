@@ -54,6 +54,14 @@ class ColorItemAdapter extends RecyclerView.Adapter<ColorItemAdapter.ColorItemHo
         notifyDataSetChanged();
     }
 
+    /* package */
+    void addItems(List<ColorItem> colorJustAdded) {
+        for (int i = colorJustAdded.size() - 1; i >= 0; i--) {
+            mItems.add(0, colorJustAdded.get(i));
+        }
+        notifyItemRangeInserted(0, colorJustAdded.size());
+    }
+
     /**
      * An interface for listening to {@link ColorItemAdapter} callbacks.
      */
