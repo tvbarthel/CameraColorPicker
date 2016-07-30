@@ -7,10 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 
 import cameracolorpicker.flavors.MainActivityFlavor;
 import fr.tvbarthel.apps.cameracolorpicker.R;
+import fr.tvbarthel.apps.cameracolorpicker.adapters.MainPagerAdapter;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.AboutDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.views.ColorItemListPage;
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // Check if there is at least two color items.
                     // Creating a color palette with 1 or 0 colors make no sense.
                     if (ColorItems.getSavedColorItems(this).size() <= 1) {
+                        onEmphasisOnPaletteCreationRequested();
                         showToast(R.string.activity_main_error_not_enough_colors);
                     } else {
                         final Intent intentColorPaletteActivity = new Intent(this, PaletteCreationActivity.class);
@@ -280,9 +282,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setCurrentPage(@PageId int pageId) {
         mCurrentPageId = pageId;
         if (pageId == PAGE_ID_COLOR_ITEM_LIST) {
-            mFab.setImageResource(R.drawable.ic_image_colorize);
+            mFab.setImageResource(R.drawable.ic_fab_color_picker_action);
         } else if (pageId == PAGE_ID_PALETTE_LIST) {
-            mFab.setImageResource(R.drawable.ic_image_palette);
+            mFab.setImageResource(R.drawable.ic_fab_palette_creation_action);
         }
     }
 
@@ -303,8 +305,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void showToast(@StringRes int resId) {
         hideToast();
-        mToast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
-        mToast.show();
+        String toastText = getString(resId);
+        if (!TextUtils.isEmpty(toastText)) {
+            mToast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
+            mToast.show();
+        }
     }
 
     /**
@@ -350,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }, delay);
     }
 
-    private class MyPagerAdapter extends PagerAdapter {
+    private class MyPagerAdapter extends MainPagerAdapter {
 
         @Override
         public CharSequence getPageTitle(int position) {
@@ -396,6 +401,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
-
     }
 }
