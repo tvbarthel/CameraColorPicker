@@ -131,6 +131,12 @@ public class ColorItemListPage extends FrameLayout implements ColorItemListWrapp
                 super.onChanged();
                 emptyView.setVisibility(adapter.getItemCount() == 0 ? VISIBLE : GONE);
             }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                emptyView.setVisibility(adapter.getItemCount() == 0 ? VISIBLE : GONE);
+            }
         });
 
         colorJustAdded = new ArrayList<>();

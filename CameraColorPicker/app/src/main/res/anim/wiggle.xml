@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shareInterpolator="false">
+    <translate
+        android:duration="60"
+        android:fromXDelta="-10"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:repeatCount="3"
+        android:repeatMode="reverse"
+        android:toXDelta="10" />
+
+    <translate
+        android:duration="60"
+        android:fromXDelta="-20"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:toXDelta="15" />
+</set>

@@ -38,24 +38,24 @@ import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
  * The last selected color can be saved by clicking the save button.
  * An animation notifies the user of the save.
  */
-public class ColorPickerActivity extends AppCompatActivity implements CameraColorPickerPreview.OnColorSelectedListener, View.OnClickListener {
+class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPickerPreview.OnColorSelectedListener, View.OnClickListener {
 
     /**
      * A tag used in the logs.
      */
-    protected static final String TAG = ColorPickerActivity.class.getSimpleName();
+    protected static final String TAG = CoreColorPickerActivity.class.getSimpleName();
 
     /**
      * The name of the property that animates the 'picked color'.
      * <p/>
-     * Used by {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity#mPickedColorProgressAnimator}.
+     * Used by {@link CoreColorPickerActivity#mPickedColorProgressAnimator}.
      */
     protected static final String PICKED_COLOR_PROGRESS_PROPERTY_NAME = "pickedColorProgress";
 
     /**
      * The name of the property that animates the 'save completed'.
      * <p/>
-     * Used by {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity#mSaveCompletedProgressAnimator}.
+     * Used by {@link CoreColorPickerActivity#mSaveCompletedProgressAnimator}.
      */
     protected static final String SAVE_COMPLETED_PROGRESS_PROPERTY_NAME = "saveCompletedProgress";
 
@@ -106,7 +106,7 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
     protected CameraColorPickerPreview mCameraPreview;
 
     /**
-     * A reference to the {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity.CameraAsyncTask} that gets the {@link android.hardware.Camera}.
+     * A reference to the {@link CoreColorPickerActivity.CameraAsyncTask} that gets the {@link android.hardware.Camera}.
      */
     protected CameraAsyncTask mCameraAsyncTask;
 
@@ -399,7 +399,7 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                ColorItems.saveLastPickedColor(ColorPickerActivity.this, mLastPickedColor);
+                ColorItems.saveLastPickedColor(CoreColorPickerActivity.this, mLastPickedColor);
                 applyPreviewColor(mLastPickedColor);
                 mPickedColorPreviewAnimated.setVisibility(View.INVISIBLE);
             }
@@ -427,7 +427,7 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
 
     /**
      * Toggle the device's camera flash.
-     * {@link ColorPickerActivity#isFlashSupported()} should be called before using this methods.
+     * {@link CoreColorPickerActivity#isFlashSupported()} should be called before using this methods.
      */
     protected void toggleFlash() {
         if (mCamera != null) {
@@ -487,19 +487,12 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
         mSaveCompletedProgressAnimator.cancel();
         mSaveCompletedProgressAnimator.setFloatValues(mSaveCompletedProgress, isSaveCompleted ? 0f : 1f);
         mSaveCompletedProgressAnimator.start();
-
-        if (isSaveCompleted) {
-            mConfirmSaveMessage.setVisibility(View.VISIBLE);
-            mConfirmSaveMessage.animate().translationY(0).setDuration(DURATION_CONFIRM_SAVE_MESSAGE).setInterpolator(mConfirmSaveMessageInterpolator).start();
-            mConfirmSaveMessage.removeCallbacks(mHideConfirmSaveMessage);
-            mConfirmSaveMessage.postDelayed(mHideConfirmSaveMessage, DELAY_HIDE_CONFIRM_SAVE_MESSAGE);
-        }
     }
 
     /**
      * Set the progress of the picked color animation.
      * <p/>
-     * Used by {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity#mPickedColorProgressAnimator}.
+     * Used by {@link CoreColorPickerActivity#mPickedColorProgressAnimator}.
      *
      * @param progress A value in closed range [0,1] representing the progress of the picked color animation.
      */
@@ -517,7 +510,7 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
     /**
      * Set the progress of the animation of the "save completed" state.
      * <p/>
-     * Used by {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity#mSaveCompletedProgressAnimator}.
+     * Used by {@link CoreColorPickerActivity#mSaveCompletedProgressAnimator}.
      *
      * @param progress A value in closed range [0,1] representing the progress of the animation of the "save completed" state.
      */
@@ -542,7 +535,7 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
         protected Camera doInBackground(Void... params) {
             Camera camera = getCameraInstance();
             if (camera == null) {
-                ColorPickerActivity.this.finish();
+                CoreColorPickerActivity.this.finish();
             } else {
                 //configure Camera parameters
                 Camera.Parameters cameraParameters = camera.getParameters();
@@ -558,7 +551,7 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
                 camera.setParameters(cameraParameters);
 
                 //set camera orientation to match with current device orientation
-                Cameras.setCameraDisplayOrientation(ColorPickerActivity.this, camera);
+                Cameras.setCameraDisplayOrientation(CoreColorPickerActivity.this, camera);
 
                 //get proportional dimension for the layout used to display preview according to the preview size used
                 int[] adaptedDimension = Cameras.getProportionalDimension(
@@ -582,12 +575,12 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
             if (!isCancelled()) {
                 mCamera = camera;
                 if (mCamera == null) {
-                    ColorPickerActivity.this.finish();
+                    CoreColorPickerActivity.this.finish();
                 } else {
                     //set up camera preview
-                    mCameraPreview = new CameraColorPickerPreview(ColorPickerActivity.this, mCamera);
-                    mCameraPreview.setOnColorSelectedListener(ColorPickerActivity.this);
-                    mCameraPreview.setOnClickListener(ColorPickerActivity.this);
+                    mCameraPreview = new CameraColorPickerPreview(CoreColorPickerActivity.this, mCamera);
+                    mCameraPreview.setOnColorSelectedListener(CoreColorPickerActivity.this);
+                    mCameraPreview.setOnClickListener(CoreColorPickerActivity.this);
 
                     //add camera preview
                     mPreviewContainer.addView(mCameraPreview, 0, mPreviewParams);
