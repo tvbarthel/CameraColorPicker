@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     tools:context="fr.tvbarthel.apps.cameracolorpicker.activities.PaletteDetailActivity">
 
-    <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView
+    <fr.tvbarthel.apps.cameracolorpicker.views.SquarePaletteView
         android:id="@+id/activity_palette_detail_preview_translating"
         android:layout_width="@dimen/row_color_palette_thumbnail_size"
         android:layout_height="@dimen/row_color_palette_thumbnail_size"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="55dp" />
+        android:layout_marginTop="@dimen/row_color_palette_thumbnail_size_half" />
 
 
     <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView

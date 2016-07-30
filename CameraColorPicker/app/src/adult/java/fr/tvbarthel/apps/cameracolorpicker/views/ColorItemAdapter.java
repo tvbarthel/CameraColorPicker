@@ -14,6 +14,7 @@ import java.util.List;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
+import fr.tvbarthel.apps.cameracolorpicker.utils.BackgroundUtils;
 
 /**
  * A {@link android.support.v7.widget.RecyclerView.Adapter} that adapts {@link ColorItem}s
@@ -115,7 +116,10 @@ class ColorItemAdapter extends RecyclerView.Adapter<ColorItemAdapter.ColorItemHo
             mUnderlyingView = view;
             mColorPreview = view.findViewById(R.id.row_color_item_preview);
             mColorText = (TextView) view.findViewById(R.id.row_color_item_text);
-
+            BackgroundUtils.setBackground(
+                    mColorPreview,
+                    new ColorDotDrawable(view.getContext())
+            );
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
         }

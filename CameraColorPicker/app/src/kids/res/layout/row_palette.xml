@@ -4,11 +4,11 @@
     android:layout_height="96dp"
     android:background="?selectableItemBackground">
 
-    <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView
+    <fr.tvbarthel.apps.cameracolorpicker.views.SquarePaletteView
         android:id="@+id/row_color_palette_thumbnail"
-        android:layout_width="@dimen/row_color_palette_thumbnail_size"
-        android:layout_height="@dimen/row_color_palette_thumbnail_size"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="16dp" />
+        android:background="@drawable/shadow_square" />
 
 </FrameLayout>
