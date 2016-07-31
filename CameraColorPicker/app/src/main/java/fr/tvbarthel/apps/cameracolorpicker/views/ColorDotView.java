@@ -56,6 +56,8 @@ public class ColorDotView extends View {
      * @param context holding context.
      */
     private void initialize(Context context) {
-        BackgroundUtils.setBackground(this, new ColorDotDrawable(context));
+        if (!isInEditMode()) {
+            BackgroundUtils.setBackground(this, new ColorDotDrawable(context));
+        }
     }
 }

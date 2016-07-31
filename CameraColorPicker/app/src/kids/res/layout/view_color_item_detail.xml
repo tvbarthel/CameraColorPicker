@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_padding">
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/drop_sad"
+            android:tint="#FF0000" />
+
+        <fr.tvbarthel.apps.cameracolorpicker.views.ColorQuantityBar
+            android:id="@+id/view_color_item_detail_quantity_bar_red"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="64dp"
+            android:layout_marginStart="64dp"
+            android:max="255" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_padding">
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/drop_sad"
+            android:tint="#00FF00" />
+
+        <fr.tvbarthel.apps.cameracolorpicker.views.ColorQuantityBar
+            android:id="@+id/view_color_item_detail_quantity_bar_green"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="64dp"
+            android:layout_marginStart="64dp"
+            android:max="255" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_padding">
+
+        <ImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:scaleType="centerInside"
+            android:src="@drawable/drop_sad"
+            android:tint="#0000FF" />
+
+        <fr.tvbarthel.apps.cameracolorpicker.views.ColorQuantityBar
+            android:id="@+id/view_color_item_detail_quantity_bar_blue"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="64dp"
+            android:layout_marginStart="64dp"
+            android:max="255" />
+
+    </FrameLayout>
+
+</merge>

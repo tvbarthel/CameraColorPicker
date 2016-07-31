@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Color quantity bar -->
+    <color name="color_quantity_bar_default_bar_color">#9a9a9a</color>
+    <color name="color_quantity_bar_default_bar_over_color">#555555</color>
+    <color name="color_quantity_bar_default_bar_thumb_color">#555555</color>
+</resources>

@@ -20,8 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -36,10 +34,10 @@ import fr.tvbarthel.apps.cameracolorpicker.data.Palette;
 import fr.tvbarthel.apps.cameracolorpicker.data.Palettes;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.DeleteColorDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.EditTextDialogFragment;
-import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
+import fr.tvbarthel.apps.cameracolorpicker.views.ColorItemDetailView;
 
-public class ColorDetailActivity extends AppCompatActivity implements View.OnClickListener,
-        DeleteColorDialogFragment.Callback, EditTextDialogFragment.Callback {
+public class ColorDetailActivity extends AppCompatActivity implements DeleteColorDialogFragment.Callback,
+        EditTextDialogFragment.Callback {
 
     /**
      * A key for passing a color item as extra.
@@ -123,27 +121,9 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     private View mScaledPreview;
 
     /**
-     * A {@link android.widget.TextView} for showing the hexadecimal value of the color.
+     * A {@link ColorItemDetailView} displaying details of a {@link ColorItem}.
      */
-    private TextView mHex;
-
-    /**
-     * A {@link android.widget.TextView} for showing the RGB value of the color.
-     */
-    private TextView mRgb;
-
-    /**
-     * A {@link android.widget.TextView} for showing the HSV value of the color.
-     */
-    private TextView mHsv;
-
-    /**
-     * A reference to the current {@link android.widget.Toast}.
-     * <p/>
-     * Used for hiding the current {@link android.widget.Toast} before showing a new one or the activity is paused.
-     * {@link }
-     */
-    private Toast mToast;
+    private ColorItemDetailView mColorItemDetailView;
 
     /**
      * The {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem} being displayed.
@@ -191,21 +171,12 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
         // Find the views.
         mTranslatedPreview = findViewById(R.id.activity_color_detail_preview_translating);
         mScaledPreview = findViewById(R.id.activity_color_detail_preview_scaling);
-        mHex = (TextView) findViewById(R.id.activity_color_detail_hex);
-        mRgb = (TextView) findViewById(R.id.activity_color_detail_rgb);
-        mHsv = (TextView) findViewById(R.id.activity_color_detail_hsv);
-
-        // Set the click listeners.
-        mHex.setOnClickListener(this);
-        mRgb.setOnClickListener(this);
-        mHsv.setOnClickListener(this);
+        mColorItemDetailView = (ColorItemDetailView) findViewById(R.id.activity_color_detail_color_item_detail_view);
+        mColorItemDetailView.setColorItem(mColorItem);
 
         // Display the color item data.
         mTranslatedPreview.getBackground().setColorFilter(mColorItem.getColor(), PorterDuff.Mode.MULTIPLY);
         mScaledPreview.getBackground().setColorFilter(mColorItem.getColor(), PorterDuff.Mode.MULTIPLY);
-        mHex.setText(mColorItem.getHexString());
-        mRgb.setText(mColorItem.getRgbString());
-        mHsv.setText(mColorItem.getHsvString());
 
         final View previewContainer = findViewById(R.id.activity_color_detail_preview_container);
         final ViewTreeObserver viewTreeObserver = previewContainer.getViewTreeObserver();
@@ -231,18 +202,15 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             mScaledPreview.setVisibility(View.VISIBLE);
-                            mHex.setVisibility(View.VISIBLE);
-                            mRgb.setVisibility(View.VISIBLE);
-                            mHsv.setVisibility(View.VISIBLE);
+                            mColorItemDetailView.setVisibility(View.VISIBLE);
+
                             final float maxContainerSize = (float) Math.sqrt(Math.pow(previewContainer.getWidth(), 2) + Math.pow(previewContainer.getHeight(), 2));
                             final float maxSize = Math.max(mScaledPreview.getWidth(), mScaledPreview.getHeight());
                             final float scaleRatio = maxContainerSize / maxSize;
                             final AnimatorSet scaleAnimatorSet = new AnimatorSet();
                             scaleAnimatorSet.play(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_X, 1f, scaleRatio))
                                     .with(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_Y, 1f, scaleRatio))
-                                    .with(ObjectAnimator.ofFloat(mHex, View.ALPHA, 0f, 1f))
-                                    .with(ObjectAnimator.ofFloat(mRgb, View.ALPHA, 0f, 1f))
-                                    .with(ObjectAnimator.ofFloat(mHsv, View.ALPHA, 0f, 1f));
+                                    .with(ObjectAnimator.ofFloat(mColorItemDetailView, View.ALPHA, 0f, 1f));
                             scaleAnimatorSet.start();
                         }
 
@@ -262,12 +230,6 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
         }
 
         ColorDetailActivityFlavor.onCreate(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        hideToast();
     }
 
     @Override
@@ -317,28 +279,6 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
-    public void onClick(View view) {
-        final int viewId = view.getId();
-
-        switch (viewId) {
-            case R.id.activity_color_detail_hex:
-                clipColor(R.string.color_clip_color_label_hex, mHex.getText());
-                break;
-
-            case R.id.activity_color_detail_rgb:
-                clipColor(R.string.color_clip_color_label_rgb, mRgb.getText());
-                break;
-
-            case R.id.activity_color_detail_hsv:
-                clipColor(R.string.color_clip_color_label_hsv, mHsv.getText());
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unsupported view clicked. Found: " + view);
-        }
-    }
-
-    @Override
     public void onColorDeletionConfirmed(@NonNull ColorItem colorItemToDelete) {
         if (ColorItems.deleteColorItem(this, colorItemToDelete)) {
             finish();
@@ -382,34 +322,6 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onEditTextDialogFragmentNegativeButtonClick(int requestCode) {
         // nothing to do here.
-    }
-
-
-    protected void clipColor(int labelResourceId, CharSequence colorString) {
-        ClipDatas.clipPainText(this, getString(labelResourceId), colorString);
-        showToast(R.string.color_clip_success_copy_message);
-    }
-
-
-    /**
-     * Hide the current {@link android.widget.Toast}.
-     */
-    protected void hideToast() {
-        if (mToast != null) {
-            mToast.cancel();
-            mToast = null;
-        }
-    }
-
-    /**
-     * Show a toast text message.
-     *
-     * @param resId The resource id of the string resource to use.
-     */
-    protected void showToast(int resId) {
-        hideToast();
-        mToast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
-        mToast.show();
     }
 
     /**
