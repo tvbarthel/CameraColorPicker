@@ -7,9 +7,9 @@
 
     <View
         android:id="@+id/row_color_item_preview"
-        android:layout_width="@dimen/row_color_item_preview_size"
-        android:layout_height="@dimen/row_color_item_preview_size"
-        android:layout_gravity="start"
+        android:layout_width="@dimen/row_color_item_preview_size_with_shadow"
+        android:layout_height="@dimen/row_color_item_preview_size_with_shadow"
+        android:layout_gravity="start|center_vertical"
         android:layout_margin="16dp"
         android:background="@drawable/oval_white" />
 

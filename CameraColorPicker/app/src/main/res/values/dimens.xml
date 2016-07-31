@@ -1,5 +1,6 @@
 <resources>
     <dimen name="default_padding">16dp</dimen>
+    <dimen name="default_padding_half">8dp</dimen>
 
     <!-- Activity color picker -->
     <dimen name="activity_color_picker_pointer_size">8dp</dimen>
@@ -8,9 +9,12 @@
 
     <!-- Row color item -->
     <dimen name="row_color_item_preview_size">40dp</dimen>
+    <dimen name="row_color_item_preview_size_shadow_size">3dp</dimen>
+
 
     <!-- Row color palette -->
-    <dimen name="row_color_palette_thumbnail_size">40dp</dimen>
+    <dimen name="row_color_palette_thumbnail_size">75dp</dimen>
+    <dimen name="row_color_palette_thumbnail_size_half">37dp</dimen>
 
     <!-- Delete color dialog fragment -->
     <dimen name="fragment_dialog_delete_color_message_padding_bottom">16dp</dimen>

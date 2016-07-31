@@ -217,6 +217,9 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
                     mTranslatedPreview.getGlobalVisibleRect(stopBounds);
                     final int deltaX = startBounds.left - stopBounds.left;
                     final int deltaY = startBounds.top - stopBounds.top;
+                    final float scale = startBounds.width() / stopBounds.width();
+                    mTranslatedPreview.setScaleX(scale);
+                    mTranslatedPreview.setScaleY(scale);
                     final AnimatorSet translationAnimatorSet = new AnimatorSet();
                     translationAnimatorSet.play(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_X, deltaX, 0))
                             .with(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_Y, deltaY, 0));

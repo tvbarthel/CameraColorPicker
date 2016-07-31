@@ -5,19 +5,20 @@
     android:layout_height="72dp"
     android:background="?selectableItemBackground">
 
-    <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView
+    <fr.tvbarthel.apps.cameracolorpicker.views.SquarePaletteView
         android:id="@+id/row_color_palette_thumbnail"
         android:layout_width="@dimen/row_color_palette_thumbnail_size"
         android:layout_height="@dimen/row_color_palette_thumbnail_size"
-        android:layout_gravity="start"
-        android:layout_margin="16dp" />
+        android:layout_gravity="start|center_vertical"
+        android:layout_margin="@dimen/default_padding_half"
+        android:background="@drawable/shadow_square" />
 
     <TextView
         android:id="@+id/row_color_palette_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="72dp"
-        android:layout_marginStart="72dp"
+        android:layout_marginLeft="82dp"
+        android:layout_marginStart="82dp"
         android:gravity="center_vertical"
         android:maxLines="1"
         android:minLines="1"

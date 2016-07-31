@@ -99,7 +99,6 @@ class ColorItemAdapter extends RecyclerView.Adapter<ColorItemAdapter.ColorItemHo
             mListener = listener;
             mUnderlyingView = view;
             mColorPreview = view.findViewById(R.id.row_color_item_preview);
-
             view.setOnClickListener(this);
         }
 
