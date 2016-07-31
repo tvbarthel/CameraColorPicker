@@ -270,8 +270,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onEmphasisOnPaletteCreationRequested() {
-        mViewPager.setCurrentItem(0, true);
-        animateFab(mFab, 300);
+        if (ColorItems.getSavedColorItems(this).size() <= 1) {
+            // needs more color to create a palette.
+            mViewPager.setCurrentItem(0, true);
+            animateFab(mFab, 300);
+        } else {
+            // touch the fab to create a palette.
+            animateFab(mFab, 0);
+        }
     }
 
     /**
