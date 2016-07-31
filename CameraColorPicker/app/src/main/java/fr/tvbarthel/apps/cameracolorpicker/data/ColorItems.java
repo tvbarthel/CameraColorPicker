@@ -112,7 +112,7 @@ public final class ColorItems {
         // No saved colors were found.
         // Return an empty list.
         if ("".equals(jsonColorItems)) {
-            return Collections.EMPTY_LIST;
+            return new ArrayList<>();
         }
 
         // Parse the json into colorItems.
@@ -155,7 +155,6 @@ public final class ColorItems {
 
         return editor.commit();
     }
-
 
 
     /**

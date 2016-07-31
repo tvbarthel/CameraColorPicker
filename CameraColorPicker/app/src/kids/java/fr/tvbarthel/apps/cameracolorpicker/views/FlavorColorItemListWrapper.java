@@ -7,6 +7,7 @@ import android.view.View;
 
 import java.util.List;
 
+import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 import fr.tvbarthel.apps.cameracolorpicker.wrappers.ColorItemListWrapper;
 
@@ -16,10 +17,12 @@ import fr.tvbarthel.apps.cameracolorpicker.wrappers.ColorItemListWrapper;
 public class FlavorColorItemListWrapper extends ColorItemListWrapper implements ColorItemAdapter.ColorItemAdapterListener {
 
     private final ColorItemAdapter mAdapter;
+    private final int mSpanCount;
 
     public FlavorColorItemListWrapper(RecyclerView recyclerView, ColorItemListWrapperListener callback) {
         super(recyclerView, callback);
         mAdapter = new ColorItemAdapter(this);
+        mSpanCount = recyclerView.getContext().getResources().getInteger(R.integer.list_horizontal_span);
     }
 
     @Override
@@ -29,7 +32,7 @@ public class FlavorColorItemListWrapper extends ColorItemListWrapper implements 
 
     @Override
     public RecyclerView.Adapter installRecyclerView() {
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(mRecyclerView.getContext(), 5);
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(mRecyclerView.getContext(), mSpanCount);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         return mAdapter;

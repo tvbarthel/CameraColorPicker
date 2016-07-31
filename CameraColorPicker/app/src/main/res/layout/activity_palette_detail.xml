@@ -16,7 +16,7 @@
     <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView
         android:id="@+id/activity_palette_detail_preview_scaling"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="@dimen/activity_palette_detail_top_palette_height"
         android:visibility="invisible"
         tools:visibility="visible" />
 
@@ -24,7 +24,7 @@
         android:id="@+id/activity_palette_detail_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="@dimen/activity_palette_detail_top_palette_height"
         android:visibility="invisible"
         tools:listitem="@layout/row_palette"
         tools:visibility="visible" />
@@ -33,7 +33,7 @@
         android:id="@+id/activity_palette_detail_list_view_shadow"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="@dimen/activity_palette_detail_top_palette_height"
         android:background="@drawable/linear_gradient_bottom"
         android:visibility="invisible"
         tools:visibility="visible" />
