@@ -26,13 +26,12 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView
+        <fr.tvbarthel.apps.cameracolorpicker.views.SquarePaletteView
             android:id="@+id/fragment_dialog_delete_palette_preview_small"
             android:layout_width="@dimen/row_color_item_preview_size"
             android:layout_height="@dimen/row_color_item_preview_size"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:background="@drawable/oval_white" />
+            android:background="@drawable/shadow_square" />
 
         <ImageView
             android:layout_width="56dp"
