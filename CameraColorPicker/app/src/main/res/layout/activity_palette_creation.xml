@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/activity_palette_creation_instruction"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="@dimen/activity_palette_detail_top_palette_height"
         android:gravity="center"
         android:text="@string/activity_palette_creation_instruction"
         android:textStyle="italic" />
@@ -16,11 +16,11 @@
     <fr.tvbarthel.apps.cameracolorpicker.views.PaletteMakerView
         android:id="@+id/activity_palette_creation_color_palette_builder"
         android:layout_width="match_parent"
-        android:layout_height="150dp" />
+        android:layout_height="@dimen/activity_palette_detail_top_palette_height" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="@dimen/activity_palette_detail_top_palette_height"
         android:background="@android:color/transparent">
 
         <ImageButton
@@ -37,14 +37,14 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="@dimen/activity_palette_detail_top_palette_height"
         android:background="@drawable/linear_gradient_bottom" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/activity_palette_creation_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="@dimen/activity_palette_detail_top_palette_height"
         tools:listitem="@layout/row_color_item" />
 
     <com.melnykov.fab.FloatingActionButton

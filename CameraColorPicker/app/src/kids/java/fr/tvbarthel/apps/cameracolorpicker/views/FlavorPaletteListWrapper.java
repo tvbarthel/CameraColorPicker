@@ -25,7 +25,8 @@ public class FlavorPaletteListWrapper extends PaletteListWrapper {
      */
     public static FlavorPaletteListWrapper create(RecyclerView recyclerView, PaletteListWrapperListener listener) {
         final PaletteAdapter paletteAdapter = new PaletteAdapter(listener);
-        final LinearLayoutManager linearLayoutManager = new GridLayoutManager(recyclerView.getContext(), 5);
+        int spanCount = recyclerView.getContext().getResources().getInteger(R.integer.list_horizontal_span);
+        final LinearLayoutManager linearLayoutManager = new GridLayoutManager(recyclerView.getContext(), spanCount);
         return new FlavorPaletteListWrapper(recyclerView, listener, paletteAdapter, linearLayoutManager);
     }
 

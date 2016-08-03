@@ -7,10 +7,12 @@
     <dimen name="activity_color_picker_pointer_ring_size">48dp</dimen>
     <dimen name="activity_color_picker_pointer_ring_thickness">8dp</dimen>
 
+    <!-- Activity palette detail -->
+    <dimen name="activity_palette_detail_top_palette_height">150dp</dimen>
+
     <!-- Row color item -->
     <dimen name="row_color_item_preview_size">40dp</dimen>
     <dimen name="row_color_item_preview_size_shadow_size">3dp</dimen>
-
 
     <!-- Row color palette -->
     <dimen name="row_color_palette_thumbnail_size">75dp</dimen>
