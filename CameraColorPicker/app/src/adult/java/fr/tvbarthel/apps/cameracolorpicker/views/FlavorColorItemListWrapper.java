@@ -76,6 +76,12 @@ public class FlavorColorItemListWrapper extends ColorItemListWrapper implements 
         mAdapter.setItems(items);
     }
 
+    @Override
+    public void addItems(List<ColorItem> colorJustAdded) {
+        super.addItems(colorJustAdded);
+        mAdapter.addItems(colorJustAdded);
+    }
+
     /**
      * Hide the current {@link android.widget.Toast}.
      */

@@ -37,6 +37,15 @@ public abstract class ColorItemListWrapper {
     public abstract void setItems(List<ColorItem> items);
 
     /**
+     * Add new {@link ColorItem}.
+     *
+     * @param colorJustAdded color item to add.
+     */
+    public void addItems(List<ColorItem> colorJustAdded) {
+        mRecyclerView.scrollToPosition(0);
+    }
+
+    /**
      * An interface for listening to {@link ColorItemListWrapper}.
      */
     public interface ColorItemListWrapperListener {
