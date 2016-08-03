@@ -3,9 +3,9 @@ package fr.tvbarthel.apps.cameracolorpicker.activities;
 import android.view.View;
 
 /**
- * {@link CoreColorPickerActivity} implementation used for the adults.
+ * {@link ColorPickerBaseActivity} implementation used for the adults.
  */
-public class ColorPickerActivity extends CoreColorPickerActivity {
+public class ColorPickerActivity extends ColorPickerBaseActivity {
 
     @Override
     protected void setSaveCompleted(boolean isSaveCompleted) {

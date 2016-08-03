@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PagerSlidingTabStrip mTabs;
 
     /**
-     * A {@link com.melnykov.fab.FloatingActionButton} for launching the {@link CoreColorPickerActivity}.
+     * A {@link com.melnykov.fab.FloatingActionButton} for launching the {@link ColorPickerBaseActivity}.
      */
     private FloatingActionButton mFab;
 

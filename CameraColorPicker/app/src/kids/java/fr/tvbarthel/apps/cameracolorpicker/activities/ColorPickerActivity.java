@@ -1,6 +1,7 @@
 package fr.tvbarthel.apps.cameracolorpicker.activities;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -8,9 +9,9 @@ import android.view.animation.AnimationUtils;
 import fr.tvbarthel.apps.cameracolorpicker.R;
 
 /**
- * {@link CoreColorPickerActivity} implementation used for the kids.
+ * {@link ColorPickerBaseActivity} implementation used for the kids.
  */
-public class ColorPickerActivity extends CoreColorPickerActivity {
+public class ColorPickerActivity extends ColorPickerBaseActivity {
 
     private Animation wiggle;
 
@@ -20,6 +21,11 @@ public class ColorPickerActivity extends CoreColorPickerActivity {
 
         wiggle = AnimationUtils.loadAnimation(this, R.anim.wiggle);
         mColorPreviewText.setVisibility(View.INVISIBLE);
+
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setTitle(null);
+        }
     }
 
     @Override

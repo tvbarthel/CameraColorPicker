@@ -38,24 +38,25 @@ import fr.tvbarthel.apps.cameracolorpicker.views.CameraColorPickerPreview;
  * The last selected color can be saved by clicking the save button.
  * An animation notifies the user of the save.
  */
-class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPickerPreview.OnColorSelectedListener, View.OnClickListener {
+class ColorPickerBaseActivity extends AppCompatActivity
+        implements CameraColorPickerPreview.OnColorSelectedListener, View.OnClickListener {
 
     /**
      * A tag used in the logs.
      */
-    protected static final String TAG = CoreColorPickerActivity.class.getSimpleName();
+    protected static final String TAG = ColorPickerBaseActivity.class.getSimpleName();
 
     /**
      * The name of the property that animates the 'picked color'.
      * <p/>
-     * Used by {@link CoreColorPickerActivity#mPickedColorProgressAnimator}.
+     * Used by {@link ColorPickerBaseActivity#mPickedColorProgressAnimator}.
      */
     protected static final String PICKED_COLOR_PROGRESS_PROPERTY_NAME = "pickedColorProgress";
 
     /**
      * The name of the property that animates the 'save completed'.
      * <p/>
-     * Used by {@link CoreColorPickerActivity#mSaveCompletedProgressAnimator}.
+     * Used by {@link ColorPickerBaseActivity#mSaveCompletedProgressAnimator}.
      */
     protected static final String SAVE_COMPLETED_PROGRESS_PROPERTY_NAME = "saveCompletedProgress";
 
@@ -106,7 +107,7 @@ class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPi
     protected CameraColorPickerPreview mCameraPreview;
 
     /**
-     * A reference to the {@link CoreColorPickerActivity.CameraAsyncTask} that gets the {@link android.hardware.Camera}.
+     * A reference to the {@link ColorPickerBaseActivity.CameraAsyncTask} that gets the {@link android.hardware.Camera}.
      */
     protected CameraAsyncTask mCameraAsyncTask;
 
@@ -210,8 +211,6 @@ class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPi
         initSaveCompletedProgressAnimator();
         initViews();
         initTranslationDeltas();
-
-        ColorPickerActivityFlavor.onCreate(this);
     }
 
     @Override
@@ -399,7 +398,7 @@ class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPi
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                ColorItems.saveLastPickedColor(CoreColorPickerActivity.this, mLastPickedColor);
+                ColorItems.saveLastPickedColor(ColorPickerBaseActivity.this, mLastPickedColor);
                 applyPreviewColor(mLastPickedColor);
                 mPickedColorPreviewAnimated.setVisibility(View.INVISIBLE);
             }
@@ -427,7 +426,7 @@ class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPi
 
     /**
      * Toggle the device's camera flash.
-     * {@link CoreColorPickerActivity#isFlashSupported()} should be called before using this methods.
+     * {@link ColorPickerBaseActivity#isFlashSupported()} should be called before using this methods.
      */
     protected void toggleFlash() {
         if (mCamera != null) {
@@ -492,7 +491,7 @@ class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPi
     /**
      * Set the progress of the picked color animation.
      * <p/>
-     * Used by {@link CoreColorPickerActivity#mPickedColorProgressAnimator}.
+     * Used by {@link ColorPickerBaseActivity#mPickedColorProgressAnimator}.
      *
      * @param progress A value in closed range [0,1] representing the progress of the picked color animation.
      */
@@ -510,7 +509,7 @@ class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPi
     /**
      * Set the progress of the animation of the "save completed" state.
      * <p/>
-     * Used by {@link CoreColorPickerActivity#mSaveCompletedProgressAnimator}.
+     * Used by {@link ColorPickerBaseActivity#mSaveCompletedProgressAnimator}.
      *
      * @param progress A value in closed range [0,1] representing the progress of the animation of the "save completed" state.
      */
@@ -535,7 +534,7 @@ class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPi
         protected Camera doInBackground(Void... params) {
             Camera camera = getCameraInstance();
             if (camera == null) {
-                CoreColorPickerActivity.this.finish();
+                ColorPickerBaseActivity.this.finish();
             } else {
                 //configure Camera parameters
                 Camera.Parameters cameraParameters = camera.getParameters();
@@ -551,7 +550,7 @@ class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPi
                 camera.setParameters(cameraParameters);
 
                 //set camera orientation to match with current device orientation
-                Cameras.setCameraDisplayOrientation(CoreColorPickerActivity.this, camera);
+                Cameras.setCameraDisplayOrientation(ColorPickerBaseActivity.this, camera);
 
                 //get proportional dimension for the layout used to display preview according to the preview size used
                 int[] adaptedDimension = Cameras.getProportionalDimension(
@@ -575,12 +574,12 @@ class CoreColorPickerActivity extends AppCompatActivity implements CameraColorPi
             if (!isCancelled()) {
                 mCamera = camera;
                 if (mCamera == null) {
-                    CoreColorPickerActivity.this.finish();
+                    ColorPickerBaseActivity.this.finish();
                 } else {
                     //set up camera preview
-                    mCameraPreview = new CameraColorPickerPreview(CoreColorPickerActivity.this, mCamera);
-                    mCameraPreview.setOnColorSelectedListener(CoreColorPickerActivity.this);
-                    mCameraPreview.setOnClickListener(CoreColorPickerActivity.this);
+                    mCameraPreview = new CameraColorPickerPreview(ColorPickerBaseActivity.this, mCamera);
+                    mCameraPreview.setOnColorSelectedListener(ColorPickerBaseActivity.this);
+                    mCameraPreview.setOnClickListener(ColorPickerBaseActivity.this);
 
                     //add camera preview
                     mPreviewContainer.addView(mCameraPreview, 0, mPreviewParams);
