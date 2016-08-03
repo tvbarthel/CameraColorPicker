@@ -42,14 +42,6 @@
     <string name="fragment_dialog_about_message">Camera Color Picker est une application Android gratuite et open source qui vous permet de capturer les couleurs autour de vous en utilisant la caméra de votre téléphone.</string>
     <string name="fragment_dialog_about_made_by">Développée en France avec amour par tbarthel &amp; vbarthel.</string>
 
-    <!-- Delete color dialog fragment -->
-    <string name="fragment_dialog_delete_color_title">Attention</string>
-    <string name="fragment_dialog_delete_color_message">Supprimer la couleur de votre téléphone ?</string>
-
-    <!-- Delete palette dialog fragment -->
-    <string name="fragment_dialog_delete_palette_title">Attention</string>
-    <string name="fragment_dialog_delete_palette_message">Supprimer la palette %1$s de votre téléphone ?</string>
-
     <!-- Main menu -->
     <string name="menu_main_action_contact_us">Contacter nous</string>
     <string name="menu_main_action_licenses">Contenu &amp; Licenses</string>

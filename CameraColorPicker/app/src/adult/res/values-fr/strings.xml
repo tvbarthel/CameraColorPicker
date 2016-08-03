@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Delete color dialog fragment -->
+    <string name="fragment_dialog_delete_color_title">Attention</string>
+    <string name="fragment_dialog_delete_color_message">Supprimer la couleur de votre téléphone ?</string>
+
+    <!-- Delete palette dialog fragment -->
+    <string name="fragment_dialog_delete_palette_title">Attention</string>
+    <string name="fragment_dialog_delete_palette_message">Supprimer la palette %1$s de votre téléphone ?</string>
+</resources>
