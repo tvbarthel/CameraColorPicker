@@ -372,11 +372,11 @@ class ColorPickerBaseActivity extends AppCompatActivity
 
                     final Rect pointerRingRect = new Rect();
                     final Rect colorPreviewAnimatedRect = new Rect();
-                    mPointerRing.getGlobalVisibleRect(pointerRingRect);
-                    mPickedColorPreviewAnimated.getGlobalVisibleRect(colorPreviewAnimatedRect);
+                    mPickedColorPreviewAnimated.getGlobalVisibleRect(pointerRingRect);
+                    mPickedColorPreview.getGlobalVisibleRect(colorPreviewAnimatedRect);
 
-                    mTranslationDeltaX = pointerRingRect.left - colorPreviewAnimatedRect.left;
-                    mTranslationDeltaY = pointerRingRect.top - colorPreviewAnimatedRect.top;
+                    mTranslationDeltaX = colorPreviewAnimatedRect.left - pointerRingRect.left;
+                    mTranslationDeltaY = colorPreviewAnimatedRect.top - pointerRingRect.top;
                 }
             });
         }
@@ -387,7 +387,7 @@ class ColorPickerBaseActivity extends AppCompatActivity
      * Initialize the animator used for the progress of the picked color.
      */
     protected void initPickedColorProgressAnimator() {
-        mPickedColorProgressAnimator = ObjectAnimator.ofFloat(this, PICKED_COLOR_PROGRESS_PROPERTY_NAME, 1f, 0f);
+        mPickedColorProgressAnimator = ObjectAnimator.ofFloat(this, PICKED_COLOR_PROGRESS_PROPERTY_NAME, 0f, 1f);
         mPickedColorProgressAnimator.setDuration(400);
         mPickedColorProgressAnimator.addListener(new Animator.AnimatorListener() {
             @Override
@@ -496,9 +496,9 @@ class ColorPickerBaseActivity extends AppCompatActivity
      * @param progress A value in closed range [0,1] representing the progress of the picked color animation.
      */
     protected void setPickedColorProgress(float progress) {
-        final float fastOppositeProgress = (float) Math.pow(1 - progress, 0.3f);
-        final float translationX = (float) (mTranslationDeltaX * Math.pow(progress, 2f));
-        final float translationY = mTranslationDeltaY * progress;
+        final float fastOppositeProgress = (float) Math.pow(progress, 0.3f);
+        final float translationX = mTranslationDeltaX * progress;
+        final float translationY = (float) (mTranslationDeltaY * Math.pow(progress, 2f));
 
         mPickedColorPreviewAnimated.setTranslationX(translationX);
         mPickedColorPreviewAnimated.setTranslationY(translationY);

@@ -1,14 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CoreColorPickerActivity">
+    tools:context=".activities.ColorPickerBaseActivity">
 
     <FrameLayout
         android:id="@+id/activity_color_picker_preview_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/activity_color_picker_bottom_bar"
+        android:layout_marginBottom="@dimen/activity_color_picker_bottom_bar_height"
         tools:background="#808080">
 
         <View
@@ -42,8 +42,8 @@
     <RelativeLayout
         android:id="@+id/activity_color_picker_bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_alignParentBottom="true">
+        android:layout_height="@dimen/activity_color_picker_bottom_bar_height"
+        android:layout_gravity="bottom">
 
         <View
             android:id="@+id/activity_color_picker_color_preview"
@@ -91,10 +91,10 @@
         android:id="@+id/activity_color_picker_animated_preview"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/activity_color_picker_bottom_bar_height_half"
         android:background="@drawable/oval_white"
         android:visibility="invisible" />
 
 
-</RelativeLayout>
+</FrameLayout>
