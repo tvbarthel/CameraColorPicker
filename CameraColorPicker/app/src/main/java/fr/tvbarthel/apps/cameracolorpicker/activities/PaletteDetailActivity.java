@@ -81,6 +81,11 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
      */
     protected static final String EXTRA_START_BOUNDS = "PaletteDetailActivity.Extras.EXTRA_START_BOUNDS";
 
+    /**
+     * Inset of the square shadow which must be take into account we evaluate the scale ratio.
+     */
+    private int shadowInset;
+
     public static void startWithColorPalette(Context context, Palette palette, View colorPreviewClicked) {
         final boolean isActivity = context instanceof Activity;
         final Rect startBounds = new Rect();
@@ -166,6 +171,8 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
         mColorItemListWrapper.installRecyclerView();
         mColorItemListWrapper.setItems(mPalette.getColors());
 
+        shadowInset = getResources().getDimensionPixelSize(R.dimen.square_shadow_inset_padding);
+
         mTranslatedPreview.setPalette(mPalette);
         mScaledPreview.setPalette(mPalette);
 
@@ -175,14 +182,23 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
                 @Override
                 public boolean onPreDraw() {
                     mTranslatedPreview.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                    mTranslatedPreview.getGlobalVisibleRect(stopBounds);
+                    final float scale = startBounds.width() / (float) stopBounds.width();
+                    mTranslatedPreview.setScaleX(scale);
+                    mTranslatedPreview.setScaleY(scale);
+
+                    // compute bounds again to include scale.
                     mTranslatedPreview.getGlobalVisibleRect(stopBounds);
                     final int deltaX = startBounds.left - stopBounds.left;
                     final int deltaY = startBounds.top - stopBounds.top;
-                    final float scaleRatioX = mTranslatedPreview.getWidth() / (float) mScaledPreview.getWidth();
-                    final float scaleRatioY = mTranslatedPreview.getHeight() / (float) mScaledPreview.getHeight();
+
+                    final float scaleRatioX = (float) (stopBounds.width() - 2 * shadowInset) / (float) (mScaledPreview.getWidth());
+                    final float scaleRatioY = (float) (stopBounds.height() - 2 * shadowInset) / (float) mScaledPreview.getHeight();
                     mScaledPreview.setScaleX(scaleRatioX);
                     mScaledPreview.setScaleY(scaleRatioY);
                     mScaledPreview.setVisibility(View.INVISIBLE);
+
                     final AnimatorSet translationAnimatorSet = new AnimatorSet();
                     translationAnimatorSet.play(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_X, deltaX, 0))
                             .with(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_Y, deltaY, 0));

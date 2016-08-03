@@ -10,7 +10,8 @@
         android:layout_width="@dimen/row_color_palette_thumbnail_size"
         android:layout_height="@dimen/row_color_palette_thumbnail_size"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/row_color_palette_thumbnail_size_half" />
+        android:layout_marginTop="@dimen/row_color_palette_thumbnail_size_half"
+        android:background="@drawable/shadow_square" />
 
 
     <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView

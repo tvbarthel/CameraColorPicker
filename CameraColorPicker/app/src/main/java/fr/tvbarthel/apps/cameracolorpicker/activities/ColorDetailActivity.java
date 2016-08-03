@@ -135,6 +135,16 @@ public class ColorDetailActivity extends AppCompatActivity implements DeleteColo
      */
     private Palette mPalette;
 
+    /**
+     * Inset of the round shadow which must be take into account we evaluate the scale ratio.
+     */
+    private int shadowInset;
+
+    /**
+     * Shadow used as delimiter.
+     */
+    private View mShadow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,6 +175,8 @@ public class ColorDetailActivity extends AppCompatActivity implements DeleteColo
             setTitle(mColorItem.getHexString());
         }
 
+        shadowInset = getResources().getDimensionPixelSize(R.dimen.row_color_item_preview_size_shadow_size);
+
         // Create a rect that will be used to retrieve the stop bounds.
         final Rect stopBounds = new Rect();
 
@@ -173,6 +185,7 @@ public class ColorDetailActivity extends AppCompatActivity implements DeleteColo
         mScaledPreview = findViewById(R.id.activity_color_detail_preview_scaling);
         mColorItemDetailView = (ColorItemDetailView) findViewById(R.id.activity_color_detail_color_item_detail_view);
         mColorItemDetailView.setColorItem(mColorItem);
+        mShadow = findViewById(R.id.activity_color_detail_list_view_shadow);
 
         // Display the color item data.
         mTranslatedPreview.getBackground().setColorFilter(mColorItem.getColor(), PorterDuff.Mode.MULTIPLY);
@@ -185,15 +198,26 @@ public class ColorDetailActivity extends AppCompatActivity implements DeleteColo
                 @Override
                 public boolean onPreDraw() {
                     previewContainer.getViewTreeObserver().removeOnPreDrawListener(this);
+
                     mTranslatedPreview.getGlobalVisibleRect(stopBounds);
-                    final int deltaX = startBounds.left - stopBounds.left;
-                    final int deltaY = startBounds.top - stopBounds.top;
-                    final float scale = startBounds.width() / stopBounds.width();
+                    final float scale = startBounds.width() / (float) stopBounds.width();
                     mTranslatedPreview.setScaleX(scale);
                     mTranslatedPreview.setScaleY(scale);
+
+                    // compute bounds again to include scale.
+                    mTranslatedPreview.getGlobalVisibleRect(stopBounds);
+                    final int deltaY = startBounds.top - stopBounds.top;
+                    final int deltaX = startBounds.left - stopBounds.left;
+
+                    float scaleRatioX = (startBounds.width() - 2 * shadowInset) / (float) stopBounds.width();
+                    float scaleRatioY = (startBounds.height() - 2 * shadowInset) / (float) stopBounds.height();
+                    mScaledPreview.setScaleX(scaleRatioX);
+                    mScaledPreview.setScaleY(scaleRatioY);
+
                     final AnimatorSet translationAnimatorSet = new AnimatorSet();
-                    translationAnimatorSet.play(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_X, deltaX, 0))
-                            .with(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_Y, deltaY, 0));
+                    translationAnimatorSet
+                            .play(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_X, deltaX, 0))
+                            .with(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_Y, deltaY, -2 * shadowInset));
                     translationAnimatorSet.addListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
@@ -203,13 +227,16 @@ public class ColorDetailActivity extends AppCompatActivity implements DeleteColo
                         public void onAnimationEnd(Animator animation) {
                             mScaledPreview.setVisibility(View.VISIBLE);
                             mColorItemDetailView.setVisibility(View.VISIBLE);
+                            mShadow.setVisibility(View.VISIBLE);
 
                             final float maxContainerSize = (float) Math.sqrt(Math.pow(previewContainer.getWidth(), 2) + Math.pow(previewContainer.getHeight(), 2));
                             final float maxSize = Math.max(mScaledPreview.getWidth(), mScaledPreview.getHeight());
                             final float scaleRatio = maxContainerSize / maxSize;
                             final AnimatorSet scaleAnimatorSet = new AnimatorSet();
-                            scaleAnimatorSet.play(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_X, 1f, scaleRatio))
-                                    .with(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_Y, 1f, scaleRatio))
+                            scaleAnimatorSet.play(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_X,
+                                    mScaledPreview.getScaleX(), scaleRatio))
+                                    .with(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_Y,
+                                            mScaledPreview.getScaleY(), scaleRatio))
                                     .with(ObjectAnimator.ofFloat(mColorItemDetailView, View.ALPHA, 0f, 1f));
                             scaleAnimatorSet.start();
                         }
