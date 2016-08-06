@@ -24,8 +24,9 @@
     <!-- Delete color palette fragment -->
     <dimen name="fragment_dialog_delete_palette_message_padding_bottom">16dp</dimen>
 
-
     <dimen name="activity_color_picker_bottom_bar_height">72dp</dimen>
     <dimen name="activity_color_picker_bottom_bar_height_half">36dp</dimen>
+
+    <dimen name="square_shadow_inset_padding">8dp</dimen>
 
 </resources>

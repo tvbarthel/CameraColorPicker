@@ -4,18 +4,18 @@
     android:layout_height="match_parent"
     tools:context="fr.tvbarthel.apps.cameracolorpicker.activities.ColorDetailActivity">
 
-    <View
+    <fr.tvbarthel.apps.cameracolorpicker.views.ColorDotView
         android:id="@+id/activity_color_detail_preview_translating"
-        android:layout_width="@dimen/row_color_item_preview_size"
-        android:layout_height="@dimen/row_color_item_preview_size"
+        android:layout_width="@dimen/row_color_palette_thumbnail_size"
+        android:layout_height="@dimen/row_color_palette_thumbnail_size"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="@dimen/row_color_palette_thumbnail_size_half"
         android:background="@drawable/oval_white" />
 
     <FrameLayout
         android:id="@+id/activity_color_detail_preview_container"
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="@dimen/activity_palette_detail_top_palette_height">
 
         <View
             android:id="@+id/activity_color_detail_preview_scaling"
@@ -30,7 +30,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="@dimen/activity_palette_detail_top_palette_height">
 
         <fr.tvbarthel.apps.cameracolorpicker.views.ColorItemDetailView
             android:id="@+id/activity_color_detail_color_item_detail_view"
@@ -40,4 +40,12 @@
             tools:visibility="visible" />
     </ScrollView>
 
+    <View
+        android:id="@+id/activity_color_detail_list_view_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginTop="@dimen/activity_palette_detail_top_palette_height"
+        android:background="@drawable/linear_gradient_bottom"
+        android:visibility="invisible"
+        tools:visibility="visible" />
 </merge>

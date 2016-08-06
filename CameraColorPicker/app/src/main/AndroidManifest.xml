@@ -18,6 +18,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="fullSensor"
             android:theme="@style/CCPTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +30,8 @@
         <activity
             android:name=".activities.ColorPickerActivity"
             android:label="@string/activity_color_picker_label"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="fullSensor">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -37,12 +39,14 @@
 
         <activity
             android:name=".activities.ColorDetailActivity"
-            android:label="@string/activity_color_detail_label" />
+            android:label="@string/activity_color_detail_label"
+            android:screenOrientation="fullSensor" />
 
         <activity
             android:name=".activities.PaletteDetailActivity"
             android:label="@string/activity_palette_detail_label"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="fullSensor">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fr.tvbarthel.apps.cameracolorpicker.activities.MainActivity" />
@@ -51,7 +55,8 @@
         <activity
             android:name=".activities.LicenseActivity"
             android:label="@string/activity_license_label"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="fullSensor">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
@@ -60,7 +65,8 @@
         <activity
             android:name=".activities.PaletteCreationActivity"
             android:label="@string/activity_palette_creation_label"
-            android:parentActivityName=".activities.MainActivity">
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="fullSensor">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
