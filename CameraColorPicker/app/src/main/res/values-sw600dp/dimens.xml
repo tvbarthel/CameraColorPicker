@@ -12,4 +12,6 @@
     <dimen name="activity_color_picker_pointer_ring_size">96dp</dimen>
     <dimen name="activity_color_picker_pointer_ring_thickness">16dp</dimen>
 
+    <dimen name="main_activity_tab_indicator_height">8dp</dimen>
+
 </resources>

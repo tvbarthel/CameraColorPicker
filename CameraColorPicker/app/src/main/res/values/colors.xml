@@ -13,7 +13,8 @@
     <color name="pointer_color">#80FFFFFF</color>
 
     <color name="black_shadow">#33000000</color>
-    <color name="activity_main_background_color">#ffffff</color>
+
+    <color name="activity_main_background_color">#EEEEEE</color>
 
     <color name="activity_color_picker_bottom_bar_background">#ffffff</color>
 </resources>
