@@ -29,4 +29,6 @@
 
     <dimen name="square_shadow_inset_padding">8dp</dimen>
 
+    <dimen name="main_activity_tab_indicator_height">4dp</dimen>
+
 </resources>

@@ -21,6 +21,7 @@
         android:background="@color/color_primary"
         android:textColor="@color/secondary_text_default_material_dark"
         app:pstsIndicatorColor="@android:color/white"
+        app:pstsIndicatorHeight="@dimen/main_activity_tab_indicator_height"
         app:pstsShouldExpand="true"
         app:pstsTabBackground="@drawable/bg_tab"
         app:pstsTextColorSelected="@android:color/white" />
