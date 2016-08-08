@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kids Camera Color Picker</string>
+    <string name="activity_main_error_not_enough_colors"></string>
+
+    <!-- Palette creation activity -->
+    <string name="activity_palette_creation_default_palette_name">Palette %d</string>
+</resources>

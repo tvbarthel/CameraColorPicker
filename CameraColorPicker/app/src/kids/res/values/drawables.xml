@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="ic_fab_color_picker_action">@drawable/ic_image_colorize</drawable>
+    <drawable name="ic_fab_palette_creation_action">@drawable/ic_image_palette</drawable>
+</resources>

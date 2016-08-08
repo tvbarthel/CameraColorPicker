@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Activity palette detail -->
+    <dimen name="activity_palette_detail_top_palette_height">250dp</dimen>
+
+    <!-- Row color palette -->
+    <dimen name="row_color_palette_thumbnail_size">125dp</dimen>
+    <dimen name="row_color_palette_thumbnail_size_half">63dp</dimen>
+
+    <!-- Activity color picker -->
+    <dimen name="activity_color_picker_pointer_size">16dp</dimen>
+    <dimen name="activity_color_picker_pointer_ring_size">96dp</dimen>
+    <dimen name="activity_color_picker_pointer_ring_thickness">16dp</dimen>
+
+    <dimen name="main_activity_tab_indicator_height">8dp</dimen>
+
+</resources>

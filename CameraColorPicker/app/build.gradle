@@ -17,15 +17,31 @@ android {
         }
     }
 
+    flavorDimensions "store", "user"
+
     productFlavors {
         googleplay {
             versionCode 8
             versionName "gp-0.0.8"
+            dimension "store"
         }
 
         foss {
             versionCode 8
             versionName "foss-0.0.8"
+            applicationIdSuffix ".foss"
+            dimension "store"
+        }
+
+        // as opposed to kids
+        adult {
+            dimension "user"
+        }
+
+        // attempt to adapt app for children.
+        kids {
+            dimension "user"
+            applicationIdSuffix ".kids"
         }
     }
 }
@@ -33,6 +49,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.jpardogo.materialtabstrip:library:1.0.9'

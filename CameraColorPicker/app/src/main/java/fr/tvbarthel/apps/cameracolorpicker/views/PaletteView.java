@@ -99,7 +99,7 @@ public class PaletteView extends View {
             // Draw a rec for each color items in the palette.
             final List<ColorItem> colorItems = mPalette.getColors();
             final float colorWidth = mBounds.width() / colorItems.size();
-            mRect.set(mBounds.left, mBounds.top, colorWidth, mBounds.bottom);
+            mRect.set(mBounds.left, mBounds.top, mBounds.left + colorWidth, mBounds.bottom);
 
             for (ColorItem colorItem : colorItems) {
                 mColorPaint.setColor(colorItem.getColor());

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/row_color_item_size"
+    android:background="?selectableItemBackground">
+
+    <fr.tvbarthel.apps.cameracolorpicker.views.ColorDotView
+        android:id="@+id/row_color_item_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/default_padding_half"
+        android:layout_gravity="start|center_vertical" />
+
+    <TextView
+        android:id="@+id/row_color_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="72dp"
+        android:layout_marginStart="72dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/abc_primary_text_material_light"
+        tools:text="#FF4455" />
+
+</FrameLayout>

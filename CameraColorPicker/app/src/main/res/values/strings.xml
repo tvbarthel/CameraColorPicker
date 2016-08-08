@@ -27,11 +27,6 @@
 
     <!-- Palette creation activity -->
     <string name="activity_palette_creation_label">New palette</string>
-    <string name="activity_palette_creation_instruction">To add colors to your palette\nsimply click on the list bellow.</string>
-    <string name="activity_palette_creation_empty_color_palette_builder">Add at least 1 color to the palette.</string>
-    <string name="activity_palette_creation_edit_text_dialog_fragment_title">Create your palette</string>
-    <string name="activity_palette_creation_edit_text_dialog_fragment_hint">My new awesome palette</string>
-    <string name="activity_palette_creation_edit_text_dialog_fragment_positive_button">Create</string>
 
     <!-- Palette detail activity -->
     <string name="activity_palette_detail_label">Detail</string>
@@ -43,14 +38,6 @@
     <string name="fragment_dialog_about_version_name">Version %1$s</string>
     <string name="fragment_dialog_about_message">Camera Color Picker is a free and open source Android app that lets you capture the colors around you using the camera of your device.</string>
     <string name="fragment_dialog_about_made_by">Made in France with love by tbarthel &amp; vbarthel.</string>
-
-    <!-- Delete color dialog fragment -->
-    <string name="fragment_dialog_delete_color_title">Warning</string>
-    <string name="fragment_dialog_delete_color_message">Delete the color from your phone?</string>
-
-    <!-- Delete palette dialog fragment -->
-    <string name="fragment_dialog_delete_palette_title">Warning</string>
-    <string name="fragment_dialog_delete_palette_message">Delete the palette %1$s from your phone?</string>
 
     <!-- Main menu -->
     <string name="menu_main_action_contact_us">Contact us</string>

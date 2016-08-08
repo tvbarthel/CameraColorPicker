@@ -3,19 +3,11 @@ package fr.tvbarthel.apps.cameracolorpicker.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
-import fr.tvbarthel.apps.cameracolorpicker.R;
 import fr.tvbarthel.apps.cameracolorpicker.data.Palette;
-import fr.tvbarthel.apps.cameracolorpicker.views.PaletteView;
 
 /**
  * A simple {@link android.support.v4.app.DialogFragment} used to ask the user to confirm the deletion of a {@link fr.tvbarthel.apps.cameracolorpicker.data.Palette}.
@@ -67,27 +59,7 @@ public class DeletePaletteDialogFragment extends DialogFragment {
         }
 
         final Palette paletteToDelete = arguments.getParcelable(ARG_PALETTE);
-
-        final Context context = getActivity();
-        final View view = LayoutInflater.from(context).inflate(R.layout.fragment_dialog_delete_palette, null);
-        final PaletteView paletteView = (PaletteView) view.findViewById(R.id.fragment_dialog_delete_palette_preview);
-        final TextView messageTextView = (TextView) view.findViewById(R.id.fragment_dialog_delete_palette_message);
-
-        paletteView.setPalette(paletteToDelete);
-        messageTextView.setText(getString(R.string.fragment_dialog_delete_palette_message, paletteToDelete.getName()));
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(view)
-                .setCancelable(true)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mCallback.onPaletteDeletionConfirmed(paletteToDelete);
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null);
-
-        return builder.create();
+        return DeletePaletteDialogFragmentFlavor.createDialog(getContext(), paletteToDelete, mCallback);
     }
 
     @Override

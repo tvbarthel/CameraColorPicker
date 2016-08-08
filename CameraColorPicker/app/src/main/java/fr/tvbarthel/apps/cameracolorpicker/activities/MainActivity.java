@@ -7,10 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,16 +26,19 @@ import java.lang.annotation.RetentionPolicy;
 
 import cameracolorpicker.flavors.MainActivityFlavor;
 import fr.tvbarthel.apps.cameracolorpicker.R;
+import fr.tvbarthel.apps.cameracolorpicker.adapters.MainPagerAdapter;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItems;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.AboutDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.views.ColorItemListPage;
 import fr.tvbarthel.apps.cameracolorpicker.views.PaletteListPage;
 
+
 /**
  * An {@link android.support.v7.app.AppCompatActivity} that shows the list of the colors that the user saved.
  * <p/>
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+        ViewPager.OnPageChangeListener, ColorItemListPage.Listener, PaletteListPage.Listener {
 
     @IntDef({PAGE_ID_COLOR_ITEM_LIST, PAGE_ID_PALETTE_LIST})
     @Retention(RetentionPolicy.SOURCE)
@@ -76,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PagerSlidingTabStrip mTabs;
 
     /**
-     * A {@link com.melnykov.fab.FloatingActionButton} for launching the {@link fr.tvbarthel.apps.cameracolorpicker.activities.ColorPickerActivity}.
+     * A {@link com.melnykov.fab.FloatingActionButton} for launching the {@link ColorPickerBaseActivity}.
      */
     private FloatingActionButton mFab;
 
@@ -113,7 +116,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mCurrentPageId = PAGE_ID_COLOR_ITEM_LIST;
         mColorItemListPage = new ColorItemListPage(this);
+        mColorItemListPage.setListener(this);
         mPaletteListPage = new PaletteListPage(this);
+        mPaletteListPage.setListener(this);
 
         mFab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
         mFab.setOnClickListener(this);
@@ -203,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // Check if there is at least two color items.
                     // Creating a color palette with 1 or 0 colors make no sense.
                     if (ColorItems.getSavedColorItems(this).size() <= 1) {
+                        onEmphasisOnPaletteCreationRequested();
                         showToast(R.string.activity_main_error_not_enough_colors);
                     } else {
                         final Intent intentColorPaletteActivity = new Intent(this, PaletteCreationActivity.class);
@@ -257,6 +263,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Nothing to do.
     }
 
+    @Override
+    public void onEmphasisOnAddColorActionRequested() {
+        animateFab(mFab, 0);
+    }
+
+    @Override
+    public void onEmphasisOnPaletteCreationRequested() {
+        if (ColorItems.getSavedColorItems(this).size() <= 1) {
+            // needs more color to create a palette.
+            mViewPager.setCurrentItem(0, true);
+            animateFab(mFab, 300);
+        } else {
+            // touch the fab to create a palette.
+            animateFab(mFab, 0);
+        }
+    }
+
     /**
      * Set the current page id.
      *
@@ -265,9 +288,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setCurrentPage(@PageId int pageId) {
         mCurrentPageId = pageId;
         if (pageId == PAGE_ID_COLOR_ITEM_LIST) {
-            mFab.setImageResource(R.drawable.ic_image_colorize);
+            mFab.setImageResource(R.drawable.ic_fab_color_picker_action);
         } else if (pageId == PAGE_ID_PALETTE_LIST) {
-            mFab.setImageResource(R.drawable.ic_image_palette);
+            mFab.setImageResource(R.drawable.ic_fab_palette_creation_action);
         }
     }
 
@@ -288,21 +311,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void showToast(@StringRes int resId) {
         hideToast();
-        mToast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
-        mToast.show();
+        String toastText = getString(resId);
+        if (!TextUtils.isEmpty(toastText)) {
+            mToast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
+            mToast.show();
+        }
+    }
+
+    /**
+     * Make a subtle animation for a {@link com.melnykov.fab.FloatingActionButton} drawing attention to the button.
+     * Apply a default delay of 400ms.
+     * <p/>
+     * See also : {@link MainActivity#animateFab(FloatingActionButton, int)}
+     *
+     * @param fab the {@link com.melnykov.fab.FloatingActionButton} to animate.
+     */
+    private void animateFab(final FloatingActionButton fab) {
+        animateFab(fab, 400);
     }
 
     /**
      * Make a subtle animation for a {@link com.melnykov.fab.FloatingActionButton} drawing attention to the button.
      *
-     * @param fab the {@link com.melnykov.fab.FloatingActionButton} to animate.
+     * @param fab   the {@link com.melnykov.fab.FloatingActionButton} to animate.
+     * @param delay delay before the animation start.
      */
-    private void animateFab(final FloatingActionButton fab) {
+    private void animateFab(final FloatingActionButton fab, int delay) {
         fab.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Play a subtle animation
-                final long duration = 450;
+                final long duration = 300;
 
                 final ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(fab, View.SCALE_X, 1f, 1.2f, 1f);
                 scaleXAnimator.setDuration(duration);
@@ -319,10 +358,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 animatorSet.play(scaleXAnimator).with(scaleYAnimator);
                 animatorSet.start();
             }
-        }, 400);
+        }, delay);
     }
 
-    private class MyPagerAdapter extends PagerAdapter {
+    private class MyPagerAdapter extends MainPagerAdapter {
 
         @Override
         public CharSequence getPageTitle(int position) {
@@ -368,6 +407,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
-
     }
 }

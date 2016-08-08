@@ -20,9 +20,10 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/color_primary"
         android:textColor="@color/secondary_text_default_material_dark"
-        app:pstsTabBackground="@drawable/bg_tab"
         app:pstsIndicatorColor="@android:color/white"
+        app:pstsIndicatorHeight="@dimen/main_activity_tab_indicator_height"
         app:pstsShouldExpand="true"
+        app:pstsTabBackground="@drawable/bg_tab"
         app:pstsTextColorSelected="@android:color/white" />
 
     <FrameLayout
@@ -37,7 +38,8 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/activity_main_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/activity_main_background_color"/>
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/activity_main_fab"
@@ -45,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_image_colorize"
+            android:src="@drawable/ic_fab_color_picker_action"
             app:fab_colorNormal="@color/color_accent"
             app:fab_colorPressed="@color/color_accent"
             app:fab_colorRipple="?attr/colorControlHighlight" />

@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ColorPickerBaseActivity">
+
+    <FrameLayout
+        android:id="@+id/activity_color_picker_preview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="#808080">
+
+        <View
+            android:id="@+id/activity_color_picker_pointer_ring"
+            android:layout_width="@dimen/activity_color_picker_pointer_ring_size"
+            android:layout_height="@dimen/activity_color_picker_pointer_ring_size"
+            android:layout_gravity="center"
+            android:background="@drawable/pointer_ring" />
+
+        <View
+            android:id="@+id/activity_main_pointer"
+            android:layout_width="@dimen/activity_color_picker_pointer_size"
+            android:layout_height="@dimen/activity_color_picker_pointer_size"
+            android:layout_gravity="center"
+            android:background="@drawable/pointer" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/activity_color_picker_confirm_save_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/activity_color_picker_confirm_save_message"
+        android:visibility="invisible"
+        tools:visibility="visible" />
+
+
+    <RelativeLayout
+        android:id="@+id/activity_color_picker_bottom_bar"
+        android:layout_width="400dp"
+        android:layout_height="@dimen/activity_color_picker_bottom_bar_height"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:background="@color/activity_color_picker_bottom_bar_background">
+
+        <View
+            android:id="@+id/activity_color_picker_color_preview"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/oval_white" />
+
+        <TextView
+            android:id="@+id/activity_color_picker_color_preview_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+
+            android:layout_toEndOf="@+id/activity_color_picker_color_preview"
+            android:layout_toLeftOf="@+id/activity_color_picker_save_button"
+            android:layout_toRightOf="@+id/activity_color_picker_color_preview"
+            android:layout_toStartOf="@+id/activity_color_picker_save_button"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/abc_primary_text_material_light"
+            tools:text="#FF4455" />
+
+        <ImageButton
+            android:id="@+id/activity_color_picker_save_button"
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_save" />
+
+        <ImageView
+            android:id="@+id/activity_color_picker_save_completed"
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:scaleType="center"
+            android:src="@drawable/ic_check" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/activity_color_picker_animated_preview"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/oval_white"
+        android:visibility="invisible" />
+
+
+</RelativeLayout>
