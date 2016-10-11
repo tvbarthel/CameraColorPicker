@@ -3,6 +3,7 @@ package fr.tvbarthel.apps.cameracolorpicker.activities;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -201,6 +202,14 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
      */
     protected boolean mIsFlashOn;
 
+    /** the intent {@link android.content.Intent#getAction action} that led to this activity. */
+    protected String action = null;
+
+    /** <a href="http://www.openintents.org/action/org-openintents-action-pick-color/">
+     * see openintents.org</a> */
+    public static final String OI_COLOR_PICKER = "org.openintents.action.PICK_COLOR";
+    public static final String OI_COLOR_DATA = "org.openintents.extra.COLOR";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,6 +219,10 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
         initSaveCompletedProgressAnimator();
         initViews();
         initTranslationDeltas();
+
+        Intent intent = getIntent();
+        if (intent != null)
+            action = intent.getAction();
     }
 
     @Override
@@ -294,6 +307,13 @@ public class ColorPickerActivity extends AppCompatActivity implements CameraColo
         if (v == mCameraPreview) {
             animatePickedColor(mSelectedColor);
         } else if (v.getId() == R.id.activity_color_picker_save_button) {
+            if (OI_COLOR_PICKER.equals(action)) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(OI_COLOR_DATA, mLastPickedColor);
+                setResult(RESULT_OK, returnIntent);
+                finish();
+                return;
+            }
             ColorItems.saveColorItem(this, new ColorItem(mLastPickedColor));
             setSaveCompleted(true);
         }
