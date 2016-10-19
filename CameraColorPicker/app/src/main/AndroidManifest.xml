@@ -34,6 +34,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
+
+            <intent-filter>
+                <action android:name="org.openintents.action.PICK_COLOR" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <activity
