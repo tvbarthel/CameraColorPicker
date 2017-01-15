@@ -1,21 +1,34 @@
 <resources>
     <dimen name="default_padding">16dp</dimen>
+    <dimen name="default_padding_half">8dp</dimen>
 
     <!-- Activity color picker -->
     <dimen name="activity_color_picker_pointer_size">8dp</dimen>
     <dimen name="activity_color_picker_pointer_ring_size">48dp</dimen>
     <dimen name="activity_color_picker_pointer_ring_thickness">8dp</dimen>
 
+    <!-- Activity palette detail -->
+    <dimen name="activity_palette_detail_top_palette_height">150dp</dimen>
+
     <!-- Row color item -->
     <dimen name="row_color_item_preview_size">40dp</dimen>
+    <dimen name="row_color_item_preview_size_shadow_size">3dp</dimen>
 
     <!-- Row color palette -->
-    <dimen name="row_color_palette_thumbnail_size">40dp</dimen>
+    <dimen name="row_color_palette_thumbnail_size">75dp</dimen>
+    <dimen name="row_color_palette_thumbnail_size_half">37dp</dimen>
 
     <!-- Delete color dialog fragment -->
     <dimen name="fragment_dialog_delete_color_message_padding_bottom">16dp</dimen>
 
     <!-- Delete color palette fragment -->
     <dimen name="fragment_dialog_delete_palette_message_padding_bottom">16dp</dimen>
+
+    <dimen name="activity_color_picker_bottom_bar_height">72dp</dimen>
+    <dimen name="activity_color_picker_bottom_bar_height_half">36dp</dimen>
+
+    <dimen name="square_shadow_inset_padding">8dp</dimen>
+
+    <dimen name="main_activity_tab_indicator_height">4dp</dimen>
 
 </resources>

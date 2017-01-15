@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:minWidth="300dp"
+    android:orientation="vertical">
+
+    <fr.tvbarthel.apps.cameracolorpicker.views.PaletteView
+        android:id="@+id/fragment_dialog_delete_palette_preview"
+        android:layout_width="match_parent"
+        android:layout_height="56dp" />
+
+    <ImageView
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_margin="@dimen/default_padding"
+        android:src="@drawable/ic_warning_42dp"
+        android:tint="#ab0000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_marginTop="@dimen/default_padding"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <fr.tvbarthel.apps.cameracolorpicker.views.SquarePaletteView
+            android:id="@+id/fragment_dialog_delete_palette_preview_small"
+            android:layout_width="@dimen/row_color_item_preview_size"
+            android:layout_height="@dimen/row_color_item_preview_size"
+            android:layout_gravity="center"
+            android:background="@drawable/shadow_square" />
+
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_arrow_right_56dp"
+            android:tint="#585858" />
+
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_action_delete"
+            android:tint="#585858" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <ImageView
+            android:id="@+id/fragment_dialog_delete_palette_btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_close_42dp" />
+
+        <ImageView
+            android:id="@+id/fragment_dialog_delete_palette_btn_validate"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_check_42dp" />
+    </LinearLayout>
+
+</LinearLayout>

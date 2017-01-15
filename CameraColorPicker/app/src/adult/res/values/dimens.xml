@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="row_color_item_size">72dp</dimen>
+    <dimen name="row_palette_item_size">72dp</dimen>
+</resources>

@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         applicationId "fr.tvbarthel.apps.cameracolorpicker"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 25
     }
 
     buildTypes {
@@ -17,23 +17,40 @@ android {
         }
     }
 
+    flavorDimensions "store", "user"
+
     productFlavors {
         googleplay {
-            versionCode 7
-            versionName "gp-0.0.7"
+            versionCode 8
+            versionName "gp-0.0.8"
+            dimension "store"
         }
 
         foss {
-            versionCode 7
-            versionName "foss-0.0.7"
+            versionCode 8
+            versionName "foss-0.0.8"
+            applicationIdSuffix ".foss"
+            dimension "store"
+        }
+
+        // as opposed to kids
+        adult {
+            dimension "user"
+        }
+
+        // attempt to adapt app for children.
+        kids {
+            dimension "user"
+            applicationIdSuffix ".kids"
         }
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
-    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.4'
     compile 'com.jpardogo.materialtabstrip:library:1.0.9'
 }

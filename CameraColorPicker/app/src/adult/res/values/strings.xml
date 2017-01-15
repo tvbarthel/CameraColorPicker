@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Delete color dialog fragment -->
+    <string name="fragment_dialog_delete_color_title">Warning</string>
+    <string name="fragment_dialog_delete_color_message">Delete the color from your phone?</string>
+
+    <!-- Delete palette dialog fragment -->
+    <string name="fragment_dialog_delete_palette_title">Warning</string>
+    <string name="fragment_dialog_delete_palette_message">Delete the palette %1$s from your phone?
+    </string>
+
+    <!-- Palette creation activity -->
+    <string name="activity_palette_creation_instruction">To add colors to your palette\nsimply click
+        on the list bellow.
+    </string>
+    <string name="activity_palette_creation_edit_text_dialog_fragment_title">Create your palette
+    </string>
+    <string name="activity_palette_creation_edit_text_dialog_fragment_hint">My new awesome palette
+    </string>
+    <string name="activity_palette_creation_edit_text_dialog_fragment_positive_button">Create
+    </string>
+
+</resources>

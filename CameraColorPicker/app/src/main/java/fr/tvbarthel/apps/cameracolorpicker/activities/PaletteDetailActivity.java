@@ -13,17 +13,15 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -33,20 +31,20 @@ import java.io.IOException;
 import java.util.List;
 
 import fr.tvbarthel.apps.cameracolorpicker.R;
-import fr.tvbarthel.apps.cameracolorpicker.adapters.ColorItemAdapter;
 import fr.tvbarthel.apps.cameracolorpicker.data.ColorItem;
 import fr.tvbarthel.apps.cameracolorpicker.data.Palette;
 import fr.tvbarthel.apps.cameracolorpicker.data.Palettes;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.DeletePaletteDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.EditTextDialogFragment;
-import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
+import fr.tvbarthel.apps.cameracolorpicker.views.FlavorColorItemListWrapper;
 import fr.tvbarthel.apps.cameracolorpicker.views.PaletteView;
+import fr.tvbarthel.apps.cameracolorpicker.wrappers.ColorItemListWrapper;
 
 /**
  * A simple {@link AppCompatActivity} for displaying a {@link Palette} with its {@link ColorItem}s
  */
 public class PaletteDetailActivity extends AppCompatActivity implements DeletePaletteDialogFragment.Callback,
-        EditTextDialogFragment.Callback {
+        EditTextDialogFragment.Callback, ColorItemListWrapper.ColorItemListWrapperListener {
 
     /**
      * The quality of the image compressed before sharing.
@@ -83,6 +81,11 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
      */
     protected static final String EXTRA_START_BOUNDS = "PaletteDetailActivity.Extras.EXTRA_START_BOUNDS";
 
+    /**
+     * Inset of the square shadow which must be take into account we evaluate the scale ratio.
+     */
+    private int shadowInset;
+
     public static void startWithColorPalette(Context context, Palette palette, View colorPreviewClicked) {
         final boolean isActivity = context instanceof Activity;
         final Rect startBounds = new Rect();
@@ -118,11 +121,6 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
     protected Palette mPalette;
 
     /**
-     * The user-visible label for the clip {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem}.
-     */
-    private String mClipColorItemLabel;
-
-    /**
      * A reference to the current {@link android.widget.Toast}.
      * <p/>
      * Used for hiding the current {@link android.widget.Toast} before showing a new one or the activity is paused.
@@ -135,13 +133,16 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
      */
     private Palettes.OnPaletteChangeListener mOnPaletteChangeListener;
 
+    /**
+     * A {@link ColorItemListWrapper}.
+     */
+    private ColorItemListWrapper mColorItemListWrapper;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_palette_detail);
-
-        mClipColorItemLabel = getString(R.string.color_clip_color_label_hex);
 
         // ensure correct extras.
         final Intent intent = getIntent();
@@ -165,28 +166,12 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
         mTranslatedPreview = (PaletteView) findViewById(R.id.activity_palette_detail_preview_translating);
         mScaledPreview = (PaletteView) findViewById(R.id.activity_palette_detail_preview_scaling);
         final View listViewShadow = findViewById(R.id.activity_palette_detail_list_view_shadow);
-        final ListView listView = (ListView) findViewById(R.id.activity_palette_detail_list_view);
-        final ColorItemAdapter adapter = new ColorItemAdapter(this);
-        adapter.addAll(mPalette.getColors());
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final ColorItem colorItem = adapter.getItem(position);
-                ColorDetailActivity.startWithColorItem(view.getContext(), colorItem,
-                        view.findViewById(R.id.row_color_item_preview), mPalette);
-            }
-        });
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.activity_palette_detail_list_view);
+        mColorItemListWrapper = new FlavorColorItemListWrapper(recyclerView, this);
+        mColorItemListWrapper.installRecyclerView();
+        mColorItemListWrapper.setItems(mPalette.getColors());
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final ColorItem colorItem = adapter.getItem(position);
-                ClipDatas.clipPainText(view.getContext(), mClipColorItemLabel, colorItem.getHexString());
-                showToast(R.string.color_clip_success_copy_message);
-                return true;
-            }
-        });
+        shadowInset = getResources().getDimensionPixelSize(R.dimen.square_shadow_inset_padding);
 
         mTranslatedPreview.setPalette(mPalette);
         mScaledPreview.setPalette(mPalette);
@@ -197,14 +182,23 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
                 @Override
                 public boolean onPreDraw() {
                     mTranslatedPreview.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                    mTranslatedPreview.getGlobalVisibleRect(stopBounds);
+                    final float scale = startBounds.width() / (float) stopBounds.width();
+                    mTranslatedPreview.setScaleX(scale);
+                    mTranslatedPreview.setScaleY(scale);
+
+                    // compute bounds again to include scale.
                     mTranslatedPreview.getGlobalVisibleRect(stopBounds);
                     final int deltaX = startBounds.left - stopBounds.left;
                     final int deltaY = startBounds.top - stopBounds.top;
-                    final float scaleRatioX = mTranslatedPreview.getWidth() / (float) mScaledPreview.getWidth();
-                    final float scaleRatioY = mTranslatedPreview.getHeight() / (float) mScaledPreview.getHeight();
+
+                    final float scaleRatioX = (float) (stopBounds.width() - 2 * shadowInset) / (float) (mScaledPreview.getWidth());
+                    final float scaleRatioY = (float) (stopBounds.height() - 2 * shadowInset) / (float) mScaledPreview.getHeight();
                     mScaledPreview.setScaleX(scaleRatioX);
                     mScaledPreview.setScaleY(scaleRatioY);
                     mScaledPreview.setVisibility(View.INVISIBLE);
+
                     final AnimatorSet translationAnimatorSet = new AnimatorSet();
                     translationAnimatorSet.play(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_X, deltaX, 0))
                             .with(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_Y, deltaY, 0));
@@ -215,13 +209,13 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            listView.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
                             mScaledPreview.setVisibility(View.VISIBLE);
                             listViewShadow.setVisibility(View.VISIBLE);
                             final AnimatorSet scaleAnimatorSet = new AnimatorSet();
                             scaleAnimatorSet.play(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_X, scaleRatioX, 1f))
                                     .with(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_Y, scaleRatioY, 1f))
-                                    .with(ObjectAnimator.ofFloat(listView, View.ALPHA, 0f, 1f))
+                                    .with(ObjectAnimator.ofFloat(recyclerView, View.ALPHA, 0f, 1f))
                                     .with(ObjectAnimator.ofFloat(listViewShadow, View.ALPHA, 0f, 1f));
                             scaleAnimatorSet.start();
                         }
@@ -260,13 +254,14 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
                     // Reload the palette.
                     mPalette = newPalette;
                     setTitle(mPalette.getName());
-                    adapter.clear();
-                    adapter.addAll(mPalette.getColors());
+                    mColorItemListWrapper.setItems(mPalette.getColors());
                 }
             }
         };
 
         Palettes.registerListener(this, mOnPaletteChangeListener);
+
+        PaletteDetailActivityFlavor.onCreate(this);
     }
 
     @Override
@@ -291,6 +286,7 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_palette_detail, menu);
+        PaletteDetailActivityFlavor.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -334,6 +330,11 @@ public class PaletteDetailActivity extends AppCompatActivity implements DeletePa
     @Override
     public void onEditTextDialogFragmentNegativeButtonClick(int requestCode) {
         // Nothing to do. The user aborted the edition of the name of the palette.
+    }
+
+    @Override
+    public void onColorItemClicked(@NonNull ColorItem colorItem, @NonNull View colorPreview) {
+        ColorDetailActivity.startWithColorItem(this, colorItem, colorPreview, mPalette);
     }
 
     /**

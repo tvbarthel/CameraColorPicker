@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Row color item -->
+    <dimen name="row_color_item_preview_size">50dp</dimen>
+
+    <dimen name="row_color_item_size">88dp</dimen>
+    <dimen name="row_palette_item_size">88dp</dimen>
+</resources>

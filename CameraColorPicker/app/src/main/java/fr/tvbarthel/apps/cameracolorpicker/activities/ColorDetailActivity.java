@@ -12,7 +12,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -21,10 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,10 +34,10 @@ import fr.tvbarthel.apps.cameracolorpicker.data.Palette;
 import fr.tvbarthel.apps.cameracolorpicker.data.Palettes;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.DeleteColorDialogFragment;
 import fr.tvbarthel.apps.cameracolorpicker.fragments.EditTextDialogFragment;
-import fr.tvbarthel.apps.cameracolorpicker.utils.ClipDatas;
+import fr.tvbarthel.apps.cameracolorpicker.views.ColorItemDetailView;
 
-public class ColorDetailActivity extends AppCompatActivity implements View.OnClickListener,
-        DeleteColorDialogFragment.Callback, EditTextDialogFragment.Callback {
+public class ColorDetailActivity extends AppCompatActivity implements DeleteColorDialogFragment.Callback,
+        EditTextDialogFragment.Callback {
 
     /**
      * A key for passing a color item as extra.
@@ -56,7 +51,6 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
 
     /**
      * A key for passing an optional palette that is associated with the color item displayed.
-     *
      */
     private static final String EXTRA_PALETTE = "ColorDetailActivity.Extras.EXTRA_PALETTE";
 
@@ -83,7 +77,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     /**
      * The authority of the file provider declared in our manifest.
      */
-    private static final String FILE_PROVIDER_AUTHORITY = "fr.tvbarthel.apps.cameracolorpicker.fileprovider";
+    private static final String FILE_PROVIDER_AUTHORITY = ".fileprovider";
 
     /**
      * A request code to use in {@link EditTextDialogFragment#newInstance(int, int, int, int, String, String, boolean)}.
@@ -91,7 +85,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     private static final int REQUEST_CODE_EDIT_COLOR_ITEM_NAME = 15;
 
     public static void startWithColorItem(Context context, ColorItem colorItem,
-                                          View colorPreviewClicked){
+                                          View colorPreviewClicked) {
         startWithColorItem(context, colorItem, colorPreviewClicked, null);
     }
 
@@ -127,27 +121,9 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
     private View mScaledPreview;
 
     /**
-     * A {@link android.widget.TextView} for showing the hexadecimal value of the color.
+     * A {@link ColorItemDetailView} displaying details of a {@link ColorItem}.
      */
-    private TextView mHex;
-
-    /**
-     * A {@link android.widget.TextView} for showing the RGB value of the color.
-     */
-    private TextView mRgb;
-
-    /**
-     * A {@link android.widget.TextView} for showing the HSV value of the color.
-     */
-    private TextView mHsv;
-
-    /**
-     * A reference to the current {@link android.widget.Toast}.
-     * <p/>
-     * Used for hiding the current {@link android.widget.Toast} before showing a new one or the activity is paused.
-     * {@link }
-     */
-    private Toast mToast;
+    private ColorItemDetailView mColorItemDetailView;
 
     /**
      * The {@link fr.tvbarthel.apps.cameracolorpicker.data.ColorItem} being displayed.
@@ -158,6 +134,16 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
      * An optional {@link Palette} that is associated with the {@link ColorItem}.
      */
     private Palette mPalette;
+
+    /**
+     * Inset of the round shadow which must be take into account we evaluate the scale ratio.
+     */
+    private int shadowInset;
+
+    /**
+     * Shadow used as delimiter.
+     */
+    private View mShadow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,27 +175,21 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
             setTitle(mColorItem.getHexString());
         }
 
+        shadowInset = getResources().getDimensionPixelSize(R.dimen.row_color_item_preview_size_shadow_size);
+
         // Create a rect that will be used to retrieve the stop bounds.
         final Rect stopBounds = new Rect();
 
         // Find the views.
         mTranslatedPreview = findViewById(R.id.activity_color_detail_preview_translating);
         mScaledPreview = findViewById(R.id.activity_color_detail_preview_scaling);
-        mHex = (TextView) findViewById(R.id.activity_color_detail_hex);
-        mRgb = (TextView) findViewById(R.id.activity_color_detail_rgb);
-        mHsv = (TextView) findViewById(R.id.activity_color_detail_hsv);
-
-        // Set the click listeners.
-        mHex.setOnClickListener(this);
-        mRgb.setOnClickListener(this);
-        mHsv.setOnClickListener(this);
+        mColorItemDetailView = (ColorItemDetailView) findViewById(R.id.activity_color_detail_color_item_detail_view);
+        mColorItemDetailView.setColorItem(mColorItem);
+        mShadow = findViewById(R.id.activity_color_detail_list_view_shadow);
 
         // Display the color item data.
         mTranslatedPreview.getBackground().setColorFilter(mColorItem.getColor(), PorterDuff.Mode.MULTIPLY);
         mScaledPreview.getBackground().setColorFilter(mColorItem.getColor(), PorterDuff.Mode.MULTIPLY);
-        mHex.setText(mColorItem.getHexString());
-        mRgb.setText(mColorItem.getRgbString());
-        mHsv.setText(mColorItem.getHsvString());
 
         final View previewContainer = findViewById(R.id.activity_color_detail_preview_container);
         final ViewTreeObserver viewTreeObserver = previewContainer.getViewTreeObserver();
@@ -218,12 +198,26 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public boolean onPreDraw() {
                     previewContainer.getViewTreeObserver().removeOnPreDrawListener(this);
+
                     mTranslatedPreview.getGlobalVisibleRect(stopBounds);
-                    final int deltaX = startBounds.left - stopBounds.left;
+                    final float scale = startBounds.width() / (float) stopBounds.width();
+                    mTranslatedPreview.setScaleX(scale);
+                    mTranslatedPreview.setScaleY(scale);
+
+                    // compute bounds again to include scale.
+                    mTranslatedPreview.getGlobalVisibleRect(stopBounds);
                     final int deltaY = startBounds.top - stopBounds.top;
+                    final int deltaX = startBounds.left - stopBounds.left;
+
+                    float scaleRatioX = (startBounds.width() - 2 * shadowInset) / (float) stopBounds.width();
+                    float scaleRatioY = (startBounds.height() - 2 * shadowInset) / (float) stopBounds.height();
+                    mScaledPreview.setScaleX(scaleRatioX);
+                    mScaledPreview.setScaleY(scaleRatioY);
+
                     final AnimatorSet translationAnimatorSet = new AnimatorSet();
-                    translationAnimatorSet.play(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_X, deltaX, 0))
-                            .with(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_Y, deltaY, 0));
+                    translationAnimatorSet
+                            .play(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_X, deltaX, 0))
+                            .with(ObjectAnimator.ofFloat(mTranslatedPreview, View.TRANSLATION_Y, deltaY, -2 * shadowInset));
                     translationAnimatorSet.addListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
@@ -232,18 +226,18 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             mScaledPreview.setVisibility(View.VISIBLE);
-                            mHex.setVisibility(View.VISIBLE);
-                            mRgb.setVisibility(View.VISIBLE);
-                            mHsv.setVisibility(View.VISIBLE);
+                            mColorItemDetailView.setVisibility(View.VISIBLE);
+                            mShadow.setVisibility(View.VISIBLE);
+
                             final float maxContainerSize = (float) Math.sqrt(Math.pow(previewContainer.getWidth(), 2) + Math.pow(previewContainer.getHeight(), 2));
                             final float maxSize = Math.max(mScaledPreview.getWidth(), mScaledPreview.getHeight());
                             final float scaleRatio = maxContainerSize / maxSize;
                             final AnimatorSet scaleAnimatorSet = new AnimatorSet();
-                            scaleAnimatorSet.play(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_X, 1f, scaleRatio))
-                                    .with(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_Y, 1f, scaleRatio))
-                                    .with(ObjectAnimator.ofFloat(mHex, View.ALPHA, 0f, 1f))
-                                    .with(ObjectAnimator.ofFloat(mRgb, View.ALPHA, 0f, 1f))
-                                    .with(ObjectAnimator.ofFloat(mHsv, View.ALPHA, 0f, 1f));
+                            scaleAnimatorSet.play(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_X,
+                                    mScaledPreview.getScaleX(), scaleRatio))
+                                    .with(ObjectAnimator.ofFloat(mScaledPreview, View.SCALE_Y,
+                                            mScaledPreview.getScaleY(), scaleRatio))
+                                    .with(ObjectAnimator.ofFloat(mColorItemDetailView, View.ALPHA, 0f, 1f));
                             scaleAnimatorSet.start();
                         }
 
@@ -261,12 +255,8 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
                 }
             });
         }
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        hideToast();
+        ColorDetailActivityFlavor.onCreate(this);
     }
 
     @Override
@@ -284,6 +274,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
             // A color associated with a palette can't be deleted.
             menu.removeItem(R.id.menu_color_detail_action_delete);
         }
+        ColorDetailActivityFlavor.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -301,7 +292,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
         } else if (id == android.R.id.home) {
             finish();
         } else if (id == R.id.menu_color_detail_action_share) {
-            return handleActionShare();
+            return handleActionShare(this);
         } else if (id == R.id.menu_color_detail_action_edit) {
             EditTextDialogFragment.newInstance(REQUEST_CODE_EDIT_COLOR_ITEM_NAME,
                     R.string.activity_color_detail_edit_text_dialog_fragment_title,
@@ -312,28 +303,6 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View view) {
-        final int viewId = view.getId();
-
-        switch (viewId) {
-            case R.id.activity_color_detail_hex:
-                clipColor(R.string.color_clip_color_label_hex, mHex.getText());
-                break;
-
-            case R.id.activity_color_detail_rgb:
-                clipColor(R.string.color_clip_color_label_rgb, mRgb.getText());
-                break;
-
-            case R.id.activity_color_detail_hsv:
-                clipColor(R.string.color_clip_color_label_hsv, mHsv.getText());
-                break;
-
-            default:
-                throw new IllegalArgumentException("Unsupported view clicked. Found: " + view);
-        }
     }
 
     @Override
@@ -382,42 +351,15 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
         // nothing to do here.
     }
 
-
-    protected void clipColor(int labelResourceId, CharSequence colorString) {
-        ClipDatas.clipPainText(this, getString(labelResourceId), colorString);
-        showToast(R.string.color_clip_success_copy_message);
-    }
-
-
-    /**
-     * Hide the current {@link android.widget.Toast}.
-     */
-    protected void hideToast() {
-        if (mToast != null) {
-            mToast.cancel();
-            mToast = null;
-        }
-    }
-
-    /**
-     * Show a toast text message.
-     *
-     * @param resId The resource id of the string resource to use.
-     */
-    protected void showToast(int resId) {
-        hideToast();
-        mToast = Toast.makeText(this, resId, Toast.LENGTH_SHORT);
-        mToast.show();
-    }
-
     /**
      * Handle the share action from the menu item.
      * <p/>
      * Create a bitmap, draw the color and send an intent for sharing the color.
      *
+     * @param context context used to initialize internal component.
      * @return Returns true if the share action was handled correctly, false otherwise.
      */
-    private boolean handleActionShare() {
+    private boolean handleActionShare(Context context) {
         boolean handled;
         try {
             // Create a bitmap and draw the color.
@@ -440,7 +382,7 @@ public class ColorDetailActivity extends AppCompatActivity implements View.OnCli
 
                 // Get the content uri.
                 final Uri contentUri = FileProvider.getUriForFile(this,
-                        FILE_PROVIDER_AUTHORITY, shareColorFile);
+                        context.getPackageName() + FILE_PROVIDER_AUTHORITY, shareColorFile);
 
                 // Send an intent to share the image.
                 final Intent intent = new Intent(Intent.ACTION_SEND);
