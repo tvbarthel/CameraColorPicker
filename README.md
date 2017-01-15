@@ -2,6 +2,24 @@
 
 [Camera Color Picker](http://tvbarthel.github.io/CameraColorPicker/) is an Android application that lets you capture, in real time, the colors around you using the camera of your device.
 
+Product Flavor
+=======
+Last project release introduce the new flavorDimension "user" with two values:
+- kids
+- adult
+
+This dimension main idea is to target who is gonna use the built apk. Is it a child or
+an adult?
+
+The "adult" productFlavor is the historic app with previous user
+experience whereas the "kids" productFlavor introduce some changes in order to
+allow kids to use the app despite lake of reading skills.
+
+This better experience for kids was initiate by [Jo Grimstad](https://github.com/jogrimst)
+who validated each improvements from an UX point of view thanks to his precious
+knowledges of digital contents for young children.
+
+
 Contributing
 =======
 Contributions are welcome (: You can contribute through GitHub by forking the repository and sending a pull request.
