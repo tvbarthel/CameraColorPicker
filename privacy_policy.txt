@@ -1,0 +1,17 @@
+Welcome to the Camera Color Picker Privacy Policy
+
+Personal data:
+The app does not collect any personnal information.
+
+Camera usage:
+The camera is only used for picking a color:
+the color is extracted from the pixels at the
+center of the camera preview.
+
+If you have a doubt about what the app is doing, feel
+free to browse the code source: the app is 100% open source
+and has nothing to hide =)
+
+https://github.com/tvbarthel/CameraColorPicker
+
+Feel free to contact us at tvbarthel@gmail.com
