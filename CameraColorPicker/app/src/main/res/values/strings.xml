@@ -3,6 +3,7 @@
 
     <!-- General -->
     <string name="app_name">Camera Color Picker</string>
+    <string name="main_activity_title">@string/app_name</string>
     <string name="contact_us_email" translatable="false">tvbarthel@gmail.com</string>
     <string name="contact_us_uri" translatable="false">mailto:%1$s?subject=%2$s</string>
     <string name="contact_us_default_subject">[Camera Color Picker] Suggestion</string>
