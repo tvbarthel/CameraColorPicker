@@ -9,6 +9,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -39,6 +40,13 @@ import fr.tvbarthel.apps.cameracolorpicker.views.PaletteListPage;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         ViewPager.OnPageChangeListener, ColorItemListPage.Listener, PaletteListPage.Listener {
+
+    /**
+     * https://medium.com/@chrisbanes/appcompat-v23-2-age-of-the-vectors-91cbafa87c88
+     */
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @IntDef({PAGE_ID_COLOR_ITEM_LIST, PAGE_ID_PALETTE_LIST})
     @Retention(RetentionPolicy.SOURCE)
@@ -121,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPaletteListPage.setListener(this);
 
         mFab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
+        mFab.setImageResource(R.drawable.ic_fab_color_picker_action);
         mFab.setOnClickListener(this);
 
         final MyPagerAdapter adapter = new MyPagerAdapter();
