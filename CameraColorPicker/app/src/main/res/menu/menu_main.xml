@@ -7,18 +7,21 @@
         android:id="@+id/menu_main_action_contact_us"
         android:orderInCategory="50"
         android:title="@string/menu_main_action_contact_us"
+        android:visible="@bool/is_menu_enabled"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_main_action_licenses"
         android:orderInCategory="100"
         android:title="@string/menu_main_action_licenses"
+        android:visible="@bool/is_menu_enabled"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_main_action_about"
         android:orderInCategory="200"
         android:title="@string/menu_main_action_about"
+        android:visible="@bool/is_menu_enabled"
         app:showAsAction="never" />
 
 </menu>
