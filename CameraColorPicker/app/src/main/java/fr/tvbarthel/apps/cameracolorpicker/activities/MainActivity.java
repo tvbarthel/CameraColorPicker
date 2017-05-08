@@ -1,12 +1,17 @@
 package fr.tvbarthel.apps.cameracolorpicker.activities;
 
+import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -64,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int PAGE_ID_PALETTE_LIST = 2;
 
     /**
+     * Request code used for permissions.
+     */
+    private static final int PERMISSION_REQUEST_CODE = 0x00000001;
+
+    /**
      * A reference to the current {@link android.widget.Toast}.
      * <p/>
      * Used for hiding the current {@link android.widget.Toast} before showing a new one or when the activity is paused.
@@ -117,29 +127,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mToolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
-        mToolbar.setTitle(R.string.main_activity_title);
-        setSupportActionBar(mToolbar);
+        if (arePermissionsGranted()) {
+            setContentView(R.layout.activity_main);
+            mToolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
+            mToolbar.setTitle(R.string.main_activity_title);
+            setSupportActionBar(mToolbar);
 
-        mCurrentPageId = PAGE_ID_COLOR_ITEM_LIST;
-        mColorItemListPage = new ColorItemListPage(this);
-        mColorItemListPage.setListener(this);
-        mPaletteListPage = new PaletteListPage(this);
-        mPaletteListPage.setListener(this);
+            mCurrentPageId = PAGE_ID_COLOR_ITEM_LIST;
+            mColorItemListPage = new ColorItemListPage(this);
+            mColorItemListPage.setListener(this);
+            mPaletteListPage = new PaletteListPage(this);
+            mPaletteListPage.setListener(this);
 
-        mFab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
-        mFab.setImageResource(R.drawable.ic_fab_color_picker_action);
-        mFab.setOnClickListener(this);
+            mFab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
+            mFab.setImageResource(R.drawable.ic_fab_color_picker_action);
+            mFab.setOnClickListener(this);
 
-        final MyPagerAdapter adapter = new MyPagerAdapter();
-        mTabs = (PagerSlidingTabStrip) findViewById(R.id.activity_main_tabs);
-        mViewPager = (ViewPager) findViewById(R.id.activity_main_view_pager);
-        mViewPager.setAdapter(adapter);
-        mTabs.setViewPager(mViewPager);
-        mTabs.setOnPageChangeListener(this);
+            final MyPagerAdapter adapter = new MyPagerAdapter();
+            mTabs = (PagerSlidingTabStrip) findViewById(R.id.activity_main_tabs);
+            mViewPager = (ViewPager) findViewById(R.id.activity_main_view_pager);
+            mViewPager.setAdapter(adapter);
+            mTabs.setViewPager(mViewPager);
+            mTabs.setOnPageChangeListener(this);
 
-        mMainActivityFlavor = new MainActivityFlavor(this);
+            mMainActivityFlavor = new MainActivityFlavor(this);
+        }
     }
 
     @Override
@@ -155,6 +167,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         hideToast();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
+                finish();
+                break;
+            default:
+                throw new IllegalStateException("Permission result not handled for the request code:" + requestCode);
+        }
     }
 
     @Override
@@ -336,7 +362,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param fab the {@link com.melnykov.fab.FloatingActionButton} to animate.
      */
     private void animateFab(final FloatingActionButton fab) {
-        animateFab(fab, 400);
+        if (fab != null) {
+            animateFab(fab, 400);
+        }
     }
 
     /**
@@ -415,6 +443,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
+        }
+    }
+
+    /**
+     * Used to know if the required permission are granted.
+     *
+     * @return true if the required permission are granted, false other wise.
+     */
+    private boolean arePermissionsGranted() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE
+            );
+            return false;
+        } else {
+            return true;
         }
     }
 }
