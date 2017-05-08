@@ -8,6 +8,8 @@ android {
         applicationId "fr.tvbarthel.apps.cameracolorpicker"
         minSdkVersion 14
         targetSdkVersion 25
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {

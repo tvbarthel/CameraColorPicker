@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CPPTheme.Fab" parent="CCPTheme.Light">
+        <item name="android:scaleType">center</item>
+        <item name="android:layout_margin">40dp</item>
+    </style>
+
+</resources>
