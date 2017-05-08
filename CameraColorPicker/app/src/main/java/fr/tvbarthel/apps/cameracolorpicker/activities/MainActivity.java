@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
-        mToolbar.setTitle(R.string.app_name);
+        mToolbar.setTitle(R.string.main_activity_title);
         setSupportActionBar(mToolbar);
 
         mCurrentPageId = PAGE_ID_COLOR_ITEM_LIST;
