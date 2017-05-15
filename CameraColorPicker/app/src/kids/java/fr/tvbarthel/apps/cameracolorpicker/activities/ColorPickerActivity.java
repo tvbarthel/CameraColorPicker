@@ -1,6 +1,8 @@
 package fr.tvbarthel.apps.cameracolorpicker.activities;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.animation.Animation;
@@ -14,6 +16,7 @@ import fr.tvbarthel.apps.cameracolorpicker.R;
 public class ColorPickerActivity extends ColorPickerBaseActivity {
 
     private Animation wiggle;
+    private ColorDrawable mActionBarBackground;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,10 +24,12 @@ public class ColorPickerActivity extends ColorPickerBaseActivity {
 
         wiggle = AnimationUtils.loadAnimation(this, R.anim.wiggle);
         mColorPreviewText.setVisibility(View.INVISIBLE);
+        mActionBarBackground = new ColorDrawable(ContextCompat.getColor(this, R.color.color_primary));
 
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setTitle(null);
+            supportActionBar.setBackgroundDrawable(mActionBarBackground);
         }
     }
 
@@ -53,5 +58,11 @@ public class ColorPickerActivity extends ColorPickerBaseActivity {
                 mSaveButton.startAnimation(wiggle);
             }
         }, 500);
+    }
+
+    @Override
+    public void onColorSelected(int color) {
+        super.onColorSelected(color);
+        mActionBarBackground.setColor(color);
     }
 }
